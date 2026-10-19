@@ -4,10 +4,11 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import type { Vec3 } from './coordenadas'
 
-// Cámaras predefinidas: vista general del terreno o junto al instrumento, mirando la mira. Entre una y
-// otra la cámara se desliza; el estudiante puede además girar y acercar con el mouse o el dedo.
+// Cámaras predefinidas: vista general del terreno, planta (desde arriba, con el norte hacia arriba) o
+// junto al instrumento, mirando la mira. Entre una y otra la cámara se desliza; el estudiante puede
+// además girar y acercar con el mouse o el dedo.
 
-export type Vista = 'general' | 'instrumento'
+export type Vista = 'general' | 'planta' | 'instrumento'
 
 interface Props {
   vista: Vista
@@ -26,10 +27,14 @@ export function ControlCamara({ vista, centro, radio, instrumento }: Props) {
     const usarInstrumento = vista === 'instrumento' && instrumento
     destino.current = usarInstrumento
       ? { posicion: new THREE.Vector3(...instrumento.ojo), objetivo: new THREE.Vector3(...instrumento.objetivo) }
-      : {
-          posicion: new THREE.Vector3(centro[0] + radio * 0.55, centro[1] + radio * 0.6, centro[2] + radio * 0.8),
-          objetivo: new THREE.Vector3(...centro),
-        }
+      : vista === 'planta'
+        ? // Un poco al sur del centro (≈1°): así la pantalla queda con el norte (+y del escenario) hacia
+          // arriba. Debe ser bastante mayor que el margen con que termina el deslizamiento (0,01).
+          { posicion: new THREE.Vector3(centro[0], centro[1] + radio * 1.9, centro[2] + radio * 0.03), objetivo: new THREE.Vector3(...centro) }
+        : {
+            posicion: new THREE.Vector3(centro[0] + radio * 0.55, centro[1] + radio * 0.6, centro[2] + radio * 0.8),
+            objetivo: new THREE.Vector3(...centro),
+          }
     invalidate()
   }, [vista, instrumento, centro, radio, invalidate])
 

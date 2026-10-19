@@ -7,7 +7,14 @@
     { "id": "A", "nombre": "A (PR-2)", "x": 60, "y": 0, "cota": 100.12, "pr": true },
     { "id": "B", "x": 105, "y": 0, "cota": 100.585 },
     { "id": "C", "x": 105, "y": 60, "cota": 101.34 },
-    { "id": "D", "x": 55.27, "y": 54.8, "cota": 100.91 }
+    { "id": "D", "x": 55.27, "y": 54.8, "cota": 100.91 },
+    { "id": "PR-3", "nombre": "PR-3", "x": -14, "y": -34, "cota": 99.64, "pr": true },
+    { "id": "E0", "x": 0, "y": -34, "cota": 99.812 },
+    { "id": "E1", "x": 20, "y": -34, "cota": 100.071 },
+    { "id": "E2", "x": 40, "y": -34, "cota": 100.395 },
+    { "id": "E3", "x": 60, "y": -34, "cota": 100.548 },
+    { "id": "E4", "x": 80, "y": -34, "cota": 100.903 },
+    { "id": "E5", "x": 100, "y": -34, "cota": 101.217 }
   ],
   "aristas": [
     { "a": "A", "b": "B", "dist": 45 },
@@ -15,6 +22,7 @@
     { "a": "C", "b": "D", "dist": 50 },
     { "a": "D", "b": "A", "dist": 55 }
   ],
+  "sendero": { "eje": ["E0", "E1", "E2", "E3", "E4", "E5"], "estacionamiento_m": 20 },
   "recorridos": [
     {
       "id": "1.1",
@@ -28,12 +36,22 @@
         { "id": "E1", "x": 110, "y": -5, "visadas": ["A", "B", "C"] },
         { "id": "E2", "x": 50, "y": 65, "visadas": ["C", "D", "A"] }
       ]
+    },
+    {
+      "id": "1.3",
+      "tipo": "circuito",
+      "estaciones": [
+        { "id": "S1", "x": 24, "y": -40, "visadas": ["PR-3", "E0", "E1", "E2", "E3"] },
+        { "id": "S2", "x": 84, "y": -41, "visadas": ["E3", "E4", "E5"] },
+        { "id": "S3", "x": 46, "y": -27, "visadas": ["E5", "PR-3"] }
+      ]
     }
   ],
   "elementos": [
     { "tipo": "edificio", "nombre": "Edificio de Ingeniería", "x": 82.5, "y": 30, "ancho": 29, "largo": 40, "alto": 12 },
     { "tipo": "camino", "puntos": [[-20, -9], [130, -9]], "ancho": 3 },
     { "tipo": "camino", "puntos": [[62, -9], [62, 70], [102, 70], [102, -9]], "ancho": 2 },
+    { "tipo": "camino", "puntos": [[-22, -34], [112, -34]], "ancho": 1.5 },
     { "tipo": "arbol", "x": 20, "y": 30, "alto": 9 },
     { "tipo": "arbol", "x": 32, "y": 46, "alto": 7 },
     { "tipo": "arbol", "x": 8, "y": 58, "alto": 10 },
@@ -42,7 +60,10 @@
     { "tipo": "arbol", "x": 130, "y": 72, "alto": 8 },
     { "tipo": "arbol", "x": 40, "y": 84, "alto": 11 },
     { "tipo": "arbol", "x": 88, "y": 86, "alto": 9 },
-    { "tipo": "arbol", "x": -8, "y": -26, "alto": 7 },
-    { "tipo": "arbol", "x": 70, "y": -28, "alto": 8 }
+    { "tipo": "arbol", "x": -24, "y": -46, "alto": 7 },
+    { "tipo": "arbol", "x": 66, "y": -54, "alto": 8 },
+    { "tipo": "arbol", "x": 30, "y": -58, "alto": 9 },
+    { "tipo": "arbol", "x": 108, "y": -56, "alto": 7 },
+    { "tipo": "arbol", "x": 122, "y": -20, "alto": 8 }
   ]
 }

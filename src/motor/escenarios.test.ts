@@ -112,14 +112,31 @@ describe('validación de escenarios', () => {
 describe('escenario del campus UCT (Acto 0)', () => {
   const campus = leerEscenario(campusJson, rango)
 
-  it('es válido y tiene los recorridos de 1.1 y 1.2', () => {
-    expect(campus.recorridos.map((r) => r.id)).toEqual(['1.1', '1.2'])
+  it('es válido y tiene los recorridos de 1.1, 1.2 y 1.3', () => {
+    expect(campus.recorridos.map((r) => r.id)).toEqual(['1.1', '1.2', '1.3'])
   })
 
   it('el circuito de 1.2 mide 210 m (45 + 60 + 50 + 55) y se hace en 2 estaciones', () => {
     const lecturas = planificarRecorrido(campus, '1.2', rango, crearRng(1))
     expect(longitudRecorridoM(lecturas)).toBe(210)
     expect(new Set(lecturas.map((l) => l.estacion)).size).toBe(2)
+  })
+
+  it('el sendero de 1.3 mide 100 m con estaciones cada 20 m (E0–E5) y pendientes suaves', () => {
+    const eje = estacionesDelEje(campus)
+    expect(eje.map((e) => `${e.id}@${e.progresivaM}`)).toEqual(['E0@0', 'E1@20', 'E2@40', 'E3@60', 'E4@80', 'E5@100'])
+    for (let i = 1; i < eje.length; i++) {
+      expect(distanciaEntre(campus, eje[i - 1].id, eje[i].id)).toBe(20)
+      expect(Math.abs(eje[i].cotaMm - eje[i - 1].cotaMm) / 20 / 10).toBeLessThan(3)
+    }
+  })
+
+  it('el perfil de 1.3 sale del PR-3, recorre el eje y vuelve al PR-3 (228 m, 3 estaciones)', () => {
+    const lecturas = planificarRecorrido(campus, '1.3', rango, crearRng(4))
+    expect(lecturas.filter((l) => l.tipo === 'LA').map((l) => l.punto)).toEqual(['E0', 'E1', 'E2', 'E3', 'E4', 'E5', 'PR-3'])
+    expect(longitudRecorridoM(lecturas)).toBe(228)
+    const visadas = lecturas.map((l) => ({ ...l, lecturaMm: l.verdaderaMm }))
+    expect(sumaDesnivelesMm(calcularLibreta(visadas, 99_640).filas)).toBe(0)
   })
 
   it('las coordenadas son coherentes con las distancias de las aristas (±0,1 m)', () => {

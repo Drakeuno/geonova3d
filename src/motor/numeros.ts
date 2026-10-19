@@ -40,6 +40,15 @@ export function parsearMetrosAMm(texto: string): Mm | null {
   return signo === '-' || signo === '−' ? -mm : mm
 }
 
+/** Lee un número escrito con coma o punto decimal ("−2", "+1,5", "100"). Null si no es número. */
+export function parsearNumero(texto: string): number | null {
+  const m = PATRON_METROS.exec(texto)
+  if (!m) return null
+  const [, signo, entero, decimales = ''] = m
+  const n = Number(`${entero}.${decimales || '0'}`)
+  return signo === '-' || signo === '−' ? -n : n
+}
+
 /**
  * Milímetros → texto en metros con tres decimales y coma: 1523 → "1,523", −750 → "−0,750".
  * Con `signo`, los positivos llevan "+" (útil para desniveles).

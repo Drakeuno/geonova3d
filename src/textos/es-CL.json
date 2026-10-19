@@ -37,7 +37,12 @@
     "cutscene": "Tramo narrativo: el Cochayuyero muestra el PR marítimo de Puerto Saavedra.",
     "enConstruccion": "En construcción",
     "grupal": "grupal",
-    "xp": "XP"
+    "xp": "XP",
+    "jugar": "Jugar",
+    "continuar": "Continuar",
+    "reintentar": "Reintentar",
+    "ver": "Ver",
+    "misXp": "{xp} XP en el viaje"
   },
   "panel": {
     "titulo": "Panel docente",
@@ -45,7 +50,15 @@
     "parametros": "Parámetros vigentes",
     "fuente": "Fuente: public/datos/parametros.json (§11 de la especificación)",
     "cargando": "Cargando parámetros…",
-    "error": "No se pudieron cargar los parámetros"
+    "error": "No se pudieron cargar los parámetros",
+    "demo": {
+      "titulo": "Demostración",
+      "texto": "Abre todas las misiones para mostrar el juego sin jugarlo en orden. Se guarda en este navegador.",
+      "activar": "Abrir todas las misiones",
+      "desactivar": "Volver al orden del viaje",
+      "abiertas": "Todas las misiones están abiertas.",
+      "enOrden": "Las misiones se abren en orden, al aprobar la anterior."
+    }
   },
   "libreta": {
     "titulo": "Libreta de campo",
@@ -167,7 +180,8 @@
     "recorrido": "Recorrido",
     "recorridos": {
       "1.1": "PR-1 → P1 · una estación",
-      "1.2": "Circuito A–B–C–D · dos estaciones"
+      "1.2": "Circuito A–B–C–D · dos estaciones",
+      "1.3": "Perfil del sendero · PR-3 → E0…E5 → PR-3"
     },
     "estacion": "Estación {e} · {n} de {total}",
     "vistaGeneral": "Vista general",
@@ -186,8 +200,6 @@
     "comprobar": "Comprobar",
     "medir": "Medir con cinta {a}–{b}",
     "distancia": "Cinta {a}–{b}: {d} m",
-    "siguiente": "Plantar el nivel en la estación siguiente",
-    "fin": "Recorrido terminado. Elige otro o vuelve a empezar.",
     "reiniciar": "Volver a empezar",
     "burbuja": {
       "calada": "Burbuja calada",
@@ -204,7 +216,12 @@
       "errorTotal": "Error total",
       "exacta": "Lectura exacta (±1 mm)",
       "invalida": "Escribe la lectura en metros, por ejemplo 1,523"
-    }
+    },
+    "vistaPlanta": "Planta",
+    "posturas": "Posturas del nivel",
+    "estacionNivelada": "nivelada",
+    "visaA": "visa {puntos}",
+    "yaAnotada": "ya anotada en la libreta"
   },
   "metales": {
     "bronce": "Bronce",
@@ -221,5 +238,174 @@
     "automatico": "automático",
     "asistido": "asistido",
     "manual": "manual"
+  },
+  "entrega": {
+    "visada": "{tipo} a {punto} (estación {estacion})",
+    "libretaVacia": "la libreta no tiene filas",
+    "faltanVisadas": "faltan visadas del recorrido: {visadas}",
+    "filaFueraDeRecorrido": "la fila {n} no sigue el recorrido: correspondía {esperada}. Corrígela en línea nueva",
+    "sobranFilas": "sobran filas al final del recorrido: {filas}",
+    "calculosOk": "Tus Δh y cotas cuadran con tus lecturas.",
+    "calculosMal": "Los cálculos de las filas {filas} no cuadran con tus lecturas (Δh = LT − LA; cota = cota anterior + Δh).",
+    "distanciasOk": "Las distancias coinciden con la cinta.",
+    "distanciasMal": "Las distancias de las filas {filas} no coinciden con lo que marcó la cinta.",
+    "m11": {
+      "cotaOk": "Cota de {punto} dentro de la tolerancia: error {e} mm (tolerancia ±{t} mm).",
+      "cotaMal": "La cota de {punto} queda fuera de la tolerancia (±{t} mm)."
+    },
+    "m12": {
+      "cierreOk": "El circuito cierra: e = ΣΔh = {e} mm, dentro de la tolerancia de ±{t} mm.",
+      "cierreMal": "El circuito no cierra: e = ΣΔh = {e} mm, más que la tolerancia de ±{t} mm.",
+      "faltaCompensacion": "falta la compensación de {puntos}",
+      "compensacionOk": "Correcciones y cotas compensadas bien repartidas (±{mm} mm).",
+      "compensacionMal": "La compensación de {puntos} no reparte bien el error (cᵢ = −e · dᵢ / D, ±{mm} mm).",
+      "coherenciaOk": "Las cotas compensadas son coherentes con el terreno.",
+      "coherenciaMal": "Alguna cota compensada se aleja del terreno más que la tolerancia (±{t} mm): hay una lectura que el cierre no alcanza a detectar."
+    },
+    "m13": {
+      "cierreOk": "El perfil cierra en el PR: e = ΣΔh = {e} mm, dentro de ±{t} mm.",
+      "cierreMal": "El perfil no cierra en el PR: e = ΣΔh = {e} mm, más que la tolerancia de ±{t} mm.",
+      "faltaPlanilla": "falta completar la planilla en {estaciones}",
+      "faltaDibujo": "faltan datos del dibujo: {campos}",
+      "campos": {
+        "escalaH": "escala horizontal",
+        "escalaV": "escala vertical",
+        "plano": "plano de comparación",
+        "ejeX": "rótulo del eje horizontal",
+        "ejeY": "rótulo del eje vertical",
+        "titulo": "título"
+      },
+      "planillaOk": "La planilla coincide con tu libreta.",
+      "planillaMal": "La planilla no coincide con tu libreta en {estaciones} (progresiva, cota, Δh parcial o acumulado).",
+      "desnivelesOk": "Los desniveles parciales y acumulados calzan con el terreno (±{t} mm).",
+      "desnivelesMal": "Algún desnivel parcial o acumulado se aleja del terreno más que la tolerancia (±{t} mm).",
+      "dibujo": {
+        "escalas": "escalas 1:{h} H y 1:{v} V",
+        "plano": "plano de comparación en un metro entero bajo la cota más baja (a menos de 2 m de ella)",
+        "ejes": "eje horizontal = progresiva y eje vertical = cota",
+        "titulo": "un título"
+      },
+      "dibujoOk": "El dibujo cumple las escalas, el plano de comparación y los rótulos.",
+      "dibujoMal": "El dibujo debe llevar: {problemas}."
+    }
+  },
+  "estados": {
+    "bloqueada": "Bloqueada",
+    "disponible": "Disponible",
+    "en_curso": "En curso",
+    "en_evaluacion": "En evaluación",
+    "aprobada": "Aprobada",
+    "a_reintentar": "Por reintentar"
+  },
+  "dialogo": {
+    "nombre": "Cochayuyero",
+    "anterior": "Línea anterior",
+    "siguiente": "Siguiente",
+    "paso": "{n} de {total}"
+  },
+  "mision": {
+    "volver": "Volver al viaje",
+    "xpTotal": "{xp} XP",
+    "intento": "Intento {n}",
+    "bloqueadaTexto": "Esta misión se abre al aprobar la misión {id} · {titulo}.",
+    "errorCarga": "No se pudo cargar la misión",
+    "cargando": "Preparando el terreno…",
+    "ocultarEncargo": "Ocultar el encargo",
+    "verEncargo": "Ver el encargo del Cochayuyero",
+    "etiquetaEncargo": "Encargo",
+    "etiquetaLogro": "Logro",
+    "etiquetaRechazo": "Retroalimentación",
+    "etiquetaPista": "Pista",
+    "misionPrefijo": "Misión",
+    "entregaTitulo": "Entrega al Cochayuyero",
+    "entregaBajada": "El sistema revisa tu libreta y lo que preparaste. Puedes reintentar las veces que quieras, sin penalización.",
+    "entregar": "Entregar al Cochayuyero",
+    "bloqueada": "Todavía no se puede entregar (no cuenta como entrega fallida):",
+    "sinEntregas": "Aún no has entregado esta misión.",
+    "confirmarNuevo": "¿Empezar un intento nuevo? Cambian las lecturas y la libreta parte en blanco.",
+    "si": "Sí, empezar de nuevo",
+    "no": "No",
+    "nuevoIntento": "Empezar un intento nuevo",
+    "aprobada": "¡Misión aprobada!",
+    "rechazada": "Todavía no: el Cochayuyero te devuelve la libreta",
+    "deIntento": "Entrega del intento {n} · {hora}",
+    "intentoAnterior": "de un intento anterior",
+    "cumple": "Cumple",
+    "noCumple": "No cumple",
+    "rechazoGeneral": "Algo no calza. Revisa la libreta con calma y vuelve a entregar.",
+    "pistaTitulo": "El Cochayuyero te da una pista",
+    "siguienteMision": "Seguir con la misión {id} · {titulo}",
+    "recompensa": "Recompensa",
+    "total": "Total",
+    "sinNuevaRecompensa": "Esta misión ya estaba aprobada: los reintentos no repiten la recompensa.",
+    "movimientos": {
+      "mision": "Insignia de la misión",
+      "lecturas-exactas": "Lecturas exactas (±1 mm)",
+      "bonus-precision": "Bonus por precisión del cierre",
+      "bonus-primera-sin-errores": "Libreta sin errores de registro",
+      "bonus-cooperativa": "Bonus cooperativo",
+      "bonus-ayuda": "Ayuda entre cuadrillas",
+      "penalizacion-tachadura": "Tachadura"
+    }
+  },
+  "compensacion": {
+    "titulo": "Cierre y compensación",
+    "bajada": "El sistema calcula el error de cierre con tu libreta; tú repartes la corrección punto por punto.",
+    "completaLibreta": "Completa la libreta (todas las visadas, con distancias y cálculos) para calcular el cierre.",
+    "error": "Error de cierre e = ΣΔh",
+    "tolerancia": "Tolerancia T",
+    "largo": "Largo del circuito D",
+    "cierra": "El circuito cierra dentro de la tolerancia: ahora compensa.",
+    "noCierra": "El circuito no cierra dentro de la tolerancia: revisa tus lecturas antes de compensar.",
+    "formula": "cᵢ = −e · dᵢ / D    ·    cota compensada = cota + cᵢ",
+    "punto": "Punto",
+    "distancia": "Dist. acumulada dᵢ (m)",
+    "cotaLibreta": "Cota de tu libreta (m)",
+    "correccion": "Corrección cᵢ (mm)",
+    "cotaCompensada": "Cota compensada (m)",
+    "cierreEn": "(cierre)",
+    "correccionDe": "Corrección de {punto}, en milímetros",
+    "cotaCompensadaDe": "Cota compensada de {punto}, en metros"
+  },
+  "perfil": {
+    "titulo": "Perfil longitudinal del sendero",
+    "bajada": "Arma la planilla con tu libreta y completa la plantilla del dibujo. El perfil se dibuja con los datos de tu libreta.",
+    "planilla": {
+      "titulo": "Planilla del perfil",
+      "estacion": "Estación",
+      "progresiva": "Progresiva (m)",
+      "cota": "Cota (m)",
+      "parcial": "Δh parcial (m)",
+      "acumulado": "Δh acumulado desde E0 (m)"
+    },
+    "dibujo": {
+      "titulo": "Plantilla del dibujo",
+      "tituloPerfil": "Título del perfil",
+      "ejemploTitulo": "Perfil longitudinal del sendero, campus UCT",
+      "escalaH": "Escala horizontal",
+      "escalaV": "Escala vertical",
+      "plano": "Plano de comparación (m)",
+      "ejeX": "Rótulo del eje horizontal",
+      "ejeY": "Rótulo del eje vertical",
+      "elegir": "Elige…"
+    },
+    "ejes": {
+      "progresiva": "Progresiva (m)",
+      "cota": "Cota (m)",
+      "lectura": "Lectura de mira (m)",
+      "distancia": "Distancia al instrumento (m)"
+    },
+    "vistaPrevia": "Vista previa con la proporción del papel, dibujada con los datos de tu libreta.",
+    "exportar": "Exportar perfil (PDF a escala)",
+    "sinDatos": "El perfil aparece cuando la libreta tenga al menos dos estaciones del eje.",
+    "sinTitulo": "Perfil sin título",
+    "descripcion": "{titulo}: perfil longitudinal con {n} estaciones",
+    "guitarra": {
+      "progresiva": "Progresiva",
+      "cota": "Cota (m)",
+      "parcial": "Δh parcial (m)"
+    },
+    "pie": "Escala horizontal 1:{h} · Escala vertical 1:{v} (exageración ×{ex}) · Plano de comparación: {plano} m",
+    "imprimir": "Imprimir al 100 %, sin ajustar a la página"
   }
 }

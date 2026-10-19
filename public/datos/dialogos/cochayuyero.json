@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "personaje": "Cochayuyero",
+  "misiones": {
+    "1.1": {
+      "encargo": [
+        "Buenos días, cuadrilla. Antes de echarnos al camino a Puerto Saavedra quiero ver cómo arman el nivel. Allá en la costa nadie les va a sujetar el trípode.",
+        "El {pr} tiene cota conocida: {cotaPr} m. Planten el nivel entre el {pr} y la estaca P1, calen bien la burbuja y lean la mira: primero atrás, sobre el {pr}; después adelante, sobre P1.",
+        "Midan con la cinta la distancia del {pr} a P1 y anoten todo en la libreta. El desnivel es lectura atrás menos lectura adelante, y la cota de P1 sale de sumarle ese desnivel a la del {pr}.",
+        "Ojo con la burbuja: si queda descentrada, la mira les miente. Con más de {tolerancia} mm de error no salimos del campamento."
+      ],
+      "pistas": [
+        "Se los digo como me lo dijeron a mí cuando juntaba cochayuyo: sin la burbuja al centro, todo lo demás sobra. Vuelvan a nivelar antes de leer y lean donde corta el hilo de la cruz: el decímetro por el número, el centímetro por los bloques y el milímetro a ojo.",
+        "Revisen el signo: si la lectura adelante es menor que la de atrás, P1 está más alto que el {pr} y el desnivel es positivo."
+      ],
+      "logro": [
+        "¡Eso es! La cota de P1 quedó dentro de la tolerancia. Se ganaron la insignia Primer Coteo.",
+        "Mañana cerramos un circuito alrededor del edificio de Ingeniería. Descansen la vista."
+      ],
+      "rechazo": {
+        "calculos": "Las lecturas pueden estar bien, pero las cuentas de la libreta no cuadran. Revisen fila por fila: Δh = LT − LA, y la cota es la anterior más el Δh.",
+        "distancias": "La distancia anotada no es la que marcó la cinta. Vuelvan a medir y corrijan en línea nueva, sin tachar.",
+        "cota": "La cota de P1 se fue de la tolerancia. ¿La burbuja estaba calada? ¿Leyeron bien el milímetro? Vuelvan a nivelar, lean de nuevo y corrijan en línea nueva."
+      }
+    },
+    "1.2": {
+      "encargo": [
+        "Ahora un circuito cerrado alrededor del edificio de Ingeniería: A, B, C, D y de vuelta a A. El punto A es el {pr}, de cota {cotaPr} m.",
+        "El edificio tapa la visual, así que van a necesitar dos posturas del nivel. C es el punto de cambio: se lee adelante desde la primera estación y atrás desde la segunda, sin mover la mira.",
+        "Un circuito que vuelve a su punto de partida debe sumar cero en desniveles. Lo que sobre o falte es el error de cierre, y aquí la tolerancia es de {tolerancia} mm para {longitud} m.",
+        "Si cierra, repartan el error en proporción a la distancia acumulada y entréguenme las cotas compensadas. Así se trabajaba en las riberas del Cautín y así se sigue trabajando."
+      ],
+      "pistas": [
+        "La corrección de cada punto es menos el error, por la distancia acumulada hasta ese punto, dividido por el largo total: cᵢ = −e · dᵢ / D. El último punto, A, recibe la corrección completa y vuelve a su cota conocida.",
+        "El cierre no lo ve todo: si se equivocan en la lectura de B, el error entra en un desnivel y sale en el siguiente. Lean con calma las visadas intermedias."
+      ],
+      "logro": [
+        "Circuito cerrado y compensado. Con esa prolijidad se puede confiar en ustedes. Insignia de plata: Circuito Cerrado.",
+        "Nos queda una tarea en el campamento: el perfil del sendero."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Sin distancias buenas no hay compensación que valga.",
+        "cierre": "El circuito no cierra: el error pasa la tolerancia. Antes de compensar hay que repetir. Revisen la burbuja en cada estación y las lecturas en el punto de cambio.",
+        "compensacion": "El cierre está bien, pero la compensación no. Recuerden: cᵢ = −e · dᵢ / D, con la distancia acumulada hasta cada punto.",
+        "coherencia": "El circuito cierra, pero alguna cota no calza con el terreno. Hay una lectura intermedia mala que el cierre no alcanza a mostrar."
+      }
+    },
+    "1.3": {
+      "encargo": [
+        "Último encargo del campamento: el perfil longitudinal del sendero. Son 100 m, con estaciones cada {estacionamiento} m, de E0 a E5. Partimos del {pr}, cota {cotaPr} m.",
+        "Desde la primera postura alcanzan a leer hasta E3; ahí cambian de estación. Al llegar a E5 no se queden: vuelvan a cerrar en el {pr}, porque un perfil que no se cierra no se puede verificar.",
+        "Con la libreta lista, armen la planilla: progresiva, cota, desnivel parcial y desnivel acumulado desde E0. Después dibujen el perfil a escala 1:{escalaH} horizontal y 1:{escalaV} vertical, con los ejes bien rotulados.",
+        "Ese perfil es el que vamos a mostrar. Si sale bien, levantamos el campamento y partimos a Puerto Saavedra."
+      ],
+      "pistas": [
+        "El desnivel parcial de un tramo es la cota de la estación menos la de la anterior; el acumulado se cuenta siempre desde E0. Y el plano de comparación va bajo la cota más baja, en un metro redondo.",
+        "En el perfil, la horizontal es la progresiva y la vertical es la cota. La vertical va exagerada para que se note la pendiente: por eso las escalas son distintas."
+      ],
+      "logro": [
+        "¡Ese perfil se entiende de lejos! Insignia Dibujante de Perfiles.",
+        "Levanten el campamento: partimos a Puerto Saavedra, donde empieza el camino de verdad."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Sin ellas, las progresivas no calzan.",
+        "cierre": "El perfil no cierra en el {pr}: el error pasa la tolerancia. Revisen la burbuja de cada postura y los puntos de cambio, y repitan lo que haga falta.",
+        "planilla": "La planilla no coincide con su libreta. Revisen progresivas, cotas y desniveles, estación por estación.",
+        "desniveles": "Los desniveles no calzan con el terreno. Alguna lectura intermedia quedó mala: esas el cierre no las controla.",
+        "dibujo": "El dibujo no cumple el formato. Revisen las escalas que les pedí, el plano de comparación y los rótulos de los ejes."
+      }
+    }
+  }
+}

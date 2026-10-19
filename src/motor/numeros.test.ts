@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { aMm, dentroDeTolerancia, formatearMm, parsearMetrosAMm, redondearMedioArriba } from './numeros'
+import { aMm, dentroDeTolerancia, formatearMm, parsearMetrosAMm, parsearNumero, redondearMedioArriba } from './numeros'
 import { crearRng, enteroEntre } from './azar'
 
 describe('redondeo medio arriba', () => {
@@ -41,6 +41,21 @@ describe('lectura de valores escritos por el jugador', () => {
 
   it('rechaza lo que no es un número', () => {
     for (const malo of ['', 'abc', '1,', ',5', '1,2,3', '1 523']) expect(parsearMetrosAMm(malo)).toBeNull()
+  })
+})
+
+describe('números escritos sin unidad', () => {
+  it('acepta coma o punto, signo y enteros', () => {
+    expect(parsearNumero('−2')).toBe(-2)
+    expect(parsearNumero('+1,5')).toBe(1.5)
+    expect(parsearNumero('100')).toBe(100)
+    expect(parsearNumero('0.25')).toBe(0.25)
+  })
+
+  it('rechaza lo que no es número', () => {
+    expect(parsearNumero('')).toBeNull()
+    expect(parsearNumero('1:100')).toBeNull()
+    expect(parsearNumero('dos')).toBeNull()
   })
 })
 

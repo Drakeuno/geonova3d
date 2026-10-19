@@ -9,8 +9,9 @@ import PanelDocente from '@/paginas/PanelDocente'
 import PracticaLibreta from '@/paginas/PracticaLibreta'
 import textos from '@/textos/es-CL.json'
 
-// La página 3D (y three.js) se descarga solo cuando se abre.
+// Las páginas con terreno 3D (y three.js) se descargan solo cuando se abren.
 const CampoPractica = lazy(() => import('@/paginas/CampoPractica'))
+const Mision = lazy(() => import('@/paginas/Mision'))
 
 function useUsuario() {
   return usuarioPorId(useSesion((s) => s.usuarioId))
@@ -46,6 +47,16 @@ export default function App() {
             <SoloRol rol="estudiante">
               <Suspense fallback={<p className="mx-auto max-w-7xl px-4 py-8 text-tierra-600">{textos.campo.cargando}</p>}>
                 <CampoPractica />
+              </Suspense>
+            </SoloRol>
+          }
+        />
+        <Route
+          path="/mision/:id"
+          element={
+            <SoloRol rol="estudiante">
+              <Suspense fallback={<p className="mx-auto max-w-7xl px-4 py-8 text-tierra-600">{textos.mision.cargando}</p>}>
+                <Mision />
               </Suspense>
             </SoloRol>
           }

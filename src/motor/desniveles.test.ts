@@ -137,3 +137,18 @@ describe('pendiente y comparación de cotas', () => {
     ])
   })
 })
+
+describe('nombres de estación y punto escritos a mano', () => {
+  it('no distinguen mayúsculas, espacios ni guiones', () => {
+    const visadas: Visada[] = [
+      { estacion: 'e1', punto: 'pr 1', tipo: 'LT', lecturaMm: 1500 },
+      { estacion: 'E1 ', punto: 'C', tipo: 'LA', lecturaMm: 1200, distanciaM: 30 },
+      { estacion: 'E-2', punto: 'c', tipo: 'LT', lecturaMm: 1400 },
+      { estacion: 'e2', punto: 'D', tipo: 'LA', lecturaMm: 1100, distanciaM: 25 },
+    ]
+    const { filas, problemas } = calcularLibreta(visadas, 100_000)
+    expect(problemas).toEqual([])
+    expect(filas.map((f) => f.cotaMm)).toEqual([100_000, 100_300, 100_300, 100_600])
+    expect(comprobacionLecturasMm(visadas)).toBe(600)
+  })
+})

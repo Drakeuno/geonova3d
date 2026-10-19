@@ -1,15 +1,26 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Binoculars, Clapperboard, Lock, NotebookPen } from 'lucide-react'
+import { ArrowRight, Binoculars, CheckCircle2, Clapperboard, Lock, NotebookPen, Play, RotateCcw, Sparkles } from 'lucide-react'
 import { ACTOS, misionesDelActo, type ActoViaje, type MisionCatalogo } from '@/datos/misiones'
 import { useParametros } from '@/estado/parametros'
+import { useSesion } from '@/estado/sesion'
+import { useXpIndividual } from '@/estado/juego'
+import { estadoVisible, useViaje, useViajeDe } from '@/estado/viaje'
+import type { EstadoMision } from '@/motor/progreso'
+import { esJugable } from '@/misiones/definiciones'
 import { ChipMetal } from '@/componentes/ui/ChipMetal'
+import { RetratoCochayuyero } from '@/componentes/dialogo/DialogoCochayuyero'
+import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 
 const arte = (archivo: string) => `${import.meta.env.BASE_URL}arte/${archivo}`
 
 export default function MapaViaje() {
   const { parametros } = useParametros()
+  const usuarioId = useSesion((s) => s.usuarioId)
+  const viaje = useViajeDe(usuarioId)
+  const todasAbiertas = useViaje((s) => s.todasAbiertas)
+  const xp = useXpIndividual(usuarioId)
   // XP base de la misión (§6.2): la cooperativa suma su bonus (2.3 = Oro 150 + 100).
   const xpDe = (m: MisionCatalogo) =>
     parametros
@@ -23,6 +34,11 @@ export default function MapaViaje() {
           <p className="text-sm font-semibold uppercase tracking-wide text-bosque-700">{textos.app.parte}</p>
           <h1 className="mt-1 text-3xl font-bold text-tierra-900 sm:text-4xl">{textos.viaje.titulo}</h1>
           <p className="mt-2 text-tierra-600">{textos.viaje.ruta}</p>
+          <p className="mt-3">
+            <span className="chip bg-buey-100 text-buey-800">
+              <Sparkles size={13} aria-hidden /> {rellenar(textos.viaje.misXp, { xp })}
+            </span>
+          </p>
         </div>
         <figure className="card flex items-center gap-4 p-4">
           <RetratoCochayuyero />
@@ -64,7 +80,7 @@ export default function MapaViaje() {
             ) : (
               <ul className="divide-y divide-tierra-100">
                 {misionesDelActo(acto.id).map((m) => (
-                  <FilaMision key={m.id} mision={m} xp={xpDe(m)} />
+                  <FilaMision key={m.id} mision={m} xp={xpDe(m)} estado={estadoVisible(viaje?.[m.id], todasAbiertas)} />
                 ))}
               </ul>
             )}
@@ -91,20 +107,6 @@ function TarjetaPractica({ a, icono, titulo, bajada }: { a: string; icono: React
   )
 }
 
-/** Recorte de la cara del Cochayuyero en la imagen del Ñielol (activo provisorio). */
-function RetratoCochayuyero() {
-  return (
-    <span className="h-20 w-20 shrink-0 overflow-hidden rounded-full ring-4 ring-buey-100">
-      <img
-        src={arte('cochayuyero-nielol.jpeg')}
-        alt=""
-        className="h-full w-full object-cover"
-        style={{ transform: 'scale(3.2)', transformOrigin: '48% 38%' }}
-      />
-    </span>
-  )
-}
-
 function RutaActos() {
   return (
     <ol className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -126,7 +128,26 @@ function RutaActos() {
   )
 }
 
-function FilaMision({ mision: m, xp }: { mision: MisionCatalogo; xp?: number }) {
+const ACCION: Partial<Record<EstadoMision, [string, ReactNode]>> = {
+  disponible: [textos.viaje.jugar, <Play key="j" size={15} aria-hidden />],
+  en_curso: [textos.viaje.continuar, <ArrowRight key="c" size={15} aria-hidden />],
+  en_evaluacion: [textos.viaje.continuar, <ArrowRight key="e" size={15} aria-hidden />],
+  a_reintentar: [textos.viaje.reintentar, <RotateCcw key="r" size={15} aria-hidden />],
+  aprobada: [textos.viaje.ver, <CheckCircle2 key="v" size={15} aria-hidden />],
+}
+
+const COLOR_ESTADO: Record<EstadoMision, string> = {
+  bloqueada: 'bg-tierra-100 text-tierra-700',
+  disponible: 'bg-poncho-100 text-poncho-800',
+  en_curso: 'bg-buey-100 text-buey-800',
+  en_evaluacion: 'bg-buey-100 text-buey-800',
+  a_reintentar: 'bg-granate-100 text-granate-700',
+  aprobada: 'bg-bosque-100 text-bosque-800',
+}
+
+function FilaMision({ mision: m, xp, estado }: { mision: MisionCatalogo; xp?: number; estado: EstadoMision }) {
+  const jugable = esJugable(m.id)
+  const accion = ACCION[estado]
   return (
     <li className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center">
       <span className="grid h-11 w-14 shrink-0 place-items-center rounded-xl bg-poncho-700 font-mono text-lg font-semibold text-white">
@@ -149,9 +170,22 @@ function FilaMision({ mision: m, xp }: { mision: MisionCatalogo; xp?: number }) 
           )}
         </div>
       </div>
-      <span className="chip w-fit bg-tierra-100 text-tierra-700">
-        <Lock size={13} aria-hidden /> {textos.viaje.enConstruccion}
-      </span>
+      {!jugable ? (
+        <span className="chip w-fit bg-tierra-100 text-tierra-700">
+          <Lock size={13} aria-hidden /> {textos.viaje.enConstruccion}
+        </span>
+      ) : (
+        <div className="flex shrink-0 items-center gap-2">
+          <span className={`chip ${COLOR_ESTADO[estado]}`}>
+            {estado === 'bloqueada' && <Lock size={13} aria-hidden />} {textos.estados[estado]}
+          </span>
+          {accion && (
+            <Link to={`/mision/${m.id}`} className={estado === 'aprobada' ? 'btn-neutro' : 'btn-primario'}>
+              {accion[1]} {accion[0]}
+            </Link>
+          )}
+        </div>
+      )}
     </li>
   )
 }

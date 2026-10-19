@@ -1,4 +1,6 @@
+import { LockOpen } from 'lucide-react'
 import { useParametros } from '@/estado/parametros'
+import { useViaje } from '@/estado/viaje'
 import { formatearNumero } from '@/motor/numeros'
 import type { Parametros } from '@/datos/parametros'
 import textos from '@/textos/es-CL.json'
@@ -29,11 +31,27 @@ function filas(p: Parametros): [string, string][] {
 
 export default function PanelDocente() {
   const { estado, parametros, error } = useParametros()
+  const { todasAbiertas, alternarTodasAbiertas } = useViaje()
+  const d = textos.panel.demo
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <h1 className="text-3xl font-bold text-tierra-900">{textos.panel.titulo}</h1>
       <p className="mt-2 text-tierra-600">{textos.panel.bajada}</p>
+
+      <section className="card mt-6 flex flex-wrap items-center gap-4 p-5">
+        <LockOpen size={22} className="text-poncho-700" aria-hidden />
+        <div className="min-w-[14rem] flex-1">
+          <h2 className="text-lg font-bold text-tierra-900">{d.titulo}</h2>
+          <p className="text-sm text-tierra-600">{d.texto}</p>
+          <p className="mt-1 text-sm font-semibold text-tierra-800" role="status">
+            {todasAbiertas ? d.abiertas : d.enOrden}
+          </p>
+        </div>
+        <button type="button" aria-pressed={todasAbiertas} className={todasAbiertas ? 'btn-neutro' : 'btn-primario'} onClick={alternarTodasAbiertas}>
+          {todasAbiertas ? d.desactivar : d.activar}
+        </button>
+      </section>
 
       <section className="card mt-6 overflow-hidden">
         <header className="border-b border-tierra-200 bg-tierra-100/60 px-5 py-3">

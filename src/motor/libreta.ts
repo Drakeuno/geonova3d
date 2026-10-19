@@ -2,6 +2,7 @@ import {
   calcularLibreta,
   comprobacionLecturasMm,
   desnivelMm,
+  mismoNombre,
   sumaDesnivelesMm,
   type FilaCalculada,
   type TipoVisada,
@@ -148,7 +149,7 @@ export function revisarCalculosJugador(r: RegistroLibreta): RevisionCalculo[] {
       lecturaAnterior = f.lecturaMm
       continue
     }
-    const esperado = f.estacion === estacion && lecturaAnterior !== null ? desnivelMm(lecturaAnterior, f.lecturaMm) : null
+    const esperado = mismoNombre(f.estacion, estacion) && lecturaAnterior !== null ? desnivelMm(lecturaAnterior, f.lecturaMm) : null
     const desnivelOk = f.desnivelMm === null ? null : esperado !== null && f.desnivelMm === esperado
     const cotaOk = f.cotaMm === null || f.desnivelMm === null || cotaAnterior === null ? null : f.cotaMm === cotaAnterior + f.desnivelMm
     revision.push({ id: f.id, numero: f.numero, desnivelOk, cotaOk })
@@ -175,7 +176,7 @@ export function esperadoParaBorrador(
   if (borrador.tipo === 'LT') return { desnivelMm: null, cotaAnteriorMm: null }
 
   const ultimaLt = [...previas].reverse().find((f) => f.tipo === 'LT')
-  const enEstacion = ultimaLt && ultimaLt.estacion === borrador.estacion ? previas.slice(previas.indexOf(ultimaLt)) : []
+  const enEstacion = ultimaLt && mismoNombre(ultimaLt.estacion, borrador.estacion) ? previas.slice(previas.indexOf(ultimaLt)) : []
   const lecturaAnterior = enEstacion.length ? enEstacion[enEstacion.length - 1].lecturaMm : null
   const desnivel = lecturaAnterior !== null && borrador.lecturaMm !== null ? desnivelMm(lecturaAnterior, borrador.lecturaMm) : null
 

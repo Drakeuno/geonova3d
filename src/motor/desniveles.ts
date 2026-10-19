@@ -27,6 +27,10 @@ export interface ResultadoLibreta {
   problemas: string[]
 }
 
+/** Nombres de estación y punto sin importar mayúsculas, espacios ni guiones: "pr 1" = "PR-1". */
+export const normalizarNombre = (s: string) => s.toUpperCase().replace(/[\s\-_]/g, '')
+export const mismoNombre = (a: string | null, b: string | null) => a !== null && b !== null && normalizarNombre(a) === normalizarNombre(b)
+
 /** Δh = LT − LA: lectura atrás menos lectura adelante, desde una misma estación. */
 export const desnivelMm = (lecturaAtrasMm: Mm, lecturaAdelanteMm: Mm): Mm => lecturaAtrasMm - lecturaAdelanteMm
 
@@ -50,8 +54,8 @@ export function calcularLibreta(visadas: Visada[], cotaInicialMm: Mm): Resultado
   for (const [i, v] of visadas.entries()) {
     const n = i + 1
     if (v.tipo === 'LT') {
-      if (v.estacion === estacion) problemas.push(`Fila ${n}: la estación ${v.estacion} ya tiene su lectura atrás`)
-      if (puntoActual !== null && v.punto !== puntoActual) {
+      if (mismoNombre(v.estacion, estacion)) problemas.push(`Fila ${n}: la estación ${v.estacion} ya tiene su lectura atrás`)
+      if (puntoActual !== null && !mismoNombre(v.punto, puntoActual)) {
         problemas.push(`Fila ${n}: la lectura atrás va sobre ${puntoActual}, el último punto con cota`)
       }
       estacion = v.estacion
@@ -61,7 +65,7 @@ export function calcularLibreta(visadas: Visada[], cotaInicialMm: Mm): Resultado
       continue
     }
 
-    if (v.estacion !== estacion || lecturaAnterior === null) {
+    if (!mismoNombre(v.estacion, estacion) || lecturaAnterior === null) {
       problemas.push(`Fila ${n}: lectura adelante sin lectura atrás en la estación ${v.estacion}`)
       filas.push({ ...v, cotaMm: cota, distanciaAcumuladaM: acumulada })
       continue
@@ -89,7 +93,7 @@ export function comprobacionLecturasMm(visadas: Visada[]): Mm {
   const ultimaLa = new Map<string, Mm>()
   for (const v of visadas) {
     if (v.tipo === 'LT') sumaLt += v.lecturaMm
-    else ultimaLa.set(v.estacion, v.lecturaMm)
+    else ultimaLa.set(normalizarNombre(v.estacion), v.lecturaMm)
   }
   let sumaLa = 0
   for (const la of ultimaLa.values()) sumaLa += la
