@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  /* Modo proyector: todo lo que usa rem crece un 25 %. */
+  html[data-proyector] {
+    font-size: 125%;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-tierra-50 font-sans text-tierra-900 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-tierra-200 bg-white shadow-card;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primario {
+    @apply btn bg-bosque-700 text-white shadow-sm hover:bg-bosque-800 focus-visible:ring-bosque-500;
+  }
+
+  .btn-acento {
+    @apply btn bg-buey-500 text-white shadow-sm hover:bg-buey-600 focus-visible:ring-buey-400;
+  }
+
+  .btn-neutro {
+    @apply btn border border-tierra-200 bg-white text-tierra-800 hover:bg-tierra-100 focus-visible:ring-tierra-300;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-tierra-300;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-tierra-400;
+}

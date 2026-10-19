@@ -1,0 +1,48 @@
+{
+  "escenario": "campus-uct",
+  "nombre": "Campus UCT · campamento base",
+  "puntos": [
+    { "id": "PR-1", "nombre": "PR-1", "x": 0, "y": 0, "cota": 100.0, "pr": true },
+    { "id": "P1", "x": 30, "y": 8, "cota": 100.437 },
+    { "id": "A", "nombre": "A (PR-2)", "x": 60, "y": 0, "cota": 100.12, "pr": true },
+    { "id": "B", "x": 105, "y": 0, "cota": 100.585 },
+    { "id": "C", "x": 105, "y": 60, "cota": 101.34 },
+    { "id": "D", "x": 55.27, "y": 54.8, "cota": 100.91 }
+  ],
+  "aristas": [
+    { "a": "A", "b": "B", "dist": 45 },
+    { "a": "B", "b": "C", "dist": 60 },
+    { "a": "C", "b": "D", "dist": 50 },
+    { "a": "D", "b": "A", "dist": 55 }
+  ],
+  "recorridos": [
+    {
+      "id": "1.1",
+      "tipo": "abierto",
+      "estaciones": [{ "id": "E1", "x": 14, "y": -4, "visadas": ["PR-1", "P1"] }]
+    },
+    {
+      "id": "1.2",
+      "tipo": "circuito",
+      "estaciones": [
+        { "id": "E1", "x": 110, "y": -5, "visadas": ["A", "B", "C"] },
+        { "id": "E2", "x": 50, "y": 65, "visadas": ["C", "D", "A"] }
+      ]
+    }
+  ],
+  "elementos": [
+    { "tipo": "edificio", "nombre": "Edificio de Ingeniería", "x": 82.5, "y": 30, "ancho": 29, "largo": 40, "alto": 12 },
+    { "tipo": "camino", "puntos": [[-20, -9], [130, -9]], "ancho": 3 },
+    { "tipo": "camino", "puntos": [[62, -9], [62, 70], [102, 70], [102, -9]], "ancho": 2 },
+    { "tipo": "arbol", "x": 20, "y": 30, "alto": 9 },
+    { "tipo": "arbol", "x": 32, "y": 46, "alto": 7 },
+    { "tipo": "arbol", "x": 8, "y": 58, "alto": 10 },
+    { "tipo": "arbol", "x": -14, "y": 22, "alto": 8 },
+    { "tipo": "arbol", "x": 128, "y": 32, "alto": 9 },
+    { "tipo": "arbol", "x": 130, "y": 72, "alto": 8 },
+    { "tipo": "arbol", "x": 40, "y": 84, "alto": 11 },
+    { "tipo": "arbol", "x": 88, "y": 86, "alto": 9 },
+    { "tipo": "arbol", "x": -8, "y": -26, "alto": 7 },
+    { "tipo": "arbol", "x": 70, "y": -28, "alto": 8 }
+  ]
+}

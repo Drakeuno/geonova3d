@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "toleranciaCierre": { "coeficienteMm": 12 },
+  "lectura": { "minimaM": 0.5, "maximaM": 2.5, "largoMiraM": 3, "toleranciaExactaMm": 1 },
+  "comparacion": { "toleranciaMm": 1, "compensacionMm": 2 },
+  "montaje": { "errorMaximoMm": 5 },
+  "perfil": { "estacionamientoM": 20, "escalaHorizontal": 100, "escalaVertical": 20 },
+  "acto2": {
+    "piel": "red-del-agua",
+    "pendienteMinimaGravedadPct": 0.5,
+    "pendienteMaximaTransitablePct": 8,
+    "presionMinimaMca": 10
+  },
+  "modoDesnivel": { "acto0": "manual", "acto2": "asistido", "acto3": "asistido" },
+  "xp": {
+    "lecturaExacta": 100,
+    "porInsignia": { "bronce": 100, "plata": 100, "oro": 150, "integrador": 300 },
+    "bonusPrecision": { "bajo5mm": 200, "bajo10mm": 100 },
+    "bonusPrimeraSinErrores": 50,
+    "bonusCooperativa": 100,
+    "bonusAyuda": 50,
+    "penalizacionTachadura": 20
+  },
+  "reintentos": { "fallasAntesDePista": 2 },
+  "evaluacionOral": { "aprobacionMinimaPct": 60, "evaluadores": 3 },
+  "errorGroseroMm": 30
+}

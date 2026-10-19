@@ -1,0 +1,225 @@
+{
+  "app": {
+    "nombre": "GeoNova3D",
+    "subtitulo": "Misión Topógrafo",
+    "parte": "Parte 1 · El Viaje del Cochayuyero",
+    "pie": "PID 2026 · Universidad Católica de Temuco, Facultad de Ingeniería",
+    "aviso": "Maqueta con datos simulados"
+  },
+  "inicio": {
+    "etiqueta": "PID 2026 · UC Temuco",
+    "bajada": "De Puerto Saavedra al cerro Ñielol, tu cuadrilla nivela el camino junto al Cochayuyero. Nivelación geométrica con nivel de ingeniero, por el método de los desniveles.",
+    "puntos": [
+      "9 misiones en tres actos",
+      "Libreta de campo digital y perfiles longitudinales",
+      "Cuadrillas de 3 a 4, con puntaje grupal"
+    ],
+    "titulo": "Ingresa a la demo",
+    "ayuda": "Elige un perfil para explorar la experiencia. No requiere registro.",
+    "creditoImagen": "El Cochayuyero sale cargado de Puerto Saavedra"
+  },
+  "roles": {
+    "estudiante": "Estudiante",
+    "docente": "Docente"
+  },
+  "nav": {
+    "viaje": "Mi viaje",
+    "panel": "Panel docente",
+    "proyectorActivar": "Activar modo proyector",
+    "proyectorDesactivar": "Desactivar modo proyector",
+    "salir": "Salir"
+  },
+  "viaje": {
+    "titulo": "El Viaje del Cochayuyero",
+    "ruta": "Campus UCT → Puerto Saavedra → parada rural → Cerro Ñielol",
+    "saludo": "Antes de salir al camino, demuéstrame que sabes armar el nivel y leer la mira. En el campamento partimos.",
+    "actoPrefijo": "Acto",
+    "cutscene": "Tramo narrativo: el Cochayuyero muestra el PR marítimo de Puerto Saavedra.",
+    "enConstruccion": "En construcción",
+    "grupal": "grupal",
+    "xp": "XP"
+  },
+  "panel": {
+    "titulo": "Panel docente",
+    "bajada": "Configuración, seguimiento por cuadrilla y evaluación oral. Esta sección se construye en la fase F8; por ahora muestra los parámetros vigentes.",
+    "parametros": "Parámetros vigentes",
+    "fuente": "Fuente: public/datos/parametros.json (§11 de la especificación)",
+    "cargando": "Cargando parámetros…",
+    "error": "No se pudieron cargar los parámetros"
+  },
+  "libreta": {
+    "titulo": "Libreta de campo",
+    "modo": {
+      "automatico": "Cálculo automático",
+      "asistido": "Cálculo asistido",
+      "manual": "Cálculo manual"
+    },
+    "modoAyuda": {
+      "automatico": "El sistema calcula los desniveles y las cotas.",
+      "asistido": "Tú calculas Δh y cotas; el sistema revisa cada valor apenas lo escribes.",
+      "manual": "Tú calculas Δh y cotas; el sistema los revisa cuando entregas."
+    },
+    "columnas": {
+      "numero": "N°",
+      "estacion": "Estación",
+      "punto": "Punto",
+      "lt": "LT (m)",
+      "la": "LA (m)",
+      "desnivel": "Δh (m)",
+      "cota": "Cota (m)",
+      "distancia": "Distancia (m)",
+      "observaciones": "Observaciones"
+    },
+    "vacia": "Aún no hay filas registradas.",
+    "pr": "PR · cota conocida",
+    "anulada": "Anulada · ver fila {n}",
+    "corrige": "Corrige la fila {n}",
+    "tachada": "Con tachadura",
+    "nueva": "Línea nueva",
+    "correccionDe": "Corrección en línea nueva de la fila {n}",
+    "tipo": "Visada",
+    "tipoLt": "LT · atrás",
+    "tipoLa": "LA · adelante",
+    "lectura": "Lectura de mira (m)",
+    "distancia": "Distancia (m)",
+    "ayudaDistancia": "Desde el punto anterior, medida con cinta",
+    "desnivel": "Δh (m)",
+    "cota": "Cota (m)",
+    "observaciones": "Observaciones",
+    "registrar": "Registrar en la libreta",
+    "cancelarCorreccion": "Cancelar corrección",
+    "previa": "El sistema calculará",
+    "correcto": "Cuadra con tus lecturas",
+    "revisa": "No cuadra: revisa el cálculo",
+    "celda": "Fila {n}, {campo}: {valor}. Registrada.",
+    "bloqueo": {
+      "titulo": "Esta fila ya está registrada",
+      "texto": "En la libreta de campo no se borra ni se tacha. Las correcciones van en una línea nueva, que anula la anterior y deja ambas a la vista.",
+      "corregir": "Corregir en línea nueva",
+      "tachar": "Tachar igual",
+      "penalizacion": "Tachar cuesta {xp} XP.",
+      "nuevoValor": "Nuevo valor (m)",
+      "confirmarTachar": "Tachar y escribir encima (−{xp} XP)",
+      "volver": "Volver",
+      "anuladaTitulo": "Fila anulada",
+      "anuladaTexto": "Esta fila está anulada por la fila {n}. Si hay que corregir algo, corrige esa."
+    },
+    "aviso": {
+      "tachadura": "−{xp} XP · tachadura en la fila {n}",
+      "correccion": "Corrección registrada en la fila {n}, sin penalización"
+    },
+    "resumen": {
+      "sumaLt": "Σ LT",
+      "sumaLa": "Σ LA de cierre",
+      "sumaDesniveles": "Σ Δh",
+      "comprobacionOk": "ΣLT − ΣLA = ΣΔh: la aritmética cuadra",
+      "manual": "En modo manual la comprobación aritmética la haces tú.",
+      "filas": "Filas",
+      "correcciones": "Correcciones",
+      "tachaduras": "Tachaduras"
+    },
+    "revisar": "Revisar para entregar",
+    "revision": {
+      "lista": "La libreta está completa y se puede entregar.",
+      "noEntregable": "Todavía no se puede entregar:",
+      "vacia": "la libreta no tiene filas",
+      "faltanDistancias": "faltan distancias en las filas {filas}",
+      "faltanCalculos": "faltan Δh o cotas en las filas {filas}",
+      "calculosErroneos": "Revisa los cálculos de las filas {filas}: no cuadran con tus lecturas."
+    },
+    "exportar": "Exportar PDF",
+    "errores": {
+      "estacion": "Falta la estación",
+      "punto": "Falta el punto",
+      "lecturaFalta": "Falta la lectura",
+      "numero": "Escribe un número en metros, por ejemplo 1,523",
+      "fueraDeMira": "La mira mide {largo} m: la lectura no puede salirse de ella",
+      "distancia": "La distancia debe ser mayor que cero"
+    }
+  },
+  "practica": {
+    "titulo": "Libreta de práctica",
+    "bajada": "El portamira te dicta las lecturas de un circuito de 4 puntos alrededor del edificio de Ingeniería. Regístralas en la libreta para conocerla antes de salir al terreno.",
+    "dictado": "Lo que te dicta el portamira",
+    "estacion": "Estación",
+    "visada": "Visada",
+    "lectura": "Lectura",
+    "distancia": "Distancia",
+    "modo": "Modo de cálculo",
+    "reiniciar": "Empezar de nuevo",
+    "confirmarReiniciar": "¿Borrar esta libreta de práctica?",
+    "si": "Sí, borrar",
+    "no": "No",
+    "enlace": "Practicar con la libreta",
+    "enlaceBajada": "Antes de partir: registra un circuito dictado y prueba los tres modos de cálculo.",
+    "volver": "Volver al viaje"
+  },
+  "campo": {
+    "titulo": "Campo de práctica: el nivel",
+    "bajada": "Planta el nivel, cala la burbuja, visa la mira y léela por el anteojo. Es una práctica: aquí ves el error de cada lectura; en las misiones, no.",
+    "enlace": "Probar el instrumento en 3D",
+    "enlaceBajada": "Arma el nivel en el campus, cala la burbuja y lee la mira por el anteojo.",
+    "volver": "Volver al viaje",
+    "cargando": "Cargando el terreno…",
+    "error": "No se pudo cargar el terreno",
+    "sin3d": "Este equipo no puede mostrar la escena 3D. El anteojo y la libreta funcionan igual, en 2D.",
+    "descripcion3d": "Vista 3D del campus UCT con el nivel, la mira y los puntos del recorrido",
+    "recorrido": "Recorrido",
+    "recorridos": {
+      "1.1": "PR-1 → P1 · una estación",
+      "1.2": "Circuito A–B–C–D · dos estaciones"
+    },
+    "estacion": "Estación {e} · {n} de {total}",
+    "vistaGeneral": "Vista general",
+    "vistaInstrumento": "Desde el instrumento",
+    "pasoNivelar": "1 · Nivelar el instrumento",
+    "pasoVisar": "2 · Visar y leer la mira",
+    "listo": "Listo, instrumento nivelado",
+    "nivelada": "Instrumento nivelado: burbuja calada.",
+    "descentrada": "Instrumento con la burbuja descentrada ({pct} %): las lecturas de esta estación tendrán error.",
+    "avisoDescentrada": "La burbuja no está calada. Si sigues así, tus lecturas tendrán error.",
+    "renivelar": "Volver a nivelar",
+    "primeroNivelar": "Primero nivela el instrumento.",
+    "visar": "{tipo} a {punto}",
+    "visando": "Visando {tipo} a {punto}",
+    "tuLectura": "Tu lectura (m)",
+    "comprobar": "Comprobar",
+    "medir": "Medir con cinta {a}–{b}",
+    "distancia": "Cinta {a}–{b}: {d} m",
+    "siguiente": "Plantar el nivel en la estación siguiente",
+    "fin": "Recorrido terminado. Elige otro o vuelve a empezar.",
+    "reiniciar": "Volver a empezar",
+    "burbuja": {
+      "calada": "Burbuja calada",
+      "desviacion": "Burbuja descentrada: {pct} %",
+      "subir": "Tornillo {t}: subir",
+      "bajar": "Tornillo {t}: bajar",
+      "ayuda": "Subir un tornillo levanta ese lado y la burbuja se va hacia él. Teclado: Q/A, W/S y E/D."
+    },
+    "resultado": {
+      "lectura": "Leíste {l}",
+      "cruz": "la cruz marcaba {c}",
+      "errorLectura": "Error de lectura",
+      "errorMontaje": "Error del montaje",
+      "errorTotal": "Error total",
+      "exacta": "Lectura exacta (±1 mm)",
+      "invalida": "Escribe la lectura en metros, por ejemplo 1,523"
+    }
+  },
+  "metales": {
+    "bronce": "Bronce",
+    "plata": "Plata",
+    "oro": "Oro",
+    "platino": "Platino"
+  },
+  "pieles": {
+    "red-del-agua": "La Red del Agua",
+    "camino-pehuen": "Camino del Pehuén",
+    "cero-cota": "Operación Cero Cota"
+  },
+  "modos": {
+    "automatico": "automático",
+    "asistido": "asistido",
+    "manual": "manual"
+  }
+}
