@@ -66,7 +66,7 @@ export function evaluarM12(ctx: ContextoEntrega): Evaluacion {
 
   criterios.push(...criteriosCompensacion(ctx, cierre))
 
-  return cerrarEvaluacion(criterios, { lecturasExactas, sinErroresRegistro, errorCierreMm: cierre.errorMm })
+  return cerrarEvaluacion(criterios, { lecturasExactas, sinErroresRegistro, errorCierreMm: cierre.errorMm, toleranciaCierreMm: cierre.toleranciaMm })
 }
 
 /** (b) Compensación propuesta por el jugador (±2 mm) y (c) cotas compensadas coherentes con el terreno. */

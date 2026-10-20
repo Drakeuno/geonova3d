@@ -170,7 +170,8 @@ describe('3.3 · La Cota del Ñielol (integrador)', () => {
   it('aprueba la parte automática: cierre, compensación, perfil, pendientes y tramo crítico', () => {
     const e = evaluar('3.3', jugar(2))
     expect(e.criterios.filter((c) => !c.ok)).toEqual([])
-    expect(e.desempeno).toEqual({ lecturasExactas: 28, sinErroresRegistro: true, errorCierreMm: 0 })
+    // T = 12√K con el circuito de ~552 m (8,92 mm): la usa el % de precisión del Ñielol.
+    expect(e.desempeno).toEqual({ lecturasExactas: 28, sinErroresRegistro: true, errorCierreMm: 0, toleranciaCierreMm: expect.closeTo(8.92, 2) })
   })
 
   it('el perfil debe cerrar en M contra la cota compensada del circuito', () => {

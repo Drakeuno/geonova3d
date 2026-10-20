@@ -15,7 +15,7 @@ const v = () => useViaje.getState()
 
 describe('avance del viaje (§14)', () => {
   beforeEach(() => {
-    useViaje.setState({ viajes: {}, intentos: {}, evaluaciones: {}, todasAbiertas: false })
+    useViaje.setState({ viajes: {}, intentos: {}, evaluaciones: {}, logros: {}, todasAbiertas: false })
     useJuego.setState({ movimientos: {} })
   })
 
@@ -48,6 +48,11 @@ describe('avance del viaje (§14)', () => {
     expect(v().resolverEntrega('u', '1.1', evaluacion(true), recompensa)).toBe(false)
     expect(useJuego.getState().movimientos.u).toHaveLength(1)
     expect(v().evaluaciones['u:1.1'].recompensa).toEqual([])
+    // El logro (lo que cuenta para la clasificación) sigue siendo el de la primera aprobación.
+    expect(v().logros['u:1.1']).toMatchObject({ desempeno: { lecturasExactas: 0 } })
+    v().nuevoIntento('u', '1.1')
+    v().resolverEntrega('u', '1.1', { ...evaluacion(true), desempeno: { lecturasExactas: 2, sinErroresRegistro: true } }, recompensa)
+    expect(v().logros['u:1.1'].desempeno?.lecturasExactas).toBe(0)
   })
 
   it('el interruptor docente abre las misiones bloqueadas', () => {

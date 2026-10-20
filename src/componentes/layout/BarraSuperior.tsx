@@ -1,9 +1,25 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, LogOut, Map, Projector } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { LayoutDashboard, LogOut, Map, Projector, Sparkles, Trophy, Users } from 'lucide-react'
 import { useSesion } from '@/estado/sesion'
-import { iniciales, usuarioPorId } from '@/datos/usuariosDemo'
+import { useXpIndividual } from '@/estado/juego'
+import { iniciales, usuarioPorId, type Rol } from '@/datos/usuariosDemo'
 import { LogoAnteojo } from '@/componentes/ui/LogoAnteojo'
+import { formatearNumero } from '@/motor/numeros'
+import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
+
+const NAVEGACION: Record<Rol, [string, string, ReactNode][]> = {
+  estudiante: [
+    ['/viaje', textos.nav.viaje, <Map key="v" size={16} aria-hidden />],
+    ['/cuadrilla', textos.nav.cuadrilla, <Users key="c" size={16} aria-hidden />],
+    ['/clasificacion', textos.nav.clasificacion, <Trophy key="t" size={16} aria-hidden />],
+  ],
+  docente: [
+    ['/panel', textos.nav.panel, <LayoutDashboard key="p" size={16} aria-hidden />],
+    ['/clasificacion', textos.nav.clasificacion, <Trophy key="t" size={16} aria-hidden />],
+  ],
+}
 
 const claseEnlace = ({ isActive }: { isActive: boolean }) =>
   `flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
@@ -14,12 +30,13 @@ export function BarraSuperior() {
   const { usuarioId, modoProyector, salir, alternarProyector } = useSesion()
   const navigate = useNavigate()
   const usuario = usuarioPorId(usuarioId)
+  const xp = useXpIndividual(usuarioId)
   if (!usuario) return null
   const esEstudiante = usuario.rol === 'estudiante'
 
   return (
     <header className="sticky top-0 z-30 border-b border-tierra-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-4">
         <button onClick={() => navigate(esEstudiante ? '/viaje' : '/panel')} className="flex items-center gap-2.5">
           <LogoAnteojo />
           <span className="hidden text-left leading-tight sm:block">
@@ -28,19 +45,20 @@ export function BarraSuperior() {
           </span>
         </button>
 
-        <nav className="ml-2 flex items-center gap-1">
-          {esEstudiante ? (
-            <NavLink to="/viaje" className={claseEnlace}>
-              <Map size={16} aria-hidden /> {textos.nav.viaje}
+        <nav className="flex items-center gap-1 sm:ml-2">
+          {NAVEGACION[usuario.rol].map(([a, nombre, icono]) => (
+            <NavLink key={a} to={a} className={claseEnlace}>
+              {icono} <span className="sr-only lg:not-sr-only">{nombre}</span>
             </NavLink>
-          ) : (
-            <NavLink to="/panel" className={claseEnlace}>
-              <LayoutDashboard size={16} aria-hidden /> {textos.nav.panel}
-            </NavLink>
-          )}
+          ))}
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          {esEstudiante && (
+            <Link to="/cuadrilla" title={textos.nav.xpTitulo} className="chip hidden bg-buey-100 text-buey-800 hover:bg-buey-200 sm:inline-flex">
+              <Sparkles size={13} aria-hidden /> {rellenar(textos.nav.xp, { xp: formatearNumero(xp, 0) })}
+            </Link>
+          )}
           <button
             onClick={alternarProyector}
             aria-pressed={modoProyector}

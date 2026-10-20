@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, HeartHandshake } from 'lucide-react'
+import { useCurso } from '@/estado/cuadrillas'
 import { useDialogos } from '@/estado/dialogos'
 import { useXpIndividual } from '@/estado/juego'
 import { useSesion } from '@/estado/sesion'
 import { useViajeDe } from '@/estado/viaje'
 import { MISIONES } from '@/datos/misiones'
+import { buscarIntegrante } from '@/motor/cuadrillas'
+import { formatearNumero } from '@/motor/numeros'
 import { ChipMetal } from '@/componentes/ui/ChipMetal'
 import { RetratoCochayuyero } from '@/componentes/dialogo/DialogoCochayuyero'
 import { rellenar } from '@/textos/rellenar'
@@ -29,6 +32,8 @@ export default function Cutscene() {
   const usuarioId = useSesion((s) => s.usuarioId)
   const viaje = useViajeDe(usuarioId)
   const xp = useXpIndividual(usuarioId)
+  const { curso } = useCurso()
+  const yo = curso && usuarioId ? buscarIntegrante(curso, usuarioId) : null
   const [i, setI] = useState(0)
   const escena = ESCENAS[acto]
   if (!escena) return <Navigate to="/viaje" replace />
@@ -85,11 +90,26 @@ export default function Cutscene() {
           <h2 id="titulo-resumen" className="text-xl font-bold text-tierra-900">
             {t.resumen}
           </h2>
-          <p className="mt-1 font-mono text-lg font-semibold text-buey-800">{rellenar(t.xp, { xp })}</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-buey-800">{rellenar(t.xp, { xp: formatearNumero(xp, 0) })}</p>
+          {yo && curso && (
+            <p className="text-sm font-semibold text-poncho-800">
+              {rellenar(t.cuadrilla, {
+                nombre: yo.cuadrilla.nombre,
+                puntos: formatearNumero(yo.cuadrilla.puntos, 0),
+                posicion: curso.clasificacion.findIndex((f) => f.id === yo.cuadrilla.id) + 1,
+                total: curso.clasificacion.length,
+              })}
+            </p>
+          )}
           <div className="mt-3 flex flex-wrap gap-1.5">
             {MISIONES.filter((m) => viaje?.[m.id]?.aprobadaEn != null).map((m) => (
               <ChipMetal key={m.id} metal={m.insignia.metal} nombre={m.insignia.nombre} grupal={m.insignia.grupal} />
             ))}
+            {yo?.integrante.especial && (
+              <span className="chip border border-granate-200 bg-granate-50 text-granate-700">
+                <HeartHandshake size={14} aria-hidden /> {textos.insignias.especial}
+              </span>
+            )}
           </div>
         </section>
       )}

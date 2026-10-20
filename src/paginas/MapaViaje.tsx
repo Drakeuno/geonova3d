@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Binoculars, CheckCircle2, Clapperboard, Lock, NotebookPen, PartyPopper, Play, RotateCcw, Sparkles } from 'lucide-react'
-import { ACTOS, misionesDelActo, type ActoViaje, type MisionCatalogo } from '@/datos/misiones'
+import { ArrowRight, Binoculars, CheckCircle2, Clapperboard, Lock, NotebookPen, PartyPopper, Play, RotateCcw } from 'lucide-react'
+import { ACTOS, MISIONES, misionesDelActo, type ActoViaje, type MisionCatalogo } from '@/datos/misiones'
 import { useParametros } from '@/estado/parametros'
 import { useSesion } from '@/estado/sesion'
 import { useXpIndividual } from '@/estado/juego'
@@ -10,7 +10,7 @@ import type { EstadoMision } from '@/motor/progreso'
 import { esJugable } from '@/misiones/definiciones'
 import { ChipMetal } from '@/componentes/ui/ChipMetal'
 import { RetratoCochayuyero } from '@/componentes/dialogo/DialogoCochayuyero'
-import { rellenar } from '@/textos/rellenar'
+import { ResumenJugador } from '@/componentes/juego/ResumenJugador'
 import textos from '@/textos/es-CL.json'
 
 const arte = (archivo: string) => `${import.meta.env.BASE_URL}arte/${archivo}`
@@ -40,11 +40,7 @@ export default function MapaViaje() {
           <p className="text-sm font-semibold uppercase tracking-wide text-bosque-700">{textos.app.parte}</p>
           <h1 className="mt-1 text-3xl font-bold text-tierra-900 sm:text-4xl">{textos.viaje.titulo}</h1>
           <p className="mt-2 text-tierra-600">{textos.viaje.ruta}</p>
-          <p className="mt-3">
-            <span className="chip bg-buey-100 text-buey-800">
-              <Sparkles size={13} aria-hidden /> {rellenar(textos.viaje.misXp, { xp })}
-            </span>
-          </p>
+          <ResumenJugador usuarioId={usuarioId} xp={xp} aprobadas={MISIONES.filter((m) => viaje?.[m.id]?.aprobadaEn != null).length} />
         </div>
         <figure className="card flex items-center gap-4 p-4">
           <RetratoCochayuyero />

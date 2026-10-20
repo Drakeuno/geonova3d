@@ -7,9 +7,10 @@ ingeniero, por el método de los desniveles (PID 2026, UC Temuco). Se construye 
 especificación técnica v1.1 (octubre 2026), documento interno del proyecto. Datos simulados: no
 guarda nada fuera del navegador de quien lo usa.
 
-Estado: **F0 a F3 terminadas**: estructura, paleta, ingreso demo, mapa del viaje, panel docente
-provisorio, núcleo de cálculo, libreta de campo y base 3D (terreno, nivel, mira, anteojo, burbuja,
-cinta). Las misiones jugables llegan en F4–F9.
+Estado: **F0 a F7 terminadas**: las 9 misiones jugables en sus tres actos (con las escenas del
+Cochayuyero), libreta de campo, base 3D, comisión evaluadora en el panel docente, y la gamificación
+transversal: XP, insignias (incluida la especial), cuadrillas con puntaje promedio + bonus, ayuda
+entre compañeros y tabla de clasificación. Faltan F8 (panel docente completo) y F9 (pulido).
 
 ## Probar el instrumento en 3D
 
@@ -25,6 +26,16 @@ Entra como **Camila Reyes** → **Practicar con la libreta**. El portamira dicta
 −4 mm (tolerancia 5,5 mm). Para ver el bloqueo, haz clic en un valor ya registrado: puedes corregir en
 línea nueva (sin costo) o tachar (−20 XP).
 
+## Probar la cuadrilla y la clasificación
+
+Entra como **Camila Reyes** → **Mi cuadrilla**. El resto del curso es simulado
+(`public/datos/cuadrillas.json`): los compañeros de la Cuadrilla 1 aprueban lo mismo que Camila,
+salvo en la misión donde se atascan y piden ayuda (Diego en la 1.2, Antonia en la 1.3, Matías en la
+2.1). Para ayudar hay que haber aprobado esa misión. El compañero acepta el mensaje a los 4 s y
+aprueba a los 15 s: ahí la ayuda es válida y cuenta para la insignia especial; si es de otra
+cuadrilla, suma +50 XP a la de Camila. **Clasificación** (también desde la sesión docente) ordena por
+puntos, misiones completadas por toda la cuadrilla, insignias y % de precisión del Ñielol.
+
 ## Ejecutar
 
 ```bash
@@ -36,20 +47,23 @@ pnpm build       # genera dist/ (rutas relativas: sirve en cualquier carpeta)
 ```
 
 Para reiniciar la demo, borra el almacenamiento local del navegador (claves `gn3d_sesion_v1`,
-`gn3d_libretas_v1` y `gn3d_juego_v1`).
+`gn3d_viaje_v1`, `gn3d_libretas_v1` y `gn3d_juego_v1`).
 
 ## Dónde está cada cosa
 
 ```
 public/arte/      imágenes del Cochayuyero (provisorias, hasta el arte final)
-public/datos/     archivos editables sin recompilar: parametros.json (§11)
+public/datos/     archivos editables sin recompilar: parametros.json (§11), cuadrillas.json
+                  (curso simulado), diálogos del Cochayuyero, tabla de la auditoría 3.1
 src/datos/        catálogo de misiones y actos, esquema de parámetros, usuarios demo
-src/estado/       sesión y parámetros (zustand)
+src/estado/       sesión, parámetros, viaje, libretas, XP y ayudas, curso (zustand)
+src/misiones/     reglas de cada misión (1.1 a 3.3) sobre un shell común
 src/estilos/      paleta: única fuente de colores (Tailwind, 3D y prueba de contraste AA)
 src/escena3d/     escena 3D (three.js): terreno, nivel, mira tipo E, anteojo, cinta, cámaras
-public/datos/escenarios/  terrenos de las misiones (campus-uct.json: misiones 1.1 y 1.2)
+public/datos/escenarios/  terrenos de las misiones (campus UCT, parada rural, Ñielol)
 src/motor/        núcleo de cálculo puro, sin interfaz: método de los desniveles, cierre y
                   compensación, lecturas simuladas, perfiles, escenarios, decisiones del Acto 2,
-                  misión cooperativa, auditoría, puntaje, estados de misión y evaluación oral
+                  misión cooperativa, auditoría, puntaje, cuadrillas y clasificación, estados de
+                  misión y evaluación oral
 src/textos/       textos de la interfaz en español de Chile
 ```

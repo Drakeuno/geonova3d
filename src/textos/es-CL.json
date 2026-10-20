@@ -27,7 +27,11 @@
     "panel": "Panel docente",
     "proyectorActivar": "Activar modo proyector",
     "proyectorDesactivar": "Desactivar modo proyector",
-    "salir": "Salir"
+    "salir": "Salir",
+    "cuadrilla": "Mi cuadrilla",
+    "clasificacion": "Clasificación",
+    "xp": "{xp} XP",
+    "xpTitulo": "Tu XP individual. Ver tu cuadrilla y tus insignias"
   },
   "viaje": {
     "titulo": "El Viaje del Cochayuyero",
@@ -47,7 +51,10 @@
     "tramoBloqueado": "Se abre al terminar el campamento",
     "verLlegada": "Ver la llegada al Ñielol",
     "misionCumplida": "¡Misión cumplida!",
-    "misionCumplidaBajada": "Terminaste la Parte 1: del mar de Puerto Saavedra al mirador del Ñielol."
+    "misionCumplidaBajada": "Terminaste la Parte 1: del mar de Puerto Saavedra al mirador del Ñielol.",
+    "progreso": "{n} de {total} misiones aprobadas",
+    "puntosCuadrilla": "{nombre}: {puntos} puntos · {posicion}.º de {total}",
+    "verCuadrilla": "Mi cuadrilla e insignias"
   },
   "panel": {
     "titulo": "Panel docente",
@@ -575,7 +582,8 @@
     "irActo3": "Seguir al cerro Ñielol",
     "irFin": "Ver el cierre del viaje",
     "resumen": "Tu viaje",
-    "xp": "{xp} XP"
+    "xp": "{xp} XP",
+    "cuadrilla": "{nombre}: {puntos} puntos · {posicion}.º de {total}"
   },
   "etapas": {
     "si": "Sí",
@@ -872,5 +880,100 @@
     "veredictoRechazada": "No aprobada: {favor} de {total} votos a favor{desempate}.",
     "faltanPuntajes": "Faltan puntajes para el veredicto.",
     "registrar": "Registrar veredicto"
+  },
+  "insignias": {
+    "titulo": "Mis insignias",
+    "bajada": "Una por misión aprobada; las grupales son de la cuadrilla. La especial pide todas las demás y ayudar a 3 compañeros a completar misiones.",
+    "especial": "Insignia especial",
+    "especialMetal": "Especial",
+    "especialRequisito": "Todas las insignias + ayudar a 3 compañeros",
+    "progresoEspecial": "{insignias} de {total} insignias · {ayudados} de 3 compañeros ayudados",
+    "obtenida": "obtenida",
+    "pendiente": "pendiente",
+    "grupal": "de la cuadrilla",
+    "resumen": "{n} de {total} insignias"
+  },
+  "cuadrilla": {
+    "titulo": "Mi cuadrilla",
+    "bajada": "El puntaje de la cuadrilla es el promedio del XP individual de sus integrantes más los bonus grupales: la estrategia ganadora es ayudarse.",
+    "cargando": "Cargando la cuadrilla…",
+    "error": "No se pudo cargar el curso",
+    "sinCuadrilla": "Tu usuario no está en ninguna cuadrilla del curso.",
+    "puntos": "Puntaje de la cuadrilla",
+    "promedio": "Promedio de XP individual",
+    "bonus": "Bonus grupal",
+    "posicion": "{posicion}.º de {total} en la clasificación",
+    "verClasificacion": "Ver la clasificación",
+    "integrantes": "Integrantes",
+    "tu": "tú",
+    "simulado": "simulado",
+    "xp": "{xp} XP",
+    "misiones": "{n} de {total} misiones",
+    "situacion": {
+      "en": "En la {mision}",
+      "atascado": "Atascado en la {mision} · pide ayuda",
+      "completo": "Viaje completo"
+    },
+    "matriz": {
+      "titulo": "Misiones de la cuadrilla",
+      "bajada": "Una misión cuenta como completada cuando la aprueba toda la cuadrilla. Las grupales (2.3 y 3.3) se aprueban juntos.",
+      "mision": "Misión",
+      "completadas": "Completadas por la cuadrilla: {n} de {total}",
+      "aprobada": "Aprobada",
+      "pendiente": "Pendiente",
+      "grupal": "Grupal"
+    },
+    "bonusTitulo": "Bonus grupal",
+    "sinBonus": "Todavía no hay XP de cuadrilla: llega con la 2.3, la 3.3 y la ayuda a otras cuadrillas.",
+    "total": "Total"
+  },
+  "ayuda": {
+    "titulo": "Pedidos de ayuda",
+    "bajada": "Una ayuda vale cuando el compañero acepta tu mensaje y aprueba esa misión. Solo puedes ayudar en misiones que ya aprobaste.",
+    "contador": "Compañeros ayudados: {n} de 3",
+    "enTuCuadrilla": "En tu cuadrilla",
+    "otrasCuadrillas": "En otras cuadrillas",
+    "bonusOtras": "Cada ayuda válida a otra cuadrilla suma +{xp} XP de bonus a la tuya.",
+    "sinPedidos": "Nadie pide ayuda por ahora.",
+    "pide": "Pide ayuda con la {mision} · {titulo}",
+    "mensaje": "Tu mensaje de ayuda para {nombre}",
+    "mensajeAyuda": "Explica cómo lo resolviste, sin dictar tus valores. Mínimo {n} caracteres.",
+    "faltan": "Faltan {n} caracteres.",
+    "enviar": "Enviar ayuda",
+    "sinAprobar": "Aprueba tú la {mision} para poder ayudar.",
+    "tuMensaje": "Tu mensaje:",
+    "estados": {
+      "enviada": "Enviada. {nombre} todavía no la lee…",
+      "aceptada": "{nombre} aceptó tu ayuda y está reintentando la {mision}…",
+      "valida": "{nombre} aprobó la {mision}: ayuda válida."
+    },
+    "pasos": {
+      "enviada": "Enviada",
+      "aceptada": "Aceptada",
+      "valida": "Misión aprobada"
+    },
+    "ayudadas": "Ayudas que diste"
+  },
+  "clasificacion": {
+    "titulo": "Clasificación de cuadrillas",
+    "bajada": "Tabla colaborativa del curso: puntos, misiones completadas, insignias y precisión en el Ñielol.",
+    "orden": "Orden: puntos; si empatan, misiones completadas, insignias y % de precisión del Ñielol.",
+    "precisionNota": "% de precisión del Ñielol = máx(0; 100 · (1 − |e| / T)), con el cierre del circuito de la 3.3.",
+    "simulado": "Curso simulado: las otras cuadrillas son datos de demostración.",
+    "cargando": "Cargando la clasificación…",
+    "columnas": {
+      "posicion": "Pos.",
+      "cuadrilla": "Cuadrilla",
+      "puntos": "Puntos",
+      "misiones": "Misiones",
+      "insignias": "Insignias",
+      "precision": "Precisión Ñielol"
+    },
+    "tuya": "tu cuadrilla",
+    "integrantes": "{n} integrantes",
+    "promedioMasBonus": "{promedio} promedio + {bonus} bonus",
+    "sinPrecision": "Aún no cierra la 3.3",
+    "verIntegrantes": "Ver integrantes",
+    "ocultarIntegrantes": "Ocultar integrantes"
   }
 }

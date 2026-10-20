@@ -4,7 +4,7 @@ import { MISIONES } from '@/datos/misiones'
 import type { Burbuja } from '@/motor/burbuja'
 import { entregar, iniciar, resolver, viajeInicial, type EstadoMision, type ProgresoMision, type Viaje } from '@/motor/progreso'
 import type { MovimientoXp } from '@/motor/puntaje'
-import { perfilVacio, type EntradasCompensacion, type EntradasPerfil, type Evaluacion, type Formulario } from '@/misiones/tipos'
+import { perfilVacio, type Desempeno, type EntradasCompensacion, type EntradasPerfil, type Evaluacion, type Formulario } from '@/misiones/tipos'
 import { useJuego } from './juego'
 
 // Avance del viaje por estudiante, guardado en el navegador: estado de cada misión, el intento en
@@ -55,10 +55,21 @@ export interface EvaluacionGuardada extends Evaluacion {
   veredicto?: VeredictoGuardado
 }
 
+/** Primera aprobación de una misión: la que da la recompensa y cuenta para la clasificación. */
+export interface Logro {
+  en: number
+  desempeno: Desempeno | null
+}
+
 interface AlmacenViaje {
   viajes: Record<string, Viaje>
   intentos: Record<string, IntentoMision>
   evaluaciones: Record<string, EvaluacionGuardada>
+  /**
+   * Por estudiante y misión, el desempeño de la primera aprobación. La evaluación guardada es la
+   * última y un reintento la reemplaza; el cierre del Ñielol de la clasificación sale de aquí.
+   */
+  logros: Record<string, Logro>
   /** Interruptor docente para demos: abre todas las misiones (§14). */
   todasAbiertas: boolean
   /** Abre la misión: la pasa a "en curso" si estaba disponible o por reintentar, y prepara el intento. */
@@ -111,6 +122,7 @@ export const useViaje = create<AlmacenViaje>()(
       viajes: {},
       intentos: {},
       evaluaciones: {},
+      logros: {},
       todasAbiertas: false,
 
       comenzar: (usuarioId, misionId) =>
@@ -158,6 +170,7 @@ export const useViaje = create<AlmacenViaje>()(
             ...s.evaluaciones,
             [clave]: { ...evaluacion, intento: s.intentos[clave]?.numero ?? 1, en: ahora, recompensa: otorgada },
           },
+          ...(r.otorgaRecompensa && { logros: { ...s.logros, [clave]: { en: ahora, desempeno: evaluacion.desempeno } } }),
         })
         const registrar = useJuego.getState().registrarMovimiento
         otorgada.forEach((m) => registrar(usuarioId, m))
@@ -199,6 +212,7 @@ export const useViaje = create<AlmacenViaje>()(
               recompensa: otorgada,
             },
           },
+          ...(r.otorgaRecompensa && { logros: { ...s.logros, [clave]: { en: veredicto.en, desempeno: previa?.desempeno ?? null } } }),
         })
         const registrar = useJuego.getState().registrarMovimiento
         otorgada.forEach((m) => registrar(usuarioId, m))

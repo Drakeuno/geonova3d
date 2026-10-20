@@ -8,6 +8,8 @@ import MapaViaje from '@/paginas/MapaViaje'
 import PanelDocente from '@/paginas/PanelDocente'
 import PracticaLibreta from '@/paginas/PracticaLibreta'
 import Cutscene from '@/paginas/Cutscene'
+import Cuadrilla from '@/paginas/Cuadrilla'
+import Clasificacion from '@/paginas/Clasificacion'
 import textos from '@/textos/es-CL.json'
 
 // Las páginas con terreno 3D (y three.js) se descargan solo cuando se abren.
@@ -23,6 +25,11 @@ function SoloRol({ rol, children }: { rol: Rol; children: ReactNode }) {
   if (!usuario) return <Navigate to="/" replace />
   if (usuario.rol !== rol) return <Navigate to={rutaInicial(usuario)} replace />
   return <>{children}</>
+}
+
+/** Cualquier rol: la clasificación también se proyecta desde la sesión docente. */
+function ConSesion({ children }: { children: ReactNode }) {
+  return useUsuario() ? <>{children}</> : <Navigate to="/" replace />
 }
 
 function SoloSinSesion() {
@@ -63,6 +70,8 @@ export default function App() {
           }
         />
         <Route path="/acto/:acto" element={<SoloRol rol="estudiante"><Cutscene /></SoloRol>} />
+        <Route path="/cuadrilla" element={<SoloRol rol="estudiante"><Cuadrilla /></SoloRol>} />
+        <Route path="/clasificacion" element={<ConSesion><Clasificacion /></ConSesion>} />
         <Route path="/panel" element={<SoloRol rol="docente"><PanelDocente /></SoloRol>} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

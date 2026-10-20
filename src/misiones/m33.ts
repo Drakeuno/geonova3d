@@ -131,5 +131,6 @@ export function evaluarM33(ctx: ContextoEntrega): Evaluacion {
     lecturasExactas: rc.lecturasExactas + rp.lecturasExactas,
     sinErroresRegistro: rc.sinErroresRegistro && rp.sinErroresRegistro,
     errorCierreMm: cierre.errorMm,
+    toleranciaCierreMm: cierre.toleranciaMm,
   })
 }

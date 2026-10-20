@@ -120,6 +120,8 @@ export interface Criterio {
 export interface Desempeno {
   lecturasExactas: number
   errorCierreMm?: Mm
+  /** Tolerancia de ese cierre: con ella se calcula el % de precisión del Ñielol (§14). */
+  toleranciaCierreMm?: number
   sinErroresRegistro: boolean
 }
 

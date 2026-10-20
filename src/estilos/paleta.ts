@@ -87,5 +87,7 @@ export const paleta = {
     plata: '#8E979F',
     oro: '#C79A2B',
     platino: '#7FA7B5',
+    /** Insignia especial (todas + 3 ayudas): el granate de las franjas del poncho. */
+    especial: '#A63A3F',
   },
 } as const
