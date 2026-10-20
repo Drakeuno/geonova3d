@@ -239,7 +239,9 @@
     "posturas": "Posturas del nivel",
     "estacionNivelada": "nivelada",
     "visaA": "visa {puntos}",
-    "yaAnotada": "ya anotada en la libreta"
+    "yaAnotada": "ya anotada en la libreta",
+    "terrenoTeclado": "Terreno 3D",
+    "ayudaTeclado": "Con el teclado: selecciona el terreno (Tab) y usa las flechas para girar la cámara, + y − para acercarla."
   },
   "metales": {
     "bronce": "Bronce",
@@ -1191,5 +1193,17 @@
       "Lectura exacta y comparaciones: ±{tol} mm; compensación de la 1.2: ±{comp} mm (§14).",
       "Error grosero sembrado en la 2.3 y la 3.1: más de {grosero} mm."
     ]
+  },
+  "zonas": {
+    "rubrica": "Rúbrica de la comisión",
+    "libreta": "Libreta de campo",
+    "tablaContratista": "Tabla de la contratista",
+    "compensacion": "Compensación del circuito",
+    "tablaEntradas": "Tabla de datos",
+    "perfil": "Dibujo del perfil longitudinal",
+    "planilla": "Planilla del perfil",
+    "clasificacion": "Tabla de clasificación",
+    "misionesCuadrilla": "Misiones de la cuadrilla",
+    "seguimiento": "Seguimiento de la cuadrilla"
   }
 }

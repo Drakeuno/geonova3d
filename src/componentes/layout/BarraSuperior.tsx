@@ -37,13 +37,14 @@ export function BarraSuperior() {
   return (
     <header className="sticky top-0 z-30 border-b border-tierra-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-4">
-        <button onClick={() => navigate(esEstudiante ? '/viaje' : '/panel')} className="flex items-center gap-2.5">
+        <Link to={esEstudiante ? '/viaje' : '/panel'} className="flex items-center gap-2.5 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-bosque-500">
           <LogoAnteojo />
-          <span className="hidden text-left leading-tight sm:block">
+          {/* En celular el nombre no cabe, pero los lectores de pantalla lo siguen leyendo. */}
+          <span className="sr-only text-left leading-tight sm:not-sr-only sm:block">
             <span className="block font-display text-lg font-bold text-tierra-900">{textos.app.nombre}</span>
             <span className="block text-xs font-semibold text-tierra-600">{textos.app.subtitulo}</span>
           </span>
-        </button>
+        </Link>
 
         <nav className="flex items-center gap-1 sm:ml-2">
           {NAVEGACION[usuario.rol].map(([a, nombre, icono]) => (

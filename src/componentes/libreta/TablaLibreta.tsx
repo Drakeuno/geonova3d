@@ -4,6 +4,7 @@ import { formatearMm } from '@/motor/numeros'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 import { textoDistancia, type Celda, type FilaVista } from './vistaLibreta'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 const t = textos.libreta
 const col = t.columnas
@@ -72,7 +73,7 @@ function ValorCelda({
 
 export function TablaLibreta({ filas, pr, onIntentarEditar, soloLectura }: Props) {
   return (
-    <div className="overflow-x-auto">
+    <Desplazable etiqueta={textos.zonas.libreta}>
       <table className="w-full min-w-[760px] border-collapse text-sm">
         <thead>
           <tr className="border-b-2 border-tierra-300 text-left text-xs font-semibold text-tierra-700">
@@ -132,6 +133,6 @@ export function TablaLibreta({ filas, pr, onIntentarEditar, soloLectura }: Props
           ))}
         </tbody>
       </table>
-    </div>
+    </Desplazable>
   )
 }

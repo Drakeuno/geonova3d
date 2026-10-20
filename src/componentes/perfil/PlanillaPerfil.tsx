@@ -7,6 +7,7 @@ import { EJES_PERFIL, type EjePerfil, type EntradasPerfil } from '@/misiones/tip
 import textos from '@/textos/es-CL.json'
 import { geometriaPerfil, planoSugeridoMm } from './geometriaPerfil'
 import { PerfilSvg, type RotulosPerfil } from './PerfilSvg'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 const t = textos.perfil
 
@@ -78,7 +79,7 @@ export function PlanillaPerfil({ eje, estaciones, entradas, onCambio, parametros
           <h3 className="flex items-center gap-2 font-display font-bold text-tierra-900">
             <Table2 size={18} aria-hidden /> {t.planilla.titulo}
           </h3>
-          <div className="mt-2 overflow-x-auto">
+          <Desplazable etiqueta={textos.zonas.planilla} className="mt-2">
             <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-b-2 border-tierra-300 text-left text-xs font-semibold text-tierra-700">
@@ -112,7 +113,7 @@ export function PlanillaPerfil({ eje, estaciones, entradas, onCambio, parametros
                 ))}
               </tbody>
             </table>
-          </div>
+          </Desplazable>
         </div>
 
         <div>

@@ -10,6 +10,7 @@ import { Avatar, ChipSituacion } from '@/componentes/juego/Integrante'
 import { contarInsignias } from '@/componentes/juego/VitrinaInsignias'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 // Tabla de clasificación colaborativa por cuadrilla (RF-10, §6.2): puntos, misiones completadas,
 // insignias y % de precisión del Ñielol.
@@ -47,8 +48,7 @@ export default function Clasificacion() {
   return (
     <Pagina>
       <div className="card mt-6 overflow-hidden">
-        {/* relative: los textos sr-only (absolutos) de las columnas ocultas no ensanchan la página. */}
-        <div className="relative overflow-x-auto">
+        <Desplazable etiqueta={textos.zonas.clasificacion}>
           <table className="w-full min-w-[40rem] text-sm">
             <thead>
               <tr className="border-b border-tierra-200 bg-tierra-100/60 text-left text-xs uppercase tracking-wide text-tierra-600">
@@ -152,7 +152,7 @@ export default function Clasificacion() {
               })}
             </tbody>
           </table>
-        </div>
+        </Desplazable>
       </div>
       <ul className="mt-4 space-y-1 text-xs text-tierra-600">
         <li>{t.orden}</li>

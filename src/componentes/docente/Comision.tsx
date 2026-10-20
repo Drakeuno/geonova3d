@@ -10,6 +10,7 @@ import { formatearNumero } from '@/motor/numeros'
 import { recompensaPorAprobacion } from '@/motor/puntaje'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 // Panel docente: defensas orales de la 3.2 y la 3.3 ante la Comisión de Parques (§5, §14 y CP-07).
 // El docente carga la evidencia y la rúbrica de cada evaluador (4 criterios, 1 a 4); el veredicto
@@ -177,7 +178,7 @@ function FichaDefensa({
         </p>
       </div>
 
-      <div className="mt-3 overflow-x-auto">
+      <Desplazable etiqueta={textos.zonas.rubrica} className="mt-3">
         <table className="w-full min-w-[560px] text-sm">
           <thead>
             <tr className="border-b-2 border-tierra-300 text-left text-xs font-semibold text-tierra-700">
@@ -235,7 +236,7 @@ function FichaDefensa({
             </tr>
           </tbody>
         </table>
-      </div>
+      </Desplazable>
 
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <p role="status" className={`text-sm font-semibold ${veredicto ? (veredicto.aprobada ? 'text-bosque-700' : 'text-granate-700') : 'text-tierra-600'}`}>

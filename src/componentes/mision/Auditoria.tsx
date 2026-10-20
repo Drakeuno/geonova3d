@@ -9,6 +9,7 @@ import { PerfilSvg } from '@/componentes/perfil/PerfilSvg'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 import { Subtitulo, TarjetaEtapa, type PropsFormulario } from './Formulario'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 // Etapa de la 3.1: auditar la tabla de la contratista. Cada celda auditable se marca como errónea y
 // se le escribe su valor correcto; la tabla nunca se borra: el valor original queda tachado al lado.
@@ -48,7 +49,7 @@ export function Auditoria({ sesion, sendero, parametros, estudiante, formulario,
       <div>
         <Subtitulo>{t.tabla}</Subtitulo>
         <p className="mt-1 text-sm text-tierra-700">{t.instrucciones}</p>
-        <div className="mt-2 overflow-x-auto">
+        <Desplazable etiqueta={textos.zonas.tablaContratista} className="mt-2">
           <table className="w-full min-w-[720px] border-collapse text-sm">
             <thead>
               <tr className="border-b-2 border-tierra-300 text-left text-xs font-semibold text-tierra-700">
@@ -81,7 +82,7 @@ export function Auditoria({ sesion, sendero, parametros, estudiante, formulario,
               ))}
             </tbody>
           </table>
-        </div>
+        </Desplazable>
         <p className="mt-2 text-sm font-semibold text-tierra-800" role="status">
           {rellenar(t.marcadas, { n: marcadas })}
         </p>

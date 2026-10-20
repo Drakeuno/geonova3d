@@ -45,7 +45,7 @@
   }
 
   .btn-acento {
-    @apply btn bg-buey-500 text-white shadow-sm hover:bg-buey-600 focus-visible:ring-buey-400;
+    @apply btn bg-buey-600 text-white shadow-sm hover:bg-buey-700 focus-visible:ring-buey-400;
   }
 
   .btn-neutro {

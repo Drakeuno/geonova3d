@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState, type ReactNode } from 'react'
+import { Suspense, lazy, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { Binoculars, Check, CheckCircle2, Eye, Grid2x2, Lock, Map as MapaIcono, RotateCcw, Ruler } from 'lucide-react'
 import type { Parametros } from '@/datos/parametros'
 import { crearRng, derivarSemilla } from '@/motor/azar'
@@ -8,12 +8,24 @@ import { errorMontajeMm } from '@/motor/lecturas'
 import { formatearNumero } from '@/motor/numeros'
 import { NivelEsferico } from '@/componentes/campo/NivelEsferico'
 import { Anteojo } from '@/escena3d/Anteojo'
-import type { Vista } from '@/escena3d/ControlCamara'
+import type { MandoCamara, MandosCamara, Vista } from '@/escena3d/ControlCamara'
 import { soportaWebGL } from '@/escena3d/webgl'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 
 const EscenaCampo = lazy(() => import('@/escena3d/EscenaCampo'))
+
+/** Teclas para mover la cámara del terreno (WCAG 2.1.1: todo lo del mouse, también con teclado). */
+const TECLAS: Record<string, MandoCamara> = {
+  ArrowLeft: 'izquierda',
+  ArrowRight: 'derecha',
+  ArrowUp: 'arriba',
+  ArrowDown: 'abajo',
+  '+': 'acercar',
+  '=': 'acercar',
+  '-': 'alejar',
+  _: 'alejar',
+}
 const t = textos.campo
 
 // Trabajo en terreno: elegir la postura del nivel, calar la burbuja, visar la mira, leerla por el
@@ -67,6 +79,14 @@ export function PanelCampo({
   const [iEstacion, setIEstacion] = useState(0)
   const [visada, setVisada] = useState<LecturaPlanificada | null>(null)
   const [vista, setVista] = useState<Vista>('general')
+  const mandos: MandosCamara = useRef(null)
+  const idAyudaTerreno = useId()
+  const teclaTerreno = (e: KeyboardEvent) => {
+    const m = TECLAS[e.key]
+    if (!m || !mandos.current) return
+    e.preventDefault()
+    mandos.current(m)
+  }
   const [cinta, setCinta] = useState<{ desde: string; hasta: string; distanciaM: number } | null>(null)
 
   const estacion = recorrido.estaciones[Math.min(iEstacion, recorrido.estaciones.length - 1)]
@@ -103,7 +123,10 @@ export function PanelCampo({
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
       <div className="card flex flex-col overflow-hidden lg:col-start-1 lg:row-start-1">
-        <div className="h-[48vh] min-h-[320px] bg-costa-50">
+        <div
+          className="h-[48vh] min-h-[320px] bg-costa-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-bosque-500"
+          {...(soportaWebGL() ? { tabIndex: 0, role: 'group', 'aria-label': t.terrenoTeclado, 'aria-describedby': idAyudaTerreno, onKeyDown: teclaTerreno } : {})}
+        >
           {soportaWebGL() ? (
             <Suspense fallback={<p className="p-5 text-tierra-600">{t.cargando}</p>}>
               <EscenaCampo
@@ -114,6 +137,7 @@ export function PanelCampo({
                 cinta={cinta}
                 vista={vista}
                 descripcion={t.descripcion3d}
+                mandosCamara={mandos}
               />
             </Suspense>
           ) : (
@@ -126,6 +150,11 @@ export function PanelCampo({
               {icono} {nombre}
             </button>
           ))}
+          {soportaWebGL() && (
+            <p id={idAyudaTerreno} className="w-full text-xs text-tierra-600">
+              {t.ayudaTeclado}
+            </p>
+          )}
         </div>
       </div>
 

@@ -13,6 +13,7 @@ import { PedidoAyuda } from '@/componentes/juego/PedidoAyuda'
 import { VitrinaInsignias, contarInsignias } from '@/componentes/juego/VitrinaInsignias'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 // Mi cuadrilla (RF-06): puntaje promedio + bonus, integrantes, insignias, ayuda entre compañeros y
 // avance de la cuadrilla misión por misión.
@@ -241,7 +242,7 @@ function MatrizMisiones({ cuadrilla }: { cuadrilla: CuadrillaCurso }) {
         </h2>
         <p className="text-sm text-tierra-600">{m.bajada}</p>
       </header>
-      <div className="relative overflow-x-auto">
+      <Desplazable etiqueta={textos.zonas.misionesCuadrilla}>
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-tierra-200 text-left text-xs uppercase tracking-wide text-tierra-600">
@@ -281,7 +282,7 @@ function MatrizMisiones({ cuadrilla }: { cuadrilla: CuadrillaCurso }) {
             ))}
           </tbody>
         </table>
-      </div>
+      </Desplazable>
       <p className="border-t border-tierra-200 px-5 py-3 text-sm font-semibold text-tierra-800">
         {rellenar(m.completadas, { n: cuadrilla.completadas.length, total: MISIONES.length })}
       </p>

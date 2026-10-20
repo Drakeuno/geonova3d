@@ -5,6 +5,7 @@ import type { EntradasCompensacion } from '@/misiones/tipos'
 import { mmConSigno, textoTolerancia } from '@/misiones/comunes'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 const t = textos.compensacion
 
@@ -50,7 +51,7 @@ export function Compensacion({ cierre, cotasLibreta, entradas, onCambio }: Props
             {cierre.aprobado ? t.cierra : t.noCierra}
           </p>
           <p className="font-mono text-sm text-tierra-700">{t.formula}</p>
-          <div className="overflow-x-auto">
+          <Desplazable etiqueta={textos.zonas.compensacion}>
             <table className="w-full min-w-[620px] text-sm">
               <thead>
                 <tr className="border-b-2 border-tierra-300 text-left text-xs font-semibold text-tierra-700">
@@ -103,7 +104,7 @@ export function Compensacion({ cierre, cotasLibreta, entradas, onCambio }: Props
                 })}
               </tbody>
             </table>
-          </div>
+          </Desplazable>
         </div>
       )}
     </section>

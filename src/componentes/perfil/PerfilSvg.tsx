@@ -4,6 +4,7 @@ import { paleta } from '@/estilos/paleta'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 import { textoProgresiva, type GeometriaPerfil } from './geometriaPerfil'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 const t = textos.perfil
 
@@ -69,7 +70,7 @@ function Dibujo({ g, rotulos, ancho }: { g: GeometriaPerfil; rotulos: RotulosPer
   ]
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-tierra-200 bg-white">
+    <Desplazable etiqueta={textos.zonas.perfil} className="rounded-xl border border-tierra-200 bg-white">
       <svg
         width={anchoTotal}
         height={altoTotal}
@@ -130,6 +131,6 @@ function Dibujo({ g, rotulos, ancho }: { g: GeometriaPerfil; rotulos: RotulosPer
           {rellenar(t.pie, { h: g.escalas.horizontal, v: g.escalas.vertical, plano: formatearMm(g.planoMm), ex: g.escalas.horizontal / g.escalas.vertical })}
         </text>
       </svg>
-    </div>
+    </Desplazable>
   )
 }

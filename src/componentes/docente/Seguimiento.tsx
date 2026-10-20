@@ -11,6 +11,7 @@ import { contarInsignias } from '@/componentes/juego/VitrinaInsignias'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 import { aCsv, descargarCsv } from './csv'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 // Seguimiento por cuadrilla (RF-08): en qué misión va cada integrante, sus fallas y lo que requiere
 // atención del docente. Se puede descargar en CSV.
@@ -124,7 +125,7 @@ function TablaCuadrilla({ cuadrilla: c, posicion, total, viajes }: { cuadrilla: 
         <span className="text-sm text-tierra-700">{rellenar(t.completadas, { n: c.completadas.length, total: MISIONES.length })}</span>
         {c.precisionNielolPct !== null && <span className="text-sm text-tierra-700">{rellenar(t.precision, { pct: formatearNumero(c.precisionNielolPct, 0) })}</span>}
       </header>
-      <div className="relative overflow-x-auto">
+      <Desplazable etiqueta={textos.zonas.seguimiento}>
         {/* Anchos fijos: las columnas quedan alineadas de una cuadrilla a otra. */}
         <table className="w-full min-w-[55rem] table-fixed text-sm">
           <colgroup>
@@ -190,7 +191,7 @@ function TablaCuadrilla({ cuadrilla: c, posicion, total, viajes }: { cuadrilla: 
             ))}
           </tbody>
         </table>
-      </div>
+      </Desplazable>
     </div>
   )
 }

@@ -1,5 +1,7 @@
 import { useId, type ReactNode } from 'react'
 import type { Formulario } from '@/misiones/tipos'
+import textos from '@/textos/es-CL.json'
+import { Desplazable } from '@/componentes/ui/Desplazable'
 
 // Piezas de las etapas de formulario (decisión técnica, informe, diagnóstico). Lo escrito se guarda
 // tal cual, como texto: la evaluación lo lee con coma o punto decimal.
@@ -161,7 +163,7 @@ export function DatoEntregado({ etiqueta, valor }: { etiqueta: string; valor: st
 /** Tabla de entradas: una fila por tramo, casa o vivienda. */
 export function TablaEntradas({ columnas, filas }: { columnas: string[]; filas: { id: string; celdas: ReactNode[] }[] }) {
   return (
-    <div className="overflow-x-auto">
+    <Desplazable etiqueta={textos.zonas.tablaEntradas}>
       <table className="w-full min-w-[520px] text-sm">
         <thead>
           <tr className="border-b-2 border-tierra-300 text-left text-xs font-semibold text-tierra-700">
@@ -187,7 +189,7 @@ export function TablaEntradas({ columnas, filas }: { columnas: string[]; filas: 
           ))}
         </tbody>
       </table>
-    </div>
+    </Desplazable>
   )
 }
 

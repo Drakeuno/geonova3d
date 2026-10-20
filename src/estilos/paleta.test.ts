@@ -28,6 +28,8 @@ const paresTexto: [string, string, string][] = [
   ['botón primario (hover)', BLANCO, bosque[800]],
   ['barra de navegación activa', bosque[800], bosque[100]],
   ['chip de XP', buey[800], buey[100]],
+  ['botón de acento (Entregar)', BLANCO, buey[600]],
+  ['botón de acento (hover)', BLANCO, buey[700]],
   ['chip de error', granate[700], granate[100]],
   ['panel secundario', BLANCO, poncho[700]],
   ['texto claro sobre panel secundario', poncho[100], poncho[700]],

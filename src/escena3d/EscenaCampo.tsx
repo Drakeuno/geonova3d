@@ -5,7 +5,7 @@ import { cotaVerdaderaMm, puntoPorId, puntosControl, type Escenario } from '@/mo
 import { ALTURA_INSTRUMENTO_M, alturaTerrenoMm } from '@/motor/terreno'
 import { aMundo, rumboHacia, type Vec3 } from './coordenadas'
 import { Cinta } from './Cinta'
-import { ControlCamara, type Vista } from './ControlCamara'
+import { ControlCamara, type MandosCamara, type Vista } from './ControlCamara'
 import { Elementos } from './Elementos'
 import { Hitos } from './Hitos'
 import { COLORES_3D } from './materiales'
@@ -24,9 +24,10 @@ export interface PropsEscenaCampo {
   cinta: { desde: string; hasta: string; distanciaM: number } | null
   vista: Vista
   descripcion: string
+  mandosCamara?: MandosCamara
 }
 
-export default function EscenaCampo({ escenario, estacion, colimacionMm, puntoVisado, cinta, vista, descripcion }: PropsEscenaCampo) {
+export default function EscenaCampo({ escenario, estacion, colimacionMm, puntoVisado, cinta, vista, descripcion, mandosCamara }: PropsEscenaCampo) {
   const control = useMemo(() => puntosControl(escenario), [escenario])
   const baseMm = useMemo(() => Math.floor(Math.min(...control.map((p) => p.cotaMm)) / 1000) * 1000, [control])
   const { centro, radio } = useMemo(() => {
@@ -102,7 +103,13 @@ export default function EscenaCampo({ escenario, estacion, colimacionMm, puntoVi
         <Cinta desde={tramoCinta.desde} hasta={tramoCinta.hasta} distanciaM={cinta.distanciaM} control={control} baseMm={baseMm} />
       )}
 
-      <ControlCamara vista={vista} centro={centro} radio={radio} instrumento={instrumento && { ojo: instrumento.ojo, objetivo: instrumento.objetivo }} />
+      <ControlCamara
+        vista={vista}
+        centro={centro}
+        radio={radio}
+        instrumento={instrumento && { ojo: instrumento.ojo, objetivo: instrumento.objetivo }}
+        mandos={mandosCamara}
+      />
     </Canvas>
   )
 }
