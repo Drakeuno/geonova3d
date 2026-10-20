@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import campusJson from '../../public/datos/escenarios/campus-uct.json'
 import parametrosJson from '../../public/datos/parametros.json'
 import { esquemaParametros } from '@/datos/parametros'
+import { aplicarAjustes } from '@/datos/configuracion'
 import { crearRng } from '@/motor/azar'
 import { cotaVerdaderaMm, estacionesDelEje, leerEscenario, planificarRecorrido, type LecturaPlanificada } from '@/motor/escenarios'
 import { rangoDesdeParametros } from '@/motor/lecturas'
@@ -180,6 +181,14 @@ describe('Misión 1.2 · Circuito Cerrado', () => {
     expect(e.aprobada).toBe(true)
     expect(e.desempeno.errorCierreMm).toBe(4)
     expect(e.desempeno.lecturasExactas).toBe(5)
+  })
+
+  it('con el coeficiente que fija el docente en 6, el mismo cierre de +4 mm (T = 2,7 mm) se rechaza (RF-08)', () => {
+    const { registro, lecturas } = libreta('1.2', 3, { errorLectura: { 3: 4 } })
+    const { parametros: ajustados } = aplicarAjustes(parametros, { 'toleranciaCierre.coeficienteMm': 6 })
+    const e = evaluar('1.2', contexto(registro, lecturas, { compensacion: compensacionDe(registro, lecturas), parametros: ajustados }))
+    expect(e.aprobada).toBe(false)
+    expect(e.motivo).toBe('cierre')
   })
 
   it('acepta la compensación dentro de ±2 mm y la rechaza fuera', () => {

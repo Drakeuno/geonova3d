@@ -22,7 +22,7 @@ import { filasVigentes, registroVacio } from '@/motor/libreta'
 import { formatearMm, formatearNumero } from '@/motor/numeros'
 import { recompensaPorAprobacion } from '@/motor/puntaje'
 import { bloqueosLibreta, claveTramo, emparejar, textoTolerancia } from '@/misiones/comunes'
-import { configMision, entregarMision, esJugable, opcionesDesdeParametros, type ConfigMision } from '@/misiones/definiciones'
+import { configMision, entregarMision, esJugable, opcionesDelIntento, type ConfigMision } from '@/misiones/definiciones'
 import { cierreDelCircuito } from '@/misiones/m12'
 import { perfilDesdeLibreta, planillaEsperada } from '@/misiones/m13'
 import { lineaSeguridadMm } from '@/misiones/m21'
@@ -152,7 +152,14 @@ function PrepararCooperativa(p: PropsCarga) {
 }
 
 function Cargar({ tramo, ...p }: PropsCarga & { tramo: Tramo | null }) {
-  const config = configMision(p.id, opcionesDesdeParametros(p.parametros, tramo ?? undefined))
+  const actualizarIntento = useViaje((s) => s.actualizarIntento)
+  const opciones = opcionesDelIntento(p.parametros, p.intento, tramo ?? undefined)
+  // La 2.1 guarda su piel al empezar: si el docente la cambia, la libreta en curso sigue en su terreno.
+  const fijarPiel = p.id === '2.1' && !p.intento.piel
+  useEffect(() => {
+    if (fijarPiel) actualizarIntento(p.usuario.id, p.id, { piel: opciones.piel })
+  }, [fijarPiel, actualizarIntento, p.usuario.id, p.id, opciones.piel])
+  const config = configMision(p.id, opciones)
   const { escenario, error } = useEscenario(config.escenario)
   const { dialogos, error: errorDialogos } = useDialogos()
   if (error || errorDialogos) {

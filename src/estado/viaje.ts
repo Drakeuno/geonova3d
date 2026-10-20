@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { MISIONES } from '@/datos/misiones'
+import type { PielActo2 } from '@/datos/parametros'
 import type { Burbuja } from '@/motor/burbuja'
 import { entregar, iniciar, resolver, viajeInicial, type EstadoMision, type ProgresoMision, type Viaje } from '@/motor/progreso'
 import type { MovimientoXp } from '@/motor/puntaje'
@@ -31,6 +32,11 @@ export interface IntentoMision {
   formularios?: Record<string, Formulario>
   /** 2.3: con una cuadrilla simulada o con otra ventana del mismo equipo (código de sesión). */
   cooperativa?: { modo: 'simulada' | 'ventanas'; codigo: string | null } | null
+  /**
+   * 2.1: piel del Acto 2 con que empezó el intento. Si el docente la cambia, rige desde el intento
+   * siguiente: la libreta en curso no queda sobre otro terreno.
+   */
+  piel?: PielActo2
 }
 
 /** Veredicto de la comisión (3.2 y 3.3), registrado por el docente con la rúbrica y la evidencia. */

@@ -113,7 +113,11 @@ export const todasLasConfiguraciones = (): ConfigMision[] =>
     id === '2.1' ? (Object.keys(PIELES_2_1) as PielActo2[]).map((piel) => configMision(id, { piel })) : [configMision(id, { piel: 'red-del-agua' })],
   )
 
-export const opcionesDesdeParametros = (p: Parametros, tramo?: Tramo): OpcionesMision => ({ piel: p.acto2.piel, tramo })
+/** La piel del intento si ya la tiene (queda fija al empezarlo); si no, la que fija el docente. */
+export const opcionesDelIntento = (p: Parametros, intento: { piel?: PielActo2 }, tramo?: Tramo): OpcionesMision => ({
+  piel: intento.piel ?? p.acto2.piel,
+  tramo,
+})
 
 /**
  * Entrega de una misión: primero lo que bloquea (libreta incompleta o fuera del recorrido, etapa

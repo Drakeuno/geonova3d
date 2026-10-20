@@ -7,10 +7,11 @@ ingeniero, por el método de los desniveles (PID 2026, UC Temuco). Se construye 
 especificación técnica v1.1 (octubre 2026), documento interno del proyecto. Datos simulados: no
 guarda nada fuera del navegador de quien lo usa.
 
-Estado: **F0 a F7 terminadas**: las 9 misiones jugables en sus tres actos (con las escenas del
-Cochayuyero), libreta de campo, base 3D, comisión evaluadora en el panel docente, y la gamificación
-transversal: XP, insignias (incluida la especial), cuadrillas con puntaje promedio + bonus, ayuda
-entre compañeros y tabla de clasificación. Faltan F8 (panel docente completo) y F9 (pulido).
+Estado: **F0 a F8 terminadas**: las 9 misiones jugables en sus tres actos (con las escenas del
+Cochayuyero), libreta de campo, base 3D, gamificación transversal (XP, insignias, cuadrillas con
+puntaje promedio + bonus, ayuda entre compañeros, clasificación) y el panel docente completo:
+seguimiento por cuadrilla con CSV, comisión evaluadora y configuración de los parámetros. Falta F9
+(pulido).
 
 ## Probar el instrumento en 3D
 
@@ -37,6 +38,15 @@ cuadrilla, suma +50 XP a la de Camila. **Clasificación** (también desde la ses
 puntos, misiones completadas por toda la cuadrilla, insignias (promedio por integrante) y % de
 precisión del Ñielol.
 
+## Probar el panel docente
+
+Entra como **Claudio Gil**. **Seguimiento**: cada integrante en cada misión, lo que requiere atención
+(defensas por evaluar, pistas ya ofrecidas, pedidos de ayuda) y descarga en CSV. **Comisión**: las
+defensas de la 3.2 y la 3.3. **Configuración**: los parámetros de la §11 sobre `parametros.json`;
+se guardan en este navegador y rigen para las entregas siguientes (p. ej., con el coeficiente en 6, un
+circuito de la 1.2 que cerraba en +4 mm ya no aprueba). La piel del Acto 2 rige desde el próximo
+intento de la 2.1. Desde ahí también se abren todas las misiones para una demostración.
+
 ## Ejecutar
 
 ```bash
@@ -48,7 +58,7 @@ pnpm build       # genera dist/ (rutas relativas: sirve en cualquier carpeta)
 ```
 
 Para reiniciar la demo, borra el almacenamiento local del navegador (claves `gn3d_sesion_v1`,
-`gn3d_viaje_v1`, `gn3d_libretas_v1` y `gn3d_juego_v1`).
+`gn3d_viaje_v1`, `gn3d_libretas_v1`, `gn3d_juego_v1` y `gn3d_parametros_v1`).
 
 ## Dónde está cada cosa
 

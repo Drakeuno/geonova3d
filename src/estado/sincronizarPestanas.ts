@@ -1,15 +1,17 @@
 import { useJuego } from './juego'
 import { useLibretas } from './libretas'
+import { useAjustes } from './parametros'
 import { useViaje } from './viaje'
 
 // Dos pestañas del mismo navegador comparten el almacenamiento local, pero cada una tiene su copia en
 // memoria. Si una escribe, la otra relee lo guardado: así no se pisan (2.3 con dos ventanas, o un
-// estudiante que abre la misión dos veces).
+// estudiante que abre la misión dos veces, o el panel docente que ajusta parámetros en otra pestaña).
 
 const ALMACENES = {
   gn3d_libretas_v1: useLibretas,
   gn3d_viaje_v1: useViaje,
   gn3d_juego_v1: useJuego,
+  gn3d_parametros_v1: useAjustes,
 } as const
 
 export function sincronizarPestanas() {

@@ -1,88 +1,131 @@
+import { useRef, useState, type KeyboardEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { LockOpen } from 'lucide-react'
-import { useParametros } from '@/estado/parametros'
+import { USUARIOS_DEMO } from '@/datos/usuariosDemo'
+import { useAjustes, useParametros } from '@/estado/parametros'
 import { useViaje } from '@/estado/viaje'
 import { Comision } from '@/componentes/docente/Comision'
-import { formatearNumero } from '@/motor/numeros'
-import type { Parametros } from '@/datos/parametros'
+import { Configuracion } from '@/componentes/docente/Configuracion'
+import { Seguimiento } from '@/componentes/docente/Seguimiento'
 import textos from '@/textos/es-CL.json'
 
-/** Filas de la tabla de la §11, en el mismo orden que la especificación. */
-function filas(p: Parametros): [string, string][] {
-  const pct = (n: number) => `${formatearNumero(n, n % 1 === 0 ? 0 : 1)} %`
-  return [
-    ['Tolerancia de cierre', `T = ${p.toleranciaCierre.coeficienteMm}√K mm (K en km)`],
-    ['Pendiente mínima de gravedad (2.1)', pct(p.acto2.pendienteMinimaGravedadPct)],
-    ['Pendiente máxima transitable (piel Pehuén)', pct(p.acto2.pendienteMaximaTransitablePct)],
-    ['Presión mínima (2.2)', `${p.acto2.presionMinimaMca} m.c.a.`],
-    ['Estaciones de perfil', `cada ${p.perfil.estacionamientoM} m`],
-    ['Escalas de perfil', `1:${p.perfil.escalaHorizontal} H / 1:${p.perfil.escalaVertical} V`],
-    ['Lectura de mira', `${formatearNumero(p.lectura.minimaM)}–${formatearNumero(p.lectura.maximaM)} m`],
-    ['XP por lectura exacta (±1 mm)', `${p.xp.lecturaExacta} XP`],
-    [
-      'XP por misión',
-      `Bronce ${p.xp.porInsignia.bronce} · Plata ${p.xp.porInsignia.plata} · Oro ${p.xp.porInsignia.oro} · Integrador ${p.xp.porInsignia.integrador}`,
-    ],
-    ['Piel del Acto 2', textos.pieles[p.acto2.piel]],
-    [
-      'Cálculo del desnivel',
-      `Acto 0: ${textos.modos[p.modoDesnivel.acto0]} · Acto 2: ${textos.modos[p.modoDesnivel.acto2]} · Acto 3: ${textos.modos[p.modoDesnivel.acto3]}`,
-    ],
-  ]
-}
+// Panel docente (RF-08): seguimiento por cuadrilla, comisión de las defensas orales (3.2 y 3.3) y
+// configuración del juego. La pestaña va en la dirección (?seccion=), para volver a ella.
+
+const SECCIONES = ['seguimiento', 'comision', 'configuracion'] as const
+type Seccion = (typeof SECCIONES)[number]
+const t = textos.panel
 
 export default function PanelDocente() {
-  const { estado, parametros, error } = useParametros()
-  const { todasAbiertas, alternarTodasAbiertas } = useViaje()
-  const d = textos.panel.demo
+  const { estado, parametros, base, ajustes, ajustesInvalidos, error } = useParametros()
+  const { guardar, restablecer, guardadosEn } = useAjustes()
+  const viajes = useViaje((s) => s.viajes)
+  const [busqueda, setBusqueda] = useSearchParams()
+  const pedida = busqueda.get('seccion') as Seccion | null
+  const seccion: Seccion = pedida && SECCIONES.includes(pedida) ? pedida : 'seguimiento'
+  const pestanas = useRef<Record<string, HTMLButtonElement | null>>({})
+  const [aviso, setAviso] = useState<string | null>(null)
+  const ir = (s: Seccion) => {
+    setBusqueda({ seccion: s }, { replace: true })
+    pestanas.current[s]?.focus()
+  }
+  const defensas = USUARIOS_DEMO.filter((u) => u.rol === 'estudiante').reduce(
+    (n, u) => n + ['3.2', '3.3'].filter((m) => viajes[u.id]?.[m]?.estado === 'en_evaluacion').length,
+    0,
+  )
+
+  // Flechas izquierda/derecha entre pestañas (patrón de pestañas de ARIA).
+  const teclado = (e: KeyboardEvent) => {
+    const i = SECCIONES.indexOf(seccion)
+    if (e.key === 'ArrowRight') ir(SECCIONES[(i + 1) % SECCIONES.length])
+    else if (e.key === 'ArrowLeft') ir(SECCIONES[(i + SECCIONES.length - 1) % SECCIONES.length])
+  }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-3xl font-bold text-tierra-900">{textos.panel.titulo}</h1>
-      <p className="mt-2 text-tierra-600">{textos.panel.bajada}</p>
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="text-3xl font-bold text-tierra-900">{t.titulo}</h1>
+      <p className="mt-2 text-tierra-600">{t.bajada}</p>
 
-      <section className="card mt-6 flex flex-wrap items-center gap-4 p-5">
-        <LockOpen size={22} className="text-poncho-700" aria-hidden />
-        <div className="min-w-[14rem] flex-1">
-          <h2 className="text-lg font-bold text-tierra-900">{d.titulo}</h2>
-          <p className="text-sm text-tierra-600">{d.texto}</p>
-          <p className="mt-1 text-sm font-semibold text-tierra-800" role="status">
-            {todasAbiertas ? d.abiertas : d.enOrden}
+      <div role="tablist" aria-label={t.pestanas.etiqueta} className="mt-6 flex gap-1 overflow-x-auto border-b border-tierra-200" onKeyDown={teclado}>
+        {SECCIONES.map((s) => (
+          <button
+            key={s}
+            ref={(b) => {
+              pestanas.current[s] = b
+            }}
+            id={`pestana-${s}`}
+            role="tab"
+            type="button"
+            aria-selected={seccion === s}
+            aria-controls={`seccion-${s}`}
+            tabIndex={seccion === s ? 0 : -1}
+            onClick={() => ir(s)}
+            className={`-mb-px flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-semibold transition ${
+              seccion === s ? 'border-bosque-700 text-bosque-800' : 'border-transparent text-tierra-700 hover:text-tierra-900'
+            }`}
+          >
+            {t.pestanas[s]}
+            {s === 'comision' && defensas > 0 && <span className="chip bg-buey-100 px-2 py-0.5 text-buey-800">{defensas}</span>}
+          </button>
+        ))}
+      </div>
+
+      <div id={`seccion-${seccion}`} role="tabpanel" aria-labelledby={`pestana-${seccion}`} className="mt-6">
+        {estado === 'error' ? (
+          <p role="alert" className="rounded-xl bg-granate-100 p-3 text-granate-700">
+            {t.error}: {error}
           </p>
-        </div>
-        <button type="button" aria-pressed={todasAbiertas} className={todasAbiertas ? 'btn-neutro' : 'btn-primario'} onClick={alternarTodasAbiertas}>
-          {todasAbiertas ? d.desactivar : d.activar}
-        </button>
-      </section>
-
-      {parametros && <Comision parametros={parametros} />}
-
-      <section className="card mt-6 overflow-hidden">
-        <header className="border-b border-tierra-200 bg-tierra-100/60 px-5 py-3">
-          <h2 className="text-lg font-bold text-tierra-900">{textos.panel.parametros}</h2>
-          <p className="text-xs text-tierra-600">{textos.panel.fuente}</p>
-        </header>
-        {estado === 'error' && (
-          <p role="alert" className="m-5 rounded-xl bg-granate-100 p-3 text-granate-700">
-            {textos.panel.error}: {error}
-          </p>
-        )}
-        {parametros ? (
-          <table className="w-full text-left">
-            <tbody className="divide-y divide-tierra-100">
-              {filas(parametros).map(([nombre, valor]) => (
-                <tr key={nombre}>
-                  <th scope="row" className="px-5 py-2.5 font-semibold text-tierra-800">
-                    {nombre}
-                  </th>
-                  <td className="px-5 py-2.5 font-mono text-sm text-tierra-900">{valor}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        ) : !parametros || !base ? (
+          <p className="text-tierra-600">{t.cargando}</p>
+        ) : seccion === 'seguimiento' ? (
+          <Seguimiento fallasAntesDePista={parametros.reintentos.fallasAntesDePista} onIrComision={() => ir('comision')} />
+        ) : seccion === 'comision' ? (
+          <Comision parametros={parametros} />
         ) : (
-          estado !== 'error' && <p className="p-5 text-tierra-600">{textos.panel.cargando}</p>
+          <>
+            <Demostracion />
+            <div className="mt-6">
+              {/* Si otra pestaña guarda ajustes, el formulario parte de nuevo desde lo guardado. */}
+              <Configuracion
+                key={guardadosEn ?? 0}
+                base={base}
+                ajustes={ajustes}
+                ajustesInvalidos={ajustesInvalidos}
+                aviso={aviso}
+                onEditar={() => setAviso(null)}
+                onGuardar={(a) => {
+                  guardar(a)
+                  setAviso(textos.configuracion.guardado)
+                }}
+                onRestablecer={() => {
+                  restablecer()
+                  setAviso(textos.configuracion.restablecido)
+                }}
+              />
+            </div>
+          </>
         )}
-      </section>
+      </div>
     </div>
+  )
+}
+
+function Demostracion() {
+  const { todasAbiertas, alternarTodasAbiertas } = useViaje()
+  const d = t.demo
+  return (
+    <section className="card flex flex-wrap items-center gap-4 p-5">
+      <LockOpen size={22} className="text-poncho-700" aria-hidden />
+      <div className="min-w-[14rem] flex-1">
+        <h2 className="text-lg font-bold text-tierra-900">{d.titulo}</h2>
+        <p className="text-sm text-tierra-600">{d.texto}</p>
+        <p className="mt-1 text-sm font-semibold text-tierra-800" role="status">
+          {todasAbiertas ? d.abiertas : d.enOrden}
+        </p>
+      </div>
+      <button type="button" aria-pressed={todasAbiertas} className={todasAbiertas ? 'btn-neutro' : 'btn-primario'} onClick={alternarTodasAbiertas}>
+        {todasAbiertas ? d.desactivar : d.activar}
+      </button>
+    </section>
   )
 }

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { aplicarAjustes } from '@/datos/configuracion'
 import parametrosJson from '../../public/datos/parametros.json'
 import aguaJson from '../../public/datos/escenarios/rural-red-del-agua.json'
 import pehuenJson from '../../public/datos/escenarios/rural-pehuen.json'
@@ -13,7 +14,7 @@ import { rangoDesdeParametros } from '@/motor/lecturas'
 import { registrarFila, registroVacio, type RegistroLibreta } from '@/motor/libreta'
 import { formatearMm, formatearNumero, type Mm } from '@/motor/numeros'
 import { claveTramo, emparejar, puntosDeLibreta } from './comunes'
-import { configMision, entregarMision } from './definiciones'
+import { configMision, entregarMision, opcionesDelIntento } from './definiciones'
 import { CASAS_CERO_COTA, PUNTOS_AGUA, PUNTOS_PEHUEN } from './m21'
 import { VIVIENDAS_2_2 } from './m22'
 import { cierreDeTramo, cotaDeM, libretaSimulada, prepararSesion } from './m23'
@@ -129,6 +130,14 @@ describe('2.1 · piel La Red del Agua', () => {
   })
 })
 
+describe('2.1 · piel fija por intento', () => {
+  it('si el docente cambia la piel, el intento en curso sigue con la suya y el siguiente toma la nueva', () => {
+    const conPehuen = aplicarAjustes(parametros, { 'acto2.piel': 'camino-pehuen' }).parametros
+    expect(opcionesDelIntento(conPehuen, { piel: 'red-del-agua' }).piel).toBe('red-del-agua')
+    expect(opcionesDelIntento(conPehuen, {}).piel).toBe('camino-pehuen')
+  })
+})
+
 describe('2.1 · piel Camino del Pehuén', () => {
   const { lecturas, registro, lib } = preparar(esc.pehuen, '2.1', 12)
   const cota = (id: string) => lib.get(id)!.cotaMm
@@ -157,6 +166,14 @@ describe('2.1 · piel Camino del Pehuén', () => {
     const e = evaluar('2.1', ctx(esc.pehuen, registro, lecturas, { ...correcto, [claveTramo('excede', 'K2', 'K3')]: 'no' }), 'camino-pehuen')
     expect(e.motivo).toBe('decision')
     expect(e.criterios.find((c) => c.id === 'decision')?.texto).not.toContain('K2')
+  })
+
+  it('con el máximo transitable que fija el docente en 9 %, K2–K3 (8,65 %) ya no excede (RF-08)', () => {
+    const { parametros: ajustados } = aplicarAjustes(parametros, { 'acto2.pendienteMaximaTransitablePct': 9 })
+    const conNueve = (f: Formulario) => evaluar('2.1', ctx(esc.pehuen, registro, lecturas, f, { parametros: ajustados }), 'camino-pehuen')
+    expect(conNueve(correcto).aprobada).toBe(false)
+    const ahora: Formulario = { ...correcto, [claveTramo('excede', 'K2', 'K3')]: 'no', decision: 'transitable', justificacion: 'Ningún tramo supera el 9 %: el camino es transitable tal como está.' }
+    expect(conNueve(ahora).aprobada).toBe(true)
   })
 })
 

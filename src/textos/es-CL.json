@@ -58,7 +58,7 @@
   },
   "panel": {
     "titulo": "Panel docente",
-    "bajada": "Defensas orales ante la comisión, demostración y parámetros vigentes. La configuración y el seguimiento por cuadrilla llegan en la fase F8.",
+    "bajada": "Seguimiento de las cuadrillas, defensas orales ante la comisión y configuración del juego.",
     "parametros": "Parámetros vigentes",
     "fuente": "Fuente: public/datos/parametros.json (§11 de la especificación)",
     "cargando": "Cargando parámetros…",
@@ -70,6 +70,12 @@
       "desactivar": "Volver al orden del viaje",
       "abiertas": "Todas las misiones están abiertas.",
       "enOrden": "Las misiones se abren en orden, al aprobar la anterior."
+    },
+    "pestanas": {
+      "etiqueta": "Secciones del panel",
+      "seguimiento": "Seguimiento",
+      "comision": "Comisión",
+      "configuracion": "Configuración"
     }
   },
   "libreta": {
@@ -976,5 +982,214 @@
     "verIntegrantes": "Ver integrantes",
     "ocultarIntegrantes": "Ocultar integrantes",
     "insigniasPromedio": "de {total} por integrante"
+  },
+  "seguimiento": {
+    "titulo": "Seguimiento por cuadrilla",
+    "bajada": "Dónde va cada integrante en cada misión. Del estudiante que juega en este navegador se ven además sus entregas fallidas; el resto del curso es simulado.",
+    "cargando": "Cargando el curso…",
+    "resumen": {
+      "cuadrillas": "Cuadrillas: {n}",
+      "estudiantes": "Estudiantes: {n}",
+      "atascados": "Piden ayuda: {n}",
+      "pistas": "Con pistas del Cochayuyero: {n}",
+      "defensas": "Defensas por evaluar: {n}"
+    },
+    "atencion": "Requiere atención",
+    "sinAlertas": "Nada pendiente por ahora.",
+    "alertas": {
+      "defensa": "{nombre} ({cuadrilla}) espera a la comisión en la {mision}.",
+      "pista": "{nombre} ({cuadrilla}) lleva {fallas} entregas fallidas en la {mision}: el Cochayuyero ya le da pistas.",
+      "atascado": "{nombre} ({cuadrilla}) pide ayuda con la {mision}."
+    },
+    "irComision": "Ir a la comisión",
+    "integrante": "Integrante",
+    "xp": "XP",
+    "insignias": "Insignias",
+    "ayudo": "Ayudó a",
+    "puntos": "{puntos} puntos · {posicion}.º de {total}",
+    "completadas": "{n} de {total} misiones completadas",
+    "precision": "Precisión Ñielol: {pct} %",
+    "simulado": "simulado",
+    "fallas": "{n} fallas",
+    "estados": {
+      "aprobada": "Aprobada",
+      "en_evaluacion": "En evaluación",
+      "a_reintentar": "Por reintentar",
+      "atascado": "Atascado, pide ayuda",
+      "en_curso": "En curso",
+      "disponible": "Disponible",
+      "pendiente": "Pendiente"
+    },
+    "leyenda": "Leyenda",
+    "descargar": "Descargar CSV",
+    "csv": {
+      "archivo": "seguimiento-cuadrillas-{fecha}.csv",
+      "cuadrilla": "Cuadrilla",
+      "integrante": "Integrante",
+      "simulado": "Simulado",
+      "si": "sí",
+      "no": "no",
+      "xp": "XP individual",
+      "insignias": "Insignias",
+      "aprobadas": "Misiones aprobadas",
+      "ayudados": "Compañeros ayudados",
+      "puntosCuadrilla": "Puntaje de la cuadrilla",
+      "mision": "Misión {id}"
+    }
+  },
+  "configuracion": {
+    "titulo": "Configuración del juego",
+    "bajada": "Parámetros de la §11 de la especificación. Parten de public/datos/parametros.json; lo que ajustes aquí se guarda en este navegador y rige para las entregas que se evalúen desde ahora.",
+    "notas": [
+      "El XP ya otorgado no cambia. Los compañeros simulados se recalculan con los valores vigentes.",
+      "La piel del Acto 2 rige desde el próximo intento de la 2.1: la libreta en curso sigue en su terreno."
+    ],
+    "grupos": {
+      "cierre": "Cierre y montaje",
+      "calculo": "Libreta y reintentos",
+      "acto2": "Acto 2 · parada rural",
+      "perfil": "Perfiles (1.3 y 3.3)",
+      "xp": "Puntaje (XP)",
+      "evaluacion": "Comisión (3.2 y 3.3)"
+    },
+    "campos": {
+      "toleranciaCierre.coeficienteMm": {
+        "etiqueta": "Tolerancia de cierre: coeficiente",
+        "ayuda": "T = coeficiente · √K mm, con K en km.",
+        "unidad": "mm"
+      },
+      "montaje.errorMaximoMm": {
+        "etiqueta": "Error máximo por montaje",
+        "ayuda": "Desvío de la cruz con la burbuja descentrada (0 a 5 mm).",
+        "unidad": "mm"
+      },
+      "modoDesnivel.acto0": {
+        "etiqueta": "Cálculo del desnivel · Acto 0",
+        "ayuda": "Automático: lo calcula el sistema. Asistido: revisa cada valor. Manual: revisa al entregar."
+      },
+      "modoDesnivel.acto2": {
+        "etiqueta": "Cálculo del desnivel · Acto 2"
+      },
+      "modoDesnivel.acto3": {
+        "etiqueta": "Cálculo del desnivel · Acto 3"
+      },
+      "reintentos.fallasAntesDePista": {
+        "etiqueta": "Entregas fallidas antes de la pista",
+        "ayuda": "El Cochayuyero ofrece una pista desde esa falla.",
+        "unidad": "fallas"
+      },
+      "acto2.piel": {
+        "etiqueta": "Piel de la misión 2.1",
+        "ayuda": "Misma mecánica, otro terreno y otra pregunta (RF-12)."
+      },
+      "acto2.pendienteMinimaGravedadPct": {
+        "etiqueta": "Pendiente mínima por gravedad",
+        "ayuda": "Piel La Red del Agua.",
+        "unidad": "%"
+      },
+      "acto2.pendienteMaximaTransitablePct": {
+        "etiqueta": "Pendiente máxima transitable",
+        "ayuda": "Piel Camino del Pehuén y tramo crítico de la 3.3.",
+        "unidad": "%"
+      },
+      "acto2.presionMinimaMca": {
+        "etiqueta": "Presión mínima en las viviendas",
+        "ayuda": "Misión 2.2: define la cota óptima del estanque.",
+        "unidad": "m.c.a."
+      },
+      "perfil.escalaHorizontal": {
+        "etiqueta": "Escala horizontal",
+        "ayuda": "La vertical debe exagerar el relieve: su número es menor o igual.",
+        "prefijo": "1:"
+      },
+      "perfil.escalaVertical": {
+        "etiqueta": "Escala vertical",
+        "prefijo": "1:"
+      },
+      "xp.lecturaExacta": {
+        "etiqueta": "Lectura exacta (±1 mm)",
+        "unidad": "XP"
+      },
+      "xp.porInsignia.bronce": {
+        "etiqueta": "Misión de bronce",
+        "unidad": "XP"
+      },
+      "xp.porInsignia.plata": {
+        "etiqueta": "Misión de plata",
+        "unidad": "XP"
+      },
+      "xp.porInsignia.oro": {
+        "etiqueta": "Misión de oro",
+        "unidad": "XP"
+      },
+      "xp.porInsignia.integrador": {
+        "etiqueta": "Integrador (3.3)",
+        "unidad": "XP"
+      },
+      "xp.bonusPrecision.bajo5mm": {
+        "etiqueta": "Bonus de cierre bajo 5 mm",
+        "unidad": "XP"
+      },
+      "xp.bonusPrecision.bajo10mm": {
+        "etiqueta": "Bonus de cierre bajo 10 mm",
+        "unidad": "XP"
+      },
+      "xp.bonusPrimeraSinErrores": {
+        "etiqueta": "Bonus 1.1 sin errores de registro",
+        "unidad": "XP"
+      },
+      "xp.bonusCooperativa": {
+        "etiqueta": "Bonus por misión cooperativa",
+        "unidad": "XP"
+      },
+      "xp.bonusAyuda": {
+        "etiqueta": "Bonus por ayuda a otra cuadrilla",
+        "unidad": "XP"
+      },
+      "xp.penalizacionTachadura": {
+        "etiqueta": "Descuento por tachadura",
+        "unidad": "XP"
+      },
+      "evaluacionOral.aprobacionMinimaPct": {
+        "etiqueta": "Aprobación de cada evaluador",
+        "ayuda": "Promedio mínimo de la rúbrica; decide la mayoría.",
+        "unidad": "%"
+      },
+      "evaluacionOral.evaluadores": {
+        "etiqueta": "Evaluadores de la comisión",
+        "ayuda": "Docente + pares. Con 2 y empate, resuelve el docente.",
+        "unidad": "evaluadores"
+      }
+    },
+    "porDefecto": "Por defecto: {valor}",
+    "ajustado": "ajustado",
+    "restablecerCampo": "Volver al valor por defecto de «{campo}»",
+    "errores": {
+      "numero": "Escribe un número.",
+      "entero": "Debe ser un número entero.",
+      "rango": "Entre {min} y {max}.",
+      "opcion": "Elige una opción de la lista.",
+      "escalas": "La vertical no puede ser menos exagerada que la horizontal."
+    },
+    "guardar": "Guardar cambios",
+    "descartar": "Descartar cambios",
+    "restablecerTodo": "Volver a los valores del archivo",
+    "confirmarRestablecer": "¿Borrar todos los ajustes y volver a los valores del archivo?",
+    "si": "Sí, restablecer",
+    "no": "No",
+    "conErrores": "Corrige {n} campo(s) antes de guardar.",
+    "sinCambios": "Sin cambios por guardar.",
+    "porGuardar": "Hay cambios sin guardar.",
+    "guardado": "Guardado. Los nuevos valores ya rigen.",
+    "restablecido": "Listo: rigen los valores del archivo.",
+    "invalidos": "Los ajustes guardados no son válidos con el archivo actual: rigen los valores del archivo.",
+    "ajustesActivos": "{n} parámetro(s) ajustado(s) respecto del archivo.",
+    "fijosTitulo": "Fijos en esta versión",
+    "fijos": [
+      "Rango de lectura de la mira: {min}–{max} m (mira de {largo} m). Los escenarios se armaron para que cada estación salve hasta {desnivel} m.",
+      "Estaciones del perfil cada {cada} m: vienen del terreno de la 1.3 y la 3.3.",
+      "Lectura exacta y comparaciones: ±{tol} mm; compensación de la 1.2: ±{comp} mm (§14).",
+      "Error grosero sembrado en la 2.3 y la 3.1: más de {grosero} mm."
+    ]
   }
 }
