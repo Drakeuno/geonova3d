@@ -6,7 +6,8 @@ import type { Formulario } from '@/misiones/tipos'
 
 export interface PropsFormulario {
   formulario: Formulario
-  onCambio: (clave: string, valor: string) => void
+  /** Null quita la clave (p. ej. desmarcar una celda en la auditoría). */
+  onCambio: (clave: string, valor: string | null) => void
 }
 
 export function TarjetaEtapa({ icono, titulo, bajada, children }: { icono: ReactNode; titulo: string; bajada: string; children: ReactNode }) {
@@ -186,6 +187,58 @@ export function TablaEntradas({ columnas, filas }: { columnas: string[]; filas: 
           ))}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+/** Campo de texto libre (títulos, nombres). */
+export function CampoTexto({ clave, etiqueta, placeholder, formulario, onCambio }: PropsFormulario & { clave: string; etiqueta: string; placeholder?: string }) {
+  const id = useId()
+  return (
+    <div>
+      <label htmlFor={id} className="block text-xs font-semibold text-tierra-700">
+        {etiqueta}
+      </label>
+      <input
+        id={id}
+        autoComplete="off"
+        placeholder={placeholder}
+        value={formulario[clave] ?? ''}
+        onChange={(e) => onCambio(clave, e.target.value)}
+        className="mt-1 w-full rounded-lg border border-tierra-300 bg-white px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-bosque-500"
+      />
+    </div>
+  )
+}
+
+/** Lista desplegable, para elegir entre muchas opciones (p. ej. un tramo de 12). */
+export function Seleccion({
+  clave,
+  etiqueta,
+  opciones,
+  vacia,
+  formulario,
+  onCambio,
+}: PropsFormulario & { clave: string; etiqueta: string; opciones: readonly (readonly [string, string])[]; vacia: string }) {
+  const id = useId()
+  return (
+    <div>
+      <label htmlFor={id} className="block text-xs font-semibold text-tierra-700">
+        {etiqueta}
+      </label>
+      <select
+        id={id}
+        value={formulario[clave] ?? ''}
+        onChange={(e) => onCambio(clave, e.target.value)}
+        className="mt-1 w-full rounded-lg border border-tierra-300 bg-white px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-bosque-500"
+      >
+        <option value="">{vacia}</option>
+        {opciones.map(([valor, texto]) => (
+          <option key={valor} value={valor}>
+            {texto}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }

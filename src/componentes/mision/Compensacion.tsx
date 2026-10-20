@@ -43,7 +43,8 @@ export function Compensacion({ cierre, cotasLibreta, entradas, onCambio }: Props
           <dl className="grid gap-2 sm:grid-cols-3">
             <Dato etiqueta={t.error} valor={`${mmConSigno(cierre.errorMm)} mm`} alerta={!cierre.aprobado} />
             <Dato etiqueta={t.tolerancia} valor={`±${textoTolerancia(cierre.toleranciaMm)} mm`} />
-            <Dato etiqueta={t.largo} valor={`${formatearNumero(cierre.longitudM, 2)} m`} />
+            {/* D de la compensación: la suma de las distancias anotadas en la libreta. */}
+            <Dato etiqueta={t.largo} valor={`${formatearNumero(cierre.compensados[cierre.compensados.length - 1]?.distanciaAcumuladaM ?? cierre.longitudM, 2)} m`} />
           </dl>
           <p className={`text-sm font-semibold ${cierre.aprobado ? 'text-bosque-700' : 'text-granate-700'}`} role="status">
             {cierre.aprobado ? t.cierra : t.noCierra}

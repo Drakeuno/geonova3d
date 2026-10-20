@@ -60,6 +60,8 @@ const contexto = (registro: RegistroLibreta, lecturas: LecturaPlanificada[], ext
   perfil: perfilVacio(),
   formulario: {},
   cooperativa: null,
+  partes: {},
+  auditoria: null,
   ...extra,
 })
 

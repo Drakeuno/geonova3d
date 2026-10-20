@@ -33,11 +33,26 @@ export interface IntentoMision {
   cooperativa?: { modo: 'simulada' | 'ventanas'; codigo: string | null } | null
 }
 
+/** Veredicto de la comisión (3.2 y 3.3), registrado por el docente con la rúbrica y la evidencia. */
+export interface VeredictoGuardado {
+  aprobada: boolean
+  votosFavor: number
+  votosContra: number
+  desempateDocente: boolean
+  evaluadores: { nombre: string; esDocente: boolean; puntajes: Record<string, number>; porcentaje: number }[]
+  /** Archivo de evidencia (presentación, video…), guardado aparte en el navegador. */
+  evidencia: { nombre: string; tamano: number; tipo: string } | null
+  en: number
+}
+
 export interface EvaluacionGuardada extends Evaluacion {
   intento: number
   en: number
   /** XP otorgado, solo en la primera aprobación. */
   recompensa: MovimientoXp[]
+  /** Aprobada la parte automática, espera el veredicto de la comisión. */
+  enComision?: boolean
+  veredicto?: VeredictoGuardado
 }
 
 interface AlmacenViaje {
@@ -56,6 +71,16 @@ interface AlmacenViaje {
    * misión siguiente; devuelve si hubo recompensa.
    */
   resolverEntrega: (usuarioId: string, misionId: string, evaluacion: Evaluacion, recompensa: MovimientoXp[]) => boolean
+  /**
+   * 3.2 y 3.3: la parte automática aprobó y la misión pasa a la comisión ("en evaluación"). La
+   * recompensa espera el veredicto.
+   */
+  enviarAComision: (usuarioId: string, misionId: string, evaluacion: Evaluacion) => void
+  /**
+   * Veredicto de la comisión (CP-07). Aprobada: otorga `recompensa` si es la primera aprobación y
+   * desbloquea la siguiente misión; si no, la misión queda por reintentar.
+   */
+  registrarVeredicto: (usuarioId: string, misionId: string, veredicto: VeredictoGuardado, criterio: Evaluacion['criterios'][number], recompensa: MovimientoXp[]) => boolean
   alternarTodasAbiertas: () => void
 }
 
@@ -132,6 +157,47 @@ export const useViaje = create<AlmacenViaje>()(
           evaluaciones: {
             ...s.evaluaciones,
             [clave]: { ...evaluacion, intento: s.intentos[clave]?.numero ?? 1, en: ahora, recompensa: otorgada },
+          },
+        })
+        const registrar = useJuego.getState().registrarMovimiento
+        otorgada.forEach((m) => registrar(usuarioId, m))
+        return r.otorgaRecompensa
+      },
+
+      enviarAComision: (usuarioId, misionId, evaluacion) =>
+        set((s) => {
+          let viaje = viajeGuardado(s.viajes, usuarioId)
+          if (viaje[misionId].estado !== 'en_curso') viaje = iniciar(viaje, misionId)
+          const clave = claveMision(usuarioId, misionId)
+          return {
+            viajes: { ...s.viajes, [usuarioId]: entregar(viaje, misionId) },
+            evaluaciones: {
+              ...s.evaluaciones,
+              [clave]: { ...evaluacion, intento: s.intentos[clave]?.numero ?? 1, en: Date.now(), recompensa: [], enComision: true },
+            },
+          }
+        }),
+
+      registrarVeredicto: (usuarioId, misionId, veredicto, criterio, recompensa) => {
+        const s = get()
+        const clave = claveMision(usuarioId, misionId)
+        const previa = s.evaluaciones[clave]
+        const r = resolver(viajeGuardado(s.viajes, usuarioId), ORDEN, misionId, veredicto.aprobada, veredicto.en)
+        const otorgada = r.otorgaRecompensa ? recompensa : []
+        set({
+          viajes: { ...s.viajes, [usuarioId]: r.viaje },
+          evaluaciones: {
+            ...s.evaluaciones,
+            [clave]: {
+              ...previa,
+              aprobada: veredicto.aprobada,
+              motivo: veredicto.aprobada ? null : 'comision',
+              criterios: [...(previa?.criterios ?? []).filter((c) => c.id !== 'comision'), criterio],
+              enComision: false,
+              veredicto,
+              en: veredicto.en,
+              recompensa: otorgada,
+            },
           },
         })
         const registrar = useJuego.getState().registrarMovimiento

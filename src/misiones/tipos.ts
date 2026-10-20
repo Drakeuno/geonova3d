@@ -1,4 +1,5 @@
 import type { Parametros } from '@/datos/parametros'
+import type { ErrorSembrado, FilaAuditoria } from '@/motor/auditoria'
 import type { EventoSembrado, Tramo } from '@/motor/cooperativa'
 import type { Escenario, LecturaPlanificada } from '@/motor/escenarios'
 import type { ModoCalculo, RegistroLibreta } from '@/motor/libreta'
@@ -7,7 +8,7 @@ import type { Mm } from '@/motor/numeros'
 // Tipos comunes del shell de misión (F4). Cada misión jugable define su recorrido en el escenario,
 // su etapa propia (compensación, perfil…) y una evaluación pura sobre la libreta del jugador.
 
-export type IdMisionJugable = '1.1' | '1.2' | '1.3' | '2.1' | '2.2' | '2.3'
+export type IdMisionJugable = '1.1' | '1.2' | '1.3' | '2.1' | '2.2' | '2.3' | '3.1' | '3.2' | '3.3'
 
 /** Lo que se entrega además de la libreta: la etapa propia de cada misión. */
 export type Etapa =
@@ -19,6 +20,9 @@ export type Etapa =
   | 'decision-cero-cota'
   | 'detective'
   | 'cooperativa'
+  | 'auditoria'
+  | 'asamblea'
+  | 'integrador'
 
 /** Respuestas de las etapas de formulario (decisión, informe, diagnóstico), tal como se escriben. */
 export type Formulario = Record<string, string>
@@ -50,18 +54,37 @@ export const perfilVacio = (): EntradasPerfil => ({
   titulo: '',
 })
 
+/** Una parte de terreno: su libreta y las lecturas verdaderas del intento (dato interno). */
+export interface ParteEntregada {
+  registro: RegistroLibreta
+  lecturas: LecturaPlanificada[]
+}
+
 export interface ContextoEntrega {
   escenario: Escenario
   parametros: Parametros
+  /** Libreta de la parte principal (la única, salvo en la 3.3). */
   registro: RegistroLibreta
   modo: ModoCalculo
   /** Lecturas verdaderas del intento (dato interno: nunca se muestran). */
   lecturas: LecturaPlanificada[]
+  /** Todas las partes de terreno, por id (la 3.3 tiene circuito y perfil). */
+  partes: Record<string, ParteEntregada>
+  /** Solo en la 3.1: la tabla de la contratista y sus errores sembrados. */
+  auditoria: SesionAuditoria | null
   compensacion: EntradasCompensacion
   perfil: EntradasPerfil
   formulario: Formulario
   /** Solo en la 2.3. */
   cooperativa: SesionCooperativa | null
+}
+
+export interface SesionAuditoria {
+  /** Tabla verdadera (dato interno). */
+  correcta: FilaAuditoria[]
+  /** Tabla que entrega la contratista, con los errores. */
+  entregada: FilaAuditoria[]
+  errores: ErrorSembrado[]
 }
 
 /** Lo que una cuadrilla comparte con la otra en la 2.3 (por el canal, o generado si es simulada). */

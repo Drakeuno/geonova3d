@@ -1,6 +1,7 @@
 import { LockOpen } from 'lucide-react'
 import { useParametros } from '@/estado/parametros'
 import { useViaje } from '@/estado/viaje'
+import { Comision } from '@/componentes/docente/Comision'
 import { formatearNumero } from '@/motor/numeros'
 import type { Parametros } from '@/datos/parametros'
 import textos from '@/textos/es-CL.json'
@@ -52,6 +53,8 @@ export default function PanelDocente() {
           {todasAbiertas ? d.desactivar : d.activar}
         </button>
       </section>
+
+      {parametros && <Comision parametros={parametros} />}
 
       <section className="card mt-6 overflow-hidden">
         <header className="border-b border-tierra-200 bg-tierra-100/60 px-5 py-3">

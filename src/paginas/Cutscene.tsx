@@ -2,23 +2,33 @@ import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useDialogos } from '@/estado/dialogos'
+import { useXpIndividual } from '@/estado/juego'
+import { useSesion } from '@/estado/sesion'
+import { useViajeDe } from '@/estado/viaje'
+import { MISIONES } from '@/datos/misiones'
+import { ChipMetal } from '@/componentes/ui/ChipMetal'
 import { RetratoCochayuyero } from '@/componentes/dialogo/DialogoCochayuyero'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
 
-// Tramo narrativo entre actos (§4): el Acto 1 en Puerto Saavedra, sin jugabilidad propia. La imagen
-// es arte provisorio hasta el definitivo (§13).
+// Tramos narrativos (§4): Puerto Saavedra (Acto 1), la llegada al Ñielol (Acto 3) y el cierre del viaje.
+// Sin jugabilidad propia. Las imágenes son arte provisorio hasta el definitivo (§13).
 
 const t = textos.cutscene
 const arte = (archivo: string) => `${import.meta.env.BASE_URL}arte/${archivo}`
 
 const ESCENAS: Record<string, { imagen: string; alt: string; siguiente: { a: string; texto: string } }> = {
   '1': { imagen: 'cochayuyero-puerto-saavedra.jpeg', alt: t.alt1, siguiente: { a: '/mision/2.1', texto: t.seguir1 } },
+  '3': { imagen: 'cochayuyero-nielol.jpeg', alt: t.alt3, siguiente: { a: '/mision/3.1', texto: t.seguir3 } },
+  fin: { imagen: 'cochayuyero-nielol.jpeg', alt: t.alt3, siguiente: { a: '/viaje', texto: t.seguirFin } },
 }
 
 export default function Cutscene() {
   const { acto = '' } = useParams()
   const { dialogos, error } = useDialogos()
+  const usuarioId = useSesion((s) => s.usuarioId)
+  const viaje = useViajeDe(usuarioId)
+  const xp = useXpIndividual(usuarioId)
   const [i, setI] = useState(0)
   const escena = ESCENAS[acto]
   if (!escena) return <Navigate to="/viaje" replace />
@@ -69,6 +79,20 @@ export default function Cutscene() {
           </div>
         </figcaption>
       </figure>
+
+      {acto === 'fin' && (
+        <section className="card mt-4 p-5" aria-labelledby="titulo-resumen">
+          <h2 id="titulo-resumen" className="text-xl font-bold text-tierra-900">
+            {t.resumen}
+          </h2>
+          <p className="mt-1 font-mono text-lg font-semibold text-buey-800">{rellenar(t.xp, { xp })}</p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {MISIONES.filter((m) => viaje?.[m.id]?.aprobadaEn != null).map((m) => (
+              <ChipMetal key={m.id} metal={m.insignia.metal} nombre={m.insignia.nombre} grupal={m.insignia.grupal} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

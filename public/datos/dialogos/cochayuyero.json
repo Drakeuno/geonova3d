@@ -189,6 +189,75 @@
         "cota": "La cota común de M no calza. Usen el tramo que sí cierra, o corrijan el otro con el error que encontraron.",
         "acuerdo": "Falta que la otra cuadrilla coincida con ustedes y documente su parte."
       }
+    },
+    "3.1": {
+      "encargo": [
+        "Llegamos a Temuco. El Ñielol nos recibe con su bosque, pero antes de subir tenemos un problema.",
+        "Una contratista entregó el perfil del sendero ecológico Los Copihues y algo no calza. Dicen que la tabla está buena; yo no les creo.",
+        "Revisen cada fila: que el desnivel sea LT − LA, que cada cota sea la anterior más el desnivel y que la distancia acumulada sea la suma de las parciales. Hay cinco errores escondidos.",
+        "Marquen cada celda mala y escriban el valor correcto. El perfil corregido es el que vamos a defender ante la Comisión de Parques."
+      ],
+      "pistas": [
+        "Si el desnivel no es LT − LA pero la cota sí calza con el desnivel, el error está en una lectura. Si ni el desnivel ni la cota calzan, el que está mal es el desnivel: fíjense en el signo.",
+        "Una cota mal transcrita descuadra su fila y la siguiente. Y una distancia acumulada mala no toca las cotas: búsquenla sumando las parciales."
+      ],
+      "logro": [
+        "¡Ojo de águila! Los cinco errores a la vista y el perfil corregido. Insignia de oro: Ojo Crítico.",
+        "Ahora toca defenderlo ante la Comisión de Parques. Preparen una buena presentación."
+      ],
+      "rechazo": {
+        "deteccion": "Todavía quedan errores escondidos, o alguno está mal corregido. Hagan las tres comprobaciones en cada fila.",
+        "perfil": "Con sus correcciones el perfil todavía no calza: alguna celda que estaba buena quedó cambiada, o algún valor corregido no es el correcto."
+      }
+    },
+    "3.2": {
+      "encargo": [
+        "La Comisión de Parques quiere escuchar a la cuadrilla. Van a presentar el perfil corregido del sendero Los Copihues.",
+        "Les van a evaluar cuatro cosas: la claridad de los procedimientos, la justificación técnica, cómo manejan las preguntas y la terminología. Cada evaluador pone nota de 1 a 4 en cada una.",
+        "La comisión la forman el docente y dos pares. Cada evaluador aprueba si su promedio llega al 60 %, y decide la mayoría.",
+        "Cuando tengan el perfil, la libreta, la presentación y un ensayo hecho, me avisan y pido la fecha."
+      ],
+      "pistas": [
+        "Expliquen el método de los desniveles con un ejemplo de su tabla: ¿qué comprobaron en cada fila y cómo encontraron cada error?",
+        "Ensayen las preguntas difíciles: ¿cómo distinguen un error de lectura de un error de signo?"
+      ],
+      "logro": [
+        "¡La comisión quedó conforme! Hablaron con propiedad. Insignia de oro: Voz de la Brigada.",
+        "Queda el último encargo del viaje: la cota del Ñielol, de la entrada al mirador."
+      ],
+      "rechazo": {
+        "comision": "La comisión no quedó conforme esta vez. Revisen las observaciones de la rúbrica, preparen de nuevo la presentación y vuelvan a pedir fecha."
+      }
+    },
+    "3.3": {
+      "encargo": [
+        "Último encargo del viaje: nivelar el sendero principal del Ñielol, de la entrada al mirador, para un proyecto de accesibilidad del parque.",
+        "Partimos del {pr}, en la entrada, amarrado a la red nacional: cota {cotaPr} m. Primero el circuito de control: entrada, bifurcación, lago, mirador, retorno y de vuelta a la entrada. Ciérrenlo y compénsenlo.",
+        "Después, el perfil del sendero principal: 240 m con estaciones cada {estacionamiento} m, de la entrada al mirador. Lo cierran en M contra la cota compensada del circuito.",
+        "Con eso, analicen las pendientes tramo por tramo: si alguno pasa de {pendienteMaxima} %, no sirve para una silla de ruedas sin obras. Armen el informe técnico y prepárense para defenderlo ante la comisión."
+      ],
+      "pistas": [
+        "El perfil no vuelve a la entrada: se cierra en el mirador. La cota de M que da el perfil tiene que calzar con la cota compensada de M en el circuito.",
+        "La pendiente de cada tramo es su desnivel dividido por 20 m, por cien. Busquen el tramo que se dispara."
+      ],
+      "logro": [
+        "¡Lo lograron! El Ñielol tiene sus cotas, su perfil y su informe, y la comisión lo aprobó. Insignia de platino para toda la cuadrilla: Ingeniero del Ñielol.",
+        "Del mar de Puerto Saavedra al mirador del Ñielol. Misión cumplida."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Vuelvan a medir y corrijan en línea nueva.",
+        "cierre": "El circuito no cierra. Antes del perfil, el circuito tiene que estar impecable: revisen la burbuja y los puntos de cambio.",
+        "compensacion": "El circuito cierra, pero la compensación no está bien repartida. Recuerden: cᵢ = −e · dᵢ / D.",
+        "coherencia": "Alguna cota del circuito no calza con el terreno: hay una lectura que el cierre no alcanza a mostrar.",
+        "cierrePerfil": "El perfil no llega a M con la cota del circuito. Revisen las posturas del perfil, sobre todo la del repecho.",
+        "planilla": "La planilla del perfil no calza con su libreta. Revisen estación por estación.",
+        "desniveles": "Algún desnivel del perfil no calza con el terreno: hay una lectura intermedia mala.",
+        "dibujo": "El perfil no cumple la plantilla: escalas, plano de comparación o rótulos de los ejes.",
+        "pendientes": "Las pendientes no salen de su perfil. Desnivel dividido por 20 m, por cien.",
+        "tramoCritico": "Miren de nuevo las pendientes: ¿qué tramo pasa el máximo?",
+        "comision": "La comisión no aprobó la defensa. Revisen las observaciones de la rúbrica, afinen el informe y pidan otra fecha."
+      }
     }
   },
   "actos": {
@@ -199,6 +268,24 @@
         "En la costanera hay un PR marítimo, amarrado al nivel del mar. De un punto así cuelgan todas las cotas del viaje: cada vez que dicen \"cota 100\", alguien la midió desde un PR como este.",
         "Por eso cuidamos tanto el método: si una cota se tuerce al principio, se tuerce todo el camino. Queule, Toltén, el Cautín… cada parada se apoya en la anterior.",
         "Suban a la carreta. La próxima parada es una comunidad rural que necesita gente como ustedes."
+      ]
+    },
+    "3": {
+      "titulo": "Cerro Ñielol",
+      "lineas": [
+        "Temuco. Ahí está el Ñielol: ciento quince hectáreas de bosque nativo en medio de la ciudad. Desde el mirador se ve todo el valle del Cautín.",
+        "Llegué a este cerro muchas veces con la carreta vacía. Hoy llego con ustedes, con libreta y nivel.",
+        "Aquí el trabajo es de ustedes, de punta a punta. Y al final lo defienden ante la Comisión de Parques.",
+        "Primero, un encargo de oficina: una tabla que llegó con errores. Vamos."
+      ]
+    },
+    "fin": {
+      "titulo": "Misión cumplida",
+      "lineas": [
+        "Del mar de Puerto Saavedra al mirador del Ñielol. Partieron leyendo una mira en el campus y terminan defendiendo un informe ante una comisión.",
+        "Cada cota que midieron cuelga de un PR, y ese PR de otro, hasta llegar al mar. Eso es la nivelación: una cadena que no se puede cortar.",
+        "Se ganaron el título de topógrafos de mi cuadrilla. Cuando vuelvan a este camino, ya saben cómo se mide.",
+        "Misión cumplida. Nos vemos en la Parte 2."
       ]
     }
   }

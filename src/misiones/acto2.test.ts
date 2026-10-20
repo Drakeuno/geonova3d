@@ -65,6 +65,8 @@ const ctx = (e: Escenario, registro: RegistroLibreta, lecturas: LecturaPlanifica
   perfil: perfilVacio(),
   formulario,
   cooperativa: null,
+  partes: {},
+  auditoria: null,
   ...extra,
 })
 

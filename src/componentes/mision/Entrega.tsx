@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowRight, CheckCircle2, Lightbulb, RotateCcw, Send, XCircle } from 'lucide-react'
+import { AlertTriangle, ArrowRight, CheckCircle2, Hourglass, Lightbulb, RotateCcw, Send, XCircle } from 'lucide-react'
 import type { MisionCatalogo } from '@/datos/misiones'
 import type { DialogoMision } from '@/datos/dialogos'
 import type { EvaluacionGuardada } from '@/estado/viaje'
@@ -26,9 +26,26 @@ interface Props {
   siguiente: { a: string; texto: string } | null
   onEntregar: () => void
   onNuevoIntento: () => void
+  /** 3.2 y 3.3: la misión está en manos de la comisión; no se puede volver a entregar. */
+  enComision?: boolean
+  /** Texto del botón de entrega (3.2: pedir la defensa). */
+  textoEntregar?: string
 }
 
-export function Entrega({ mision, dialogo, valores, intento, evaluacion, bloqueos, pista, siguiente, onEntregar, onNuevoIntento }: Props) {
+export function Entrega({
+  mision,
+  dialogo,
+  valores,
+  intento,
+  evaluacion,
+  bloqueos,
+  pista,
+  siguiente,
+  onEntregar,
+  onNuevoIntento,
+  enComision = false,
+  textoEntregar = t.entregar,
+}: Props) {
   const [confirmando, setConfirmando] = useState(false)
   return (
     <section className="card overflow-hidden" aria-labelledby="titulo-entrega">
@@ -40,8 +57,8 @@ export function Entrega({ mision, dialogo, valores, intento, evaluacion, bloqueo
           </h2>
           <p className="text-sm text-tierra-600">{t.entregaBajada}</p>
         </div>
-        <button type="button" className="btn-acento" onClick={onEntregar}>
-          <Send size={16} aria-hidden /> {t.entregar}
+        <button type="button" className="btn-acento" onClick={onEntregar} disabled={enComision}>
+          <Send size={16} aria-hidden /> {textoEntregar}
         </button>
       </header>
 
@@ -104,12 +121,20 @@ function Resultado({
   siguiente,
 }: Pick<Props, 'mision' | 'dialogo' | 'valores' | 'pista' | 'siguiente'> & { evaluacion: EvaluacionGuardada; intentoActual: number }) {
   const rechazo = e.motivo ? (dialogo.rechazo[e.motivo] ?? t.rechazoGeneral) : null
+  // Aprobada la parte automática, la misión espera a la comisión: ni aprobada ni rechazada todavía.
+  const aprobada = e.aprobada && !e.enComision
   return (
     <div className="space-y-4">
-      <div className={`rounded-xl p-3 ${e.aprobada ? 'bg-bosque-100 text-bosque-800' : 'bg-tierra-100 text-tierra-900'}`}>
+      <div className={`rounded-xl p-3 ${e.enComision ? 'bg-poncho-50 text-poncho-900' : aprobada ? 'bg-bosque-100 text-bosque-800' : 'bg-tierra-100 text-tierra-900'}`}>
         <p className="flex items-center gap-2 font-display text-lg font-bold">
-          {e.aprobada ? <CheckCircle2 size={20} aria-hidden /> : <XCircle size={20} className="text-granate-600" aria-hidden />}
-          {e.aprobada ? t.aprobada : t.rechazada}
+          {e.enComision ? (
+            <Hourglass size={20} aria-hidden />
+          ) : aprobada ? (
+            <CheckCircle2 size={20} aria-hidden />
+          ) : (
+            <XCircle size={20} className="text-granate-600" aria-hidden />
+          )}
+          {e.enComision ? t.enComision : aprobada ? t.aprobada : t.rechazada}
         </p>
         <p className="mt-0.5 text-xs">
           {rellenar(t.deIntento, { n: e.intento, hora: new Date(e.en).toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' }) })}
@@ -129,7 +154,9 @@ function Resultado({
         </ul>
       </div>
 
-      {e.aprobada ? (
+      {e.enComision ? (
+        <p className="text-sm text-tierra-700">{textos.entrega.comision.pendiente}</p>
+      ) : aprobada ? (
         <DialogoCochayuyero lineas={dialogo.logro} tono="logro" valores={valores} etiqueta={t.etiquetaLogro} />
       ) : (
         <DialogoCochayuyero lineas={[rechazo!]} tono="rechazo" valores={valores} etiqueta={t.etiquetaRechazo} />
@@ -143,9 +170,9 @@ function Resultado({
         </div>
       )}
 
-      {e.aprobada && <Recompensa mision={mision} movimientos={e.recompensa} />}
+      {aprobada && <Recompensa mision={mision} movimientos={e.recompensa} />}
 
-      {e.aprobada && (
+      {aprobada && (
         <div className="flex flex-wrap gap-2">
           {siguiente && (
             <Link to={siguiente.a} className="btn-primario">

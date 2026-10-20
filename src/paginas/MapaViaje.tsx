@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Binoculars, CheckCircle2, Clapperboard, Lock, NotebookPen, Play, RotateCcw, Sparkles } from 'lucide-react'
+import { ArrowRight, Binoculars, CheckCircle2, Clapperboard, Lock, NotebookPen, PartyPopper, Play, RotateCcw, Sparkles } from 'lucide-react'
 import { ACTOS, misionesDelActo, type ActoViaje, type MisionCatalogo } from '@/datos/misiones'
 import { useParametros } from '@/estado/parametros'
 import { useSesion } from '@/estado/sesion'
@@ -23,7 +23,8 @@ export default function MapaViaje() {
   const xp = useXpIndividual(usuarioId)
   // El tramo de Puerto Saavedra se abre al terminar el campamento (al aprobar la última misión del Acto 0).
   const actoAbierto = (acto: number) => {
-    const ultimaAnterior = misionesDelActo((acto - 1) as 0).slice(-1)[0]
+    // El Acto 3 sigue al 2 (el 1 no tiene misiones).
+    const ultimaAnterior = misionesDelActo((acto === 3 ? 2 : acto - 1) as 0).slice(-1)[0]
     return todasAbiertas || (ultimaAnterior ? viaje?.[ultimaAnterior.id]?.aprobadaEn != null : false)
   }
   // XP base de la misión (§6.2): la cooperativa suma su bonus (2.3 = Oro 150 + 100).
@@ -59,6 +60,17 @@ export default function MapaViaje() {
         <TarjetaPractica a="/practica" icono={<NotebookPen size={22} aria-hidden />} titulo={textos.practica.enlace} bajada={textos.practica.enlaceBajada} />
       </div>
 
+      {viaje?.['3.3']?.aprobadaEn != null && (
+        <Link to="/acto/fin" className="card mt-6 flex items-center gap-4 border-buey-300 bg-buey-50 p-4 transition hover:shadow-pop">
+          <PartyPopper size={28} className="shrink-0 text-buey-700" aria-hidden />
+          <span className="flex-1">
+            <span className="block font-display text-lg font-bold text-tierra-900">{textos.viaje.misionCumplida}</span>
+            <span className="block text-sm text-tierra-700">{textos.viaje.misionCumplidaBajada}</span>
+          </span>
+          <ArrowRight className="shrink-0 text-tierra-400" aria-hidden />
+        </Link>
+      )}
+
       <RutaActos />
 
       <div className="mt-8 space-y-6">
@@ -69,6 +81,11 @@ export default function MapaViaje() {
                 {textos.viaje.actoPrefijo} {acto.id} · {acto.nombre}
               </h2>
               <span className="text-sm text-tierra-600">{acto.escenario}</span>
+              {acto.id === 3 && actoAbierto(3) && (
+                <Link to="/acto/3" className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-bosque-700 hover:underline">
+                  <Clapperboard size={15} aria-hidden /> {textos.viaje.verLlegada}
+                </Link>
+              )}
             </header>
             {acto.cutscene ? (
               <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center">

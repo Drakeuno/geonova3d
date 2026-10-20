@@ -20,13 +20,18 @@ export const MOTIVOS_M13 = ['calculos', 'distancias', 'cierre', 'planilla', 'des
 
 /**
  * Perfil generado desde la libreta (RF-09): cada estación del eje con su cota calculada desde las
- * lecturas del jugador y su progresiva desde E0 según las distancias anotadas. Toma la libreta tal
- * como esté: si aún faltan estaciones, entrega las que hay.
+ * lecturas del jugador y su progresiva desde la primera estación según las distancias anotadas. Si el
+ * eje parte en el PR de la libreta (Ñielol: E), esa es la primera estación. Toma la libreta tal como
+ * esté: si aún faltan estaciones, entrega las que hay.
  */
 export function perfilDesdeLibreta(registro: RegistroLibreta, lecturas: LecturaPlanificada[], eje: string[]): EstacionPerfil[] {
   const pares = emparejar(registro, lecturas).filter((p) => p.fila && p.calculo && p.lectura.tipo === 'LA')
   const estaciones: EstacionPerfil[] = []
   for (const id of eje) {
+    if (estaciones.length === 0 && mismoNombre(registro.pr.punto, id)) {
+      estaciones.push({ id, cotaMm: registro.pr.cotaMm, progresivaM: 0 })
+      continue
+    }
     const par = pares.find((p) => p.lectura.punto === id && mismoNombre(p.fila.punto, id))
     if (!par) break
     estaciones.push({ id, cotaMm: par.calculo.cotaMm, progresivaM: par.calculo.distanciaAcumuladaM })
@@ -106,18 +111,25 @@ export function evaluarM13(ctx: ContextoEntrega): Evaluacion {
   const cierre = cierreDelCircuito(ctx.registro, ctx.lecturas, ctx.parametros.toleranciaCierre.coeficienteMm)
   const tol = { e: mmConSigno(cierre.errorMm), t: textoTolerancia(cierre.toleranciaMm) }
   criterios.push({ id: 'cierre', ok: cierre.aprobado, texto: rellenar(cierre.aprobado ? t.cierreOk : t.cierreMal, tol) })
+  criterios.push(...criteriosPerfil(ctx, ctx.registro, ctx.lecturas, cierre.toleranciaMm))
+  return cerrarEvaluacion(criterios, { lecturasExactas, sinErroresRegistro, errorCierreMm: cierre.errorMm })
+}
 
+/**
+ * Planilla, desniveles y dibujo del perfil (1.3 y 3.3): (a) la planilla copia bien la libreta y hace
+ * bien las cuentas, y sus desniveles calzan con el terreno dentro de la tolerancia; (b) el dibujo
+ * cumple la plantilla.
+ */
+export function criteriosPerfil(ctx: ContextoEntrega, registro: RegistroLibreta, lecturas: LecturaPlanificada[], toleranciaMm: number): Criterio[] {
   const eje = estacionesDelEje(ctx.escenario)
-  const ids = eje.map((e) => e.id)
-  const deLibreta = planillaEsperada(perfilDesdeLibreta(ctx.registro, ctx.lecturas, ids))
+  const deLibreta = planillaEsperada(perfilDesdeLibreta(registro, lecturas, eje.map((e) => e.id)))
   const verdadera = planillaEsperada(eje)
   const margen = ctx.parametros.comparacion.toleranciaMm
+  const fuera = (v: number | null, ref: number | null, m: number) => ref !== null && (v === null || Math.abs(v - ref) > m)
 
-  // (a) La planilla copia bien la libreta y hace bien las cuentas…
   const inconsistentes = deLibreta
     .filter((esp) => {
       const f = leerFila(ctx.perfil, esp.id)
-      const fuera = (v: number | null, ref: number | null, m: number) => ref !== null && (v === null || Math.abs(v - ref) > m)
       return (
         fuera(f.progresivaM, esp.progresivaM, TOLERANCIA_DISTANCIA_M) ||
         fuera(f.cotaMm, esp.cotaMm, margen) ||
@@ -126,28 +138,26 @@ export function evaluarM13(ctx: ContextoEntrega): Evaluacion {
       )
     })
     .map((e) => e.id)
-  criterios.push({
-    id: 'planilla',
-    ok: inconsistentes.length === 0,
-    texto: inconsistentes.length === 0 ? t.planillaOk : rellenar(t.planillaMal, { estaciones: inconsistentes.join(', ') }),
-  })
-
-  // …y sus desniveles calzan con el terreno dentro de la tolerancia del perfil.
   const lejanos = verdadera
     .filter((esp, i) => {
       const f = leerFila(ctx.perfil, esp.id)
-      const fuera = (v: number | null, ref: number | null) => ref !== null && (v === null || Math.abs(v - ref) > cierre.toleranciaMm)
-      return fuera(f.acumuladoMm, esp.acumuladoMm) || (i > 0 && fuera(f.parcialMm, esp.parcialMm))
+      return fuera(f.acumuladoMm, esp.acumuladoMm, toleranciaMm) || (i > 0 && fuera(f.parcialMm, esp.parcialMm, toleranciaMm))
     })
     .map((e) => e.id)
-  criterios.push({
-    id: 'desniveles',
-    ok: lejanos.length === 0,
-    texto: lejanos.length === 0 ? rellenar(t.desnivelesOk, { t: tol.t }) : rellenar(t.desnivelesMal, { t: tol.t }),
-  })
-
-  criterios.push(criterioDibujo(ctx, deLibreta))
-  return cerrarEvaluacion(criterios, { lecturasExactas, sinErroresRegistro, errorCierreMm: cierre.errorMm })
+  const t2 = textoTolerancia(toleranciaMm)
+  return [
+    {
+      id: 'planilla',
+      ok: inconsistentes.length === 0,
+      texto: inconsistentes.length === 0 ? t.planillaOk : rellenar(t.planillaMal, { estaciones: inconsistentes.join(', ') }),
+    },
+    {
+      id: 'desniveles',
+      ok: lejanos.length === 0,
+      texto: lejanos.length === 0 ? rellenar(t.desnivelesOk, { t: t2 }) : rellenar(t.desnivelesMal, { t: t2 }),
+    },
+    criterioDibujo(ctx, deLibreta),
+  ]
 }
 
 /** (b) Escalas pedidas por el docente, plano de comparación bajo el terreno y ejes bien rotulados. */

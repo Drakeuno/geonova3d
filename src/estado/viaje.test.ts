@@ -58,4 +58,36 @@ describe('avance del viaje (§14)', () => {
     expect(estadoVisible(v().viajes.u['1.2'], true)).toBe('disponible')
     expect(estadoVisible(v().viajes.u['1.2'], false)).toBe('bloqueada')
   })
+
+  it('CP-07 · la 3.2 espera a la comisión y el veredicto del docente otorga insignia y XP', () => {
+    v().alternarTodasAbiertas()
+    v().comenzar('u', '3.2')
+    v().enviarAComision('u', '3.2', evaluacion(true))
+    expect(v().viajes.u['3.2'].estado).toBe('en_evaluacion')
+    expect(v().evaluaciones['u:3.2']).toMatchObject({ enComision: true, recompensa: [] })
+    expect(useJuego.getState().movimientos.u).toBeUndefined()
+
+    const veredicto = (aprobada: boolean) => ({
+      aprobada,
+      votosFavor: aprobada ? 2 : 1,
+      votosContra: aprobada ? 1 : 2,
+      desempateDocente: false,
+      evaluadores: [],
+      evidencia: { nombre: 'defensa.mp4', tamano: 1000, tipo: 'video/mp4' },
+      en: 5,
+    })
+    const oro: MovimientoXp[] = [{ tipo: 'mision', xp: 150, ambito: 'individual', misionId: '3.2' }]
+    const criterio = { id: 'comision', ok: false, texto: 'no' }
+    expect(v().registrarVeredicto('u', '3.2', veredicto(false), criterio, oro)).toBe(false)
+    expect(v().viajes.u['3.2']).toMatchObject({ estado: 'a_reintentar', fallas: 1 })
+    expect(v().evaluaciones['u:3.2']).toMatchObject({ aprobada: false, motivo: 'comision', enComision: false })
+
+    v().comenzar('u', '3.2')
+    v().enviarAComision('u', '3.2', evaluacion(true))
+    expect(v().registrarVeredicto('u', '3.2', veredicto(true), { ...criterio, ok: true }, oro)).toBe(true)
+    expect(v().viajes.u['3.2'].estado).toBe('aprobada')
+    expect(v().viajes.u['3.3'].estado).toBe('disponible')
+    expect(useJuego.getState().movimientos.u).toEqual(oro)
+    expect(v().evaluaciones['u:3.2'].veredicto?.evidencia?.nombre).toBe('defensa.mp4')
+  })
 })

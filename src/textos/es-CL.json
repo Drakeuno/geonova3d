@@ -44,11 +44,14 @@
     "ver": "Ver",
     "misXp": "{xp} XP en el viaje",
     "verTramo": "Ver el tramo",
-    "tramoBloqueado": "Se abre al terminar el campamento"
+    "tramoBloqueado": "Se abre al terminar el campamento",
+    "verLlegada": "Ver la llegada al Ñielol",
+    "misionCumplida": "¡Misión cumplida!",
+    "misionCumplidaBajada": "Terminaste la Parte 1: del mar de Puerto Saavedra al mirador del Ñielol."
   },
   "panel": {
     "titulo": "Panel docente",
-    "bajada": "Configuración, seguimiento por cuadrilla y evaluación oral. Esta sección se construye en la fase F8; por ahora muestra los parámetros vigentes.",
+    "bajada": "Defensas orales ante la comisión, demostración y parámetros vigentes. La configuración y el seguimiento por cuadrilla llegan en la fase F8.",
     "parametros": "Parámetros vigentes",
     "fuente": "Fuente: public/datos/parametros.json (§11 de la especificación)",
     "cargando": "Cargando parámetros…",
@@ -313,7 +316,10 @@
       "estacion": "postura con el error",
       "causa": "causa raíz",
       "cotaComun": "cota común de M",
-      "procedimiento": "procedimiento de corrección"
+      "procedimiento": "procedimiento de corrección",
+      "tramoCritico": "tramo sobre el máximo",
+      "tituloInforme": "título del informe",
+      "conclusiones": "conclusiones"
     },
     "m21": {
       "planillaOk": "La planilla coincide con tu libreta.",
@@ -381,6 +387,54 @@
       "cotaMal": "La cota común de M no calza con el terreno (±{t} mm).",
       "acuerdoOk": "Ambas cuadrillas coinciden en la cota de M y documentaron el proceso.",
       "acuerdoMal": "La otra cuadrilla aún no documenta su diagnóstico, o su cota de M difiere en más de ±{t} mm."
+    },
+    "m31": {
+      "sinTabla": "la tabla de la contratista todavía no está lista",
+      "ilegibles": "no se pueden leer los valores corregidos de {celdas}",
+      "sinMarcas": "marca al menos una celda errónea, con su valor corregido",
+      "celda": "fila {fila}, {columna}",
+      "columnas": {
+        "distanciaAcumuladaM": "distancia acumulada",
+        "ltMm": "LT",
+        "laMm": "LA",
+        "desnivelMm": "Δh",
+        "cotaMm": "cota"
+      },
+      "deteccionOk": "Encontraste y corregiste los {total} errores.",
+      "deteccionMal": "Corregiste bien {n} de {total} errores.",
+      "perfilOk": "El perfil corregido coincide con el terreno.",
+      "perfilMal": "El perfil corregido todavía no coincide con el terreno: revisa tus correcciones."
+    },
+    "m32": {
+      "materiales": {
+        "perfil": "el perfil corregido de la 3.1",
+        "libreta": "la libreta de campo",
+        "presentacion": "la presentación",
+        "ensayo": "el ensayo de la defensa"
+      },
+      "faltanMateriales": "confirma que tienen listo: {lista}",
+      "materialesOk": "Materiales listos: la solicitud pasa a la Comisión de Parques."
+    },
+    "m33": {
+      "partes": {
+        "circuito": "Circuito",
+        "perfil": "Perfil"
+      },
+      "enParte": "{parte}: {texto}",
+      "cierreOk": "El circuito cierra: e = ΣΔh = {e} mm, dentro de la tolerancia de ±{t} mm.",
+      "cierreMal": "El circuito no cierra: e = ΣΔh = {e} mm, más que la tolerancia de ±{t} mm.",
+      "cierrePerfilOk": "El perfil cierra en M contra el circuito compensado: e = {e} mm, dentro de ±{t} mm.",
+      "cierrePerfilMal": "El perfil no cierra en M contra el circuito compensado: e = {e} mm (tolerancia ±{t} mm).",
+      "pendientesOk": "Las pendientes por tramo salen bien de tu perfil.",
+      "pendientesMal": "Revisa las pendientes de {lista} (P = Δh / distancia × 100).",
+      "tramoCriticoOk": "Identificaste bien el tramo que pasa de {max} %.",
+      "tramoCriticoMal": "El tramo marcado no corresponde a las pendientes del sendero (máximo {max} %)."
+    },
+    "comision": {
+      "pendiente": "Defensa pendiente: la Comisión de Parques todavía no da su veredicto.",
+      "aprobada": "Comisión de Parques: aprobada, {favor} de {total} votos{desempate}.",
+      "rechazada": "Comisión de Parques: no aprobada, {favor} de {total} votos a favor{desempate}.",
+      "desempate": " (desempate del docente)"
     }
   },
   "estados": {
@@ -441,7 +495,12 @@
       "bonus-ayuda": "Ayuda entre cuadrillas",
       "penalizacion-tachadura": "Tachadura"
     },
-    "paraLaCuadrilla": "(cuadrilla)"
+    "paraLaCuadrilla": "(cuadrilla)",
+    "enComision": "Defensa pendiente ante la Comisión de Parques",
+    "pedirDefensa": "Pedir la defensa a la comisión",
+    "entregarYDefender": "Entregar y pedir la defensa",
+    "partes": "Partes del trabajo de terreno",
+    "parteN": "Parte {n} · {nombre}"
   },
   "compensacion": {
     "titulo": "Cierre y compensación",
@@ -471,7 +530,7 @@
       "progresiva": "Progresiva (m)",
       "cota": "Cota (m)",
       "parcial": "Δh parcial (m)",
-      "acumulado": "Δh acumulado desde E0 (m)"
+      "acumulado": "Δh acumulado desde el inicio (m)"
     },
     "dibujo": {
       "titulo": "Plantilla del dibujo",
@@ -509,7 +568,14 @@
     "cargando": "Cargando…",
     "alt1": "El Cochayuyero sale de Puerto Saavedra con su carreta de bueyes cargada de cochayuyo, junto al mar.",
     "seguir1": "Seguir a la parada rural",
-    "irActo1": "Partir a Puerto Saavedra"
+    "irActo1": "Partir a Puerto Saavedra",
+    "alt3": "El Cochayuyero llega al cerro Ñielol, entre el bosque, con Temuco a sus pies.",
+    "seguir3": "Ir al primer encargo del Ñielol",
+    "seguirFin": "Volver al viaje",
+    "irActo3": "Seguir al cerro Ñielol",
+    "irFin": "Ver el cierre del viaje",
+    "resumen": "Tu viaje",
+    "xp": "{xp} XP"
   },
   "etapas": {
     "si": "Sí",
@@ -671,5 +737,140 @@
     "ejemploProcedimiento": "Ej.: repetir la postura … del tramo … con la mira revisada; adoptar la cota de M del tramo que cierra.",
     "otraResolvio": "La cuadrilla {tramo} documentó su diagnóstico: cota común {cota} m.",
     "otraSinResolver": "La cuadrilla {tramo} aún no documenta su diagnóstico."
+  },
+  "auditoria": {
+    "titulo": "Auditoría del perfil de la contratista",
+    "bajada": "{sendero}: marca las celdas erróneas, escribe su valor correcto y re-elabora el perfil.",
+    "tabla": "Tabla entregada",
+    "instrucciones": "Haz clic en una celda que esté mala para marcarla y escribir su valor correcto (en metros). El valor original queda tachado al lado; con la × la desmarcas.",
+    "columnas": {
+      "estacion": "Estación",
+      "parcial": "Dist. parcial (m)",
+      "distanciaAcumuladaM": "Dist. acumulada (m)",
+      "ltMm": "LT (m)",
+      "laMm": "LA (m)",
+      "desnivelMm": "Δh (m)",
+      "cotaMm": "Cota (m)"
+    },
+    "marcadas": "Celdas marcadas: {n}",
+    "perfilCorregido": "Perfil re-elaborado con tus correcciones",
+    "exportar": "Exportar perfil corregido (PDF)",
+    "perfilAyuda": "Este es el perfil que defenderá la cuadrilla en la 3.2.",
+    "tituloPerfil": "Perfil corregido · {sendero}",
+    "celda": "{estacion}, {columna}",
+    "marcar": "Marcar como errónea: {celda}, {valor}",
+    "corregir": "Valor correcto de {celda}, en metros",
+    "desmarcar": "Desmarcar {celda}"
+  },
+  "asamblea": {
+    "titulo": "Preparar la defensa",
+    "bajada": "La presentación es presencial, ante la Comisión de Parques. Aquí confirman los materiales y piden la fecha.",
+    "comoEvalua": "Cómo evalúa la comisión",
+    "reglas": "La comisión la forman {n} evaluadores (el docente y pares). Cada uno pone de 1 a 4 en cada criterio y aprueba si su promedio llega al {pct} %; decide la mayoría y, si hay empate, el docente.",
+    "criterios": {
+      "claridad": {
+        "nombre": "Claridad de procedimientos",
+        "ayuda": "Cómo se hizo la auditoría, paso a paso."
+      },
+      "justificacion": {
+        "nombre": "Justificación técnica",
+        "ayuda": "Por qué cada valor estaba mal y cómo se corrigió."
+      },
+      "preguntas": {
+        "nombre": "Manejo de preguntas",
+        "ayuda": "Responder con precisión y sin rodeos."
+      },
+      "terminologia": {
+        "nombre": "Terminología",
+        "ayuda": "LT, LA, desnivel, cota, cierre, tolerancia…"
+      }
+    },
+    "materiales": "Materiales de la cuadrilla",
+    "items": {
+      "perfil": {
+        "nombre": "Perfil corregido (3.1)",
+        "ayuda": "La tabla y el perfil re-elaborado, en PDF."
+      },
+      "libreta": {
+        "nombre": "Libreta de campo",
+        "ayuda": "Para respaldar los procedimientos."
+      },
+      "presentacion": {
+        "nombre": "Presentación",
+        "ayuda": "Láminas o pizarra para la defensa."
+      },
+      "ensayo": {
+        "nombre": "Ensayo de la defensa",
+        "ayuda": "La cuadrilla la ensayó con preguntas de prueba."
+      }
+    },
+    "descargarPerfil": "Descargar el perfil corregido (PDF)",
+    "sinPerfil": "Aún no hay perfil corregido de la 3.1"
+  },
+  "integrador": {
+    "titulo": "Análisis e informe técnico",
+    "bajada": "Pendiente de cada tramo, el tramo que no cumple accesibilidad y el informe para la defensa.",
+    "pendientes": "Pendientes por tramo (máximo {max})",
+    "formula": "P = Δh / distancia × 100",
+    "pendiente": "Pendiente (%)",
+    "tramoCritico": "Tramo que pasa de {max}",
+    "ninguno": "Ninguno",
+    "informe": "Informe técnico",
+    "tituloInforme": "Título del informe",
+    "ejemploTitulo": "Informe técnico: nivelación del sendero principal del cerro Ñielol",
+    "conclusiones": "Conclusiones",
+    "ejemploConclusiones": "Ej.: el circuito cierra con e = … mm; el tramo … supera el … % y no es accesible; se recomienda…",
+    "exportar": "Exportar informe técnico (PDF)",
+    "exportarAyuda": "Incluye las libretas, el cierre y la compensación, el perfil, el análisis y las conclusiones. El plano del perfil a escala se exporta desde la plantilla del perfil.",
+    "pdf": {
+      "pr": "PR de partida",
+      "cota": "cota",
+      "metodo": "Nivelación geométrica por el método de los desniveles.",
+      "circuito": "Circuito de control",
+      "cierre": "Cierre del circuito",
+      "punto": "Punto",
+      "distAcum": "Dist. acum. (m)",
+      "cotaCalculada": "Cota calculada (m)",
+      "correccion": "Corrección (mm)",
+      "cotaCompensada": "Cota compensada (m)",
+      "perfil": "Perfil longitudinal del sendero principal",
+      "cierrePerfil": "Cierre del perfil en M (contra el circuito compensado)",
+      "sinCierrePerfil": "El perfil todavía no llega a M.",
+      "estacion": "Estación",
+      "progresiva": "Progresiva",
+      "parcial": "Dh parcial (m)",
+      "acumulado": "Dh acumulado (m)",
+      "pendiente": "Pendiente (%)",
+      "esquema": "Esquema del perfil (vertical exagerada, sin escala). El plano a escala va como anexo.",
+      "analisis": "Análisis de pendientes",
+      "tramoCritico": "Tramo que supera la pendiente máxima de accesibilidad",
+      "conclusiones": "Conclusiones",
+      "cotaColumna": "Cota (m)"
+    }
+  },
+  "comision": {
+    "titulo": "Comisión de Parques: defensas orales",
+    "bajada": "3.2 y 3.3. Carga la evidencia y la rúbrica de cada evaluador; cada uno aprueba con {pct} % y decide la mayoría.",
+    "sinPendientes": "No hay defensas pendientes.",
+    "historial": "Veredictos registrados",
+    "votos": "{favor} de {total} votos a favor",
+    "docente": "{nombre} (docente)",
+    "par": "Par {n}",
+    "defensaDe": "Defensa de {nombre}, misión {mision}",
+    "solicitud": "{cuadrilla} · pidió la defensa el {fecha}",
+    "parteAutomatica": "Parte automática aprobada",
+    "evidencia": "Evidencia de la defensa (presentación, video o acta)",
+    "archivo": "{nombre} ({kb} KB)",
+    "evidenciaAyuda": "Obligatoria para registrar el veredicto.",
+    "criterio": "Criterio",
+    "nombreEvaluador": "Nombre del evaluador {n}",
+    "puntaje": "{criterio}, {evaluador}",
+    "promedio": "Promedio",
+    "aprueba": "aprueba",
+    "noAprueba": "no aprueba",
+    "veredictoAprobada": "Aprobada: {favor} de {total} votos a favor{desempate}.",
+    "veredictoRechazada": "No aprobada: {favor} de {total} votos a favor{desempate}.",
+    "faltanPuntajes": "Faltan puntajes para el veredicto.",
+    "registrar": "Registrar veredicto"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "sendero": "Sendero ecológico Los Copihues",
+  "estacionamientoM": 20,
+  "estaciones": [
+    { "id": "E0", "cota": 104.12 },
+    { "id": "E1", "cota": 104.655 },
+    { "id": "E2", "cota": 105.31 },
+    { "id": "E3", "cota": 105.18 },
+    { "id": "E4", "cota": 106.02 },
+    { "id": "E5", "cota": 106.475 }
+  ]
+}
