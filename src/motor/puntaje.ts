@@ -131,6 +131,7 @@ export interface FilaClasificacion {
   nombre: string
   puntos: number
   misionesCompletadas: number
+  /** Promedio por integrante: proporcional al tamaño de la cuadrilla (decisión del 20-oct-2026). */
   insignias: number
   /** Null mientras la cuadrilla no cierre el circuito de la 3.3. */
   precisionNielolPct: number | null

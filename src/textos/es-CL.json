@@ -885,7 +885,6 @@
     "titulo": "Mis insignias",
     "bajada": "Una por misión aprobada; las grupales son de la cuadrilla. La especial pide todas las demás y ayudar a 3 compañeros a completar misiones.",
     "especial": "Insignia especial",
-    "especialMetal": "Especial",
     "especialRequisito": "Todas las insignias + ayudar a 3 compañeros",
     "progresoEspecial": "{insignias} de {total} insignias · {ayudados} de 3 compañeros ayudados",
     "obtenida": "obtenida",
@@ -958,6 +957,7 @@
     "titulo": "Clasificación de cuadrillas",
     "bajada": "Tabla colaborativa del curso: puntos, misiones completadas, insignias y precisión en el Ñielol.",
     "orden": "Orden: puntos; si empatan, misiones completadas, insignias y % de precisión del Ñielol.",
+    "insigniasNota": "Insignias: promedio por integrante, de {total} posibles (las 9 de misión y la especial). Así el tamaño de la cuadrilla no pesa.",
     "precisionNota": "% de precisión del Ñielol = máx(0; 100 · (1 − |e| / T)), con el cierre del circuito de la 3.3.",
     "simulado": "Curso simulado: las otras cuadrillas son datos de demostración.",
     "cargando": "Cargando la clasificación…",
@@ -974,6 +974,7 @@
     "promedioMasBonus": "{promedio} promedio + {bonus} bonus",
     "sinPrecision": "Aún no cierra la 3.3",
     "verIntegrantes": "Ver integrantes",
-    "ocultarIntegrantes": "Ocultar integrantes"
+    "ocultarIntegrantes": "Ocultar integrantes",
+    "insigniasPromedio": "de {total} por integrante"
   }
 }

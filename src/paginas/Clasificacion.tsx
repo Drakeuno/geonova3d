@@ -4,7 +4,7 @@ import { MISIONES } from '@/datos/misiones'
 import { useCurso } from '@/estado/cuadrillas'
 import { useSesion } from '@/estado/sesion'
 import { paleta } from '@/estilos/paleta'
-import { buscarIntegrante, type ClaveInsignia, type CuadrillaCurso } from '@/motor/cuadrillas'
+import { buscarIntegrante } from '@/motor/cuadrillas'
 import { formatearNumero } from '@/motor/numeros'
 import { Avatar, ChipSituacion } from '@/componentes/juego/Integrante'
 import { contarInsignias } from '@/componentes/juego/VitrinaInsignias'
@@ -17,8 +17,8 @@ import textos from '@/textos/es-CL.json'
 const t = textos.clasificacion
 const c = t.columnas
 const xp = (n: number) => formatearNumero(n, 0)
-const CLAVES: ClaveInsignia[] = ['bronce', 'plata', 'oro', 'platino', 'especial']
-const nombreInsignia = (k: ClaveInsignia) => (k === 'especial' ? textos.insignias.especialMetal : textos.metales[k])
+/** Las 9 de misión y la especial. */
+const INSIGNIAS_POSIBLES = MISIONES.length + 1
 
 export default function Clasificacion() {
   const usuarioId = useSesion((s) => s.usuarioId)
@@ -104,7 +104,8 @@ export default function Clasificacion() {
                         {q.completadas.length}/{MISIONES.length}
                       </td>
                       <td className="px-2 py-3">
-                        <Insignias cuadrilla={q} />
+                        <span className="font-mono font-semibold">{formatearNumero(q.insigniasPorIntegrante, 1)}</span>
+                        <span className="block text-xs text-tierra-600">{rellenar(t.insigniasPromedio, { total: INSIGNIAS_POSIBLES })}</span>
                       </td>
                       <td className="px-2 py-3">
                         {q.precisionNielolPct === null ? (
@@ -155,6 +156,7 @@ export default function Clasificacion() {
       </div>
       <ul className="mt-4 space-y-1 text-xs text-tierra-600">
         <li>{t.orden}</li>
+        <li>{rellenar(t.insigniasNota, { total: INSIGNIAS_POSIBLES })}</li>
         <li>{t.precisionNota}</li>
         <li>{t.simulado}</li>
       </ul>
@@ -183,22 +185,6 @@ function Posicion({ n }: { n: number }) {
       style={metal ? { borderColor: paleta.insignia[metal] } : undefined}
     >
       {n}
-    </span>
-  )
-}
-
-function Insignias({ cuadrilla }: { cuadrilla: CuadrillaCurso }) {
-  const presentes = CLAVES.filter((k) => cuadrilla.insignias[k] > 0)
-  return (
-    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-      <span className="font-mono font-semibold">{cuadrilla.totalInsignias}</span>
-      {presentes.map((k) => (
-        <span key={k} className="inline-flex items-center gap-0.5 text-xs text-tierra-700" title={nombreInsignia(k)}>
-          <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: paleta.insignia[k] }} />
-          {cuadrilla.insignias[k]}
-          <span className="sr-only"> {nombreInsignia(k)}</span>
-        </span>
-      ))}
     </span>
   )
 }

@@ -34,7 +34,8 @@ salvo en la misión donde se atascan y piden ayuda (Diego en la 1.2, Antonia en 
 2.1). Para ayudar hay que haber aprobado esa misión. El compañero acepta el mensaje a los 4 s y
 aprueba a los 15 s: ahí la ayuda es válida y cuenta para la insignia especial; si es de otra
 cuadrilla, suma +50 XP a la de Camila. **Clasificación** (también desde la sesión docente) ordena por
-puntos, misiones completadas por toda la cuadrilla, insignias y % de precisión del Ñielol.
+puntos, misiones completadas por toda la cuadrilla, insignias (promedio por integrante) y % de
+precisión del Ñielol.
 
 ## Ejecutar
 

@@ -83,8 +83,11 @@ export interface CuadrillaCurso {
   puntos: number
   /** Misiones que completó la cuadrilla: las individuales que aprobaron todos, y las grupales. */
   completadas: string[]
-  insignias: Record<ClaveInsignia, number>
-  totalInsignias: number
+  /**
+   * Promedio de insignias por integrante (las grupales cuentan para cada uno), proporcional al
+   * tamaño de la cuadrilla como el puntaje: una de 3 no queda en desventaja frente a una de 4.
+   */
+  insigniasPorIntegrante: number
   precisionNielolPct: number | null
 }
 
@@ -191,13 +194,8 @@ export function calcularCurso({ roster, misiones, xp, jugadores, ayudas, ahora }
     )
     const bonusXp = movimientos.reduce((s, m) => s + m.xp, 0)
 
-    // 5. Insignias: las individuales de cada integrante, las grupales una vez y las especiales.
-    const insignias: Record<ClaveInsignia, number> = { bronce: 0, plata: 0, oro: 0, platino: 0, especial: 0 }
-    for (const x of calculados) {
-      for (const id of x.aprobadas) insignias[mision(id).insignia.metal]++
-      if (x.especial) insignias.especial++
-    }
-    for (const id of grupales) insignias[mision(id).insignia.metal]++
+    // 5. Insignias: promedio por integrante, con la especial de cada uno.
+    const insignias = calculados.reduce((s, x) => s + x.insignias.length + (x.especial ? 1 : 0), 0)
 
     const cierre = integrador && grupales.includes(integrador) ? (avance ? avance.aprobadas[integrador] : c.grupales[integrador]) : null
     return {
@@ -210,8 +208,7 @@ export function calcularCurso({ roster, misiones, xp, jugadores, ayudas, ahora }
       bonusXp,
       puntos,
       completadas: orden.filter((id) => (grupal(id) ? grupales.includes(id) : calculados.every((x) => x.aprobadas.includes(id)))),
-      insignias,
-      totalInsignias: Object.values(insignias).reduce((s, n) => s + n, 0),
+      insigniasPorIntegrante: insignias / calculados.length,
       precisionNielolPct:
         cierre?.errorCierreMm !== undefined && cierre.toleranciaCierreMm ? precisionNielolPct(cierre.errorCierreMm, cierre.toleranciaCierreMm) : null,
     }
@@ -225,7 +222,7 @@ export function calcularCurso({ roster, misiones, xp, jugadores, ayudas, ahora }
         nombre: c.nombre,
         puntos: c.puntos,
         misionesCompletadas: c.completadas.length,
-        insignias: c.totalInsignias,
+        insignias: c.insigniasPorIntegrante,
         precisionNielolPct: c.precisionNielolPct,
       })),
     ),

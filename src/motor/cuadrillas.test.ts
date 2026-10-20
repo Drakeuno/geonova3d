@@ -75,12 +75,15 @@ describe('curso simulado (RF-06, RF-10)', () => {
     expect(cuadrilla(c, 'c3').completadas).toEqual(['1.1', '1.2', '1.3', '2.1', '2.2', '2.3'])
   })
 
-  it('cuenta las insignias de cada integrante, las grupales una vez', () => {
-    const c4 = cuadrilla(curso(), 'c4')
-    // 4 integrantes: 1.1 bronce, 1.2 y 1.3 plata, 2.1 oro; 3 de ellos con la 2.2 (oro).
-    expect(c4.insignias).toEqual({ bronce: 4, plata: 8, oro: 7, platino: 0, especial: 0 })
-    expect(c4.totalInsignias).toBe(19)
-    expect(cuadrilla(curso(), 'c2').insignias.platino).toBe(1)
+  it('insignias de la cuadrilla = promedio por integrante, proporcional a su tamaño', () => {
+    const c = curso()
+    // Cuadrilla 4: tres con 5 insignias (1.1 a 2.2) y Valentina con 4 → 19 / 4.
+    expect(cuadrilla(c, 'c4').insigniasPorIntegrante).toBe(4.75)
+    // Cuadrilla 2: cada uno con sus 7 individuales y las 2 grupales de la cuadrilla.
+    expect(cuadrilla(c, 'c2').insigniasPorIntegrante).toBe(9)
+    // Cuadrilla 3 (de 3): 7 + 7 + 6. Con 3 integrantes no queda bajo una de 4 por tamaño.
+    expect(cuadrilla(c, 'c3').insigniasPorIntegrante).toBeCloseTo(20 / 3, 10)
+    expect(c.clasificacion.find((f) => f.id === 'c3')!.insignias).toBeGreaterThan(c.clasificacion.find((f) => f.id === 'c4')!.insignias)
   })
 
   it('la clasificación ordena por puntos; al empezar, la cuadrilla de Camila va última', () => {
@@ -160,7 +163,9 @@ describe('ayuda entre compañeros (§14)', () => {
     expect(integrante(curso(ORDEN.slice(0, -1), ayudas, tarde), 'est-1').especial).toBe(false)
     const c = curso(ORDEN, ayudas, tarde)
     expect(integrante(c, 'est-1')).toMatchObject({ ayudados: 3, especial: true })
-    expect(cuadrilla(c, 'c1').insignias.especial).toBe(1)
+    // Camila 10 (con la especial); Diego y Antonia, destrabados, 9 como ella; Matías sigue en la 2.1:
+    // 1.1 a 1.3 y las grupales 2.3 y 3.3.
+    expect(cuadrilla(c, 'c1').insigniasPorIntegrante).toBe((10 + 9 + 9 + 5) / 4)
   })
 
   it('el reloj despierta en la próxima aceptación o aprobación pendiente', () => {
