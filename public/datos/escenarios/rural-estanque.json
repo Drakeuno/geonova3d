@@ -1,0 +1,37 @@
+{
+  "escenario": "rural-estanque",
+  "nombre": "Parada rural · El estanque elevado",
+  "puntos": [
+    { "id": "PR-R2", "nombre": "PR-R2", "x": 0, "y": 0, "cota": 100.0, "pr": true },
+    { "id": "V1", "x": 60, "y": -15, "cota": 99.85 },
+    { "id": "V2", "x": 110, "y": 20, "cota": 100.42 },
+    { "id": "V3", "x": 100, "y": 80, "cota": 100.98 },
+    { "id": "V4", "x": 40, "y": 85, "cota": 99.6 },
+    { "id": "T", "nombre": "T (radier del estanque)", "x": 20, "y": 45, "cota": 101.35 }
+  ],
+  "recorridos": [
+    {
+      "id": "2.2",
+      "tipo": "circuito",
+      "estaciones": [
+        { "id": "S1", "x": 55, "y": 15, "visadas": ["PR-R2", "V1", "V2"] },
+        { "id": "S2", "x": 85, "y": 60, "visadas": ["V2", "V3", "V4"] },
+        { "id": "S3", "x": 30, "y": 65, "visadas": ["V4", "T", "PR-R2"] }
+      ]
+    }
+  ],
+  "datos": { "alturaTorre": 8.75, "cotaRadierPlano": 104.85 },
+  "elementos": [
+    { "tipo": "estanque", "nombre": "Estanque elevado", "x": 20, "y": 45, "alto": 8.75, "radio": 2.6 },
+    { "tipo": "camino", "puntos": [[0, 0], [60, -15], [110, 20], [100, 80], [40, 85], [20, 45], [0, 0]], "ancho": 1.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 1", "x": 70, "y": -24, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 2", "x": 122, "y": 24, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 3", "x": 110, "y": 92, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 4", "x": 32, "y": 98, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "arbol", "x": -20, "y": 40, "alto": 9 },
+    { "tipo": "arbol", "x": 70, "y": 40, "alto": 8 },
+    { "tipo": "arbol", "x": 140, "y": 60, "alto": 10 },
+    { "tipo": "arbol", "x": 10, "y": 110, "alto": 9 },
+    { "tipo": "arbol", "x": 130, "y": -20, "alto": 8 }
+  ]
+}

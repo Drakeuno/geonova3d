@@ -25,3 +25,7 @@ export const elegir = <T>(rng: Rng, lista: readonly T[]): T => {
 }
 
 export const signoAlAzar = (rng: Rng) => (rng() < 0.5 ? -1 : 1)
+
+/** Semilla derivada de otra y una clave: la misma sesión da siempre las mismas lecturas por tramo, postura… */
+export const derivarSemilla = (base: number, clave: string) =>
+  [...clave].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, base >>> 0)

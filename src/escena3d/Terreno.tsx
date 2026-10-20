@@ -17,7 +17,7 @@ function distanciaSegmento(px: number, py: number, [ax, ay]: [number, number], [
 const ruido = (x: number, y: number) => (Math.sin(x * 0.21 + y * 0.13) + Math.sin(x * 0.07 - y * 0.19)) * 0.25 + 0.5
 
 export function limitesEscena(e: Escenario): Limites {
-  const extra = e.elementos.flatMap((el) => (el.tipo === 'camino' ? el.puntos.map(([x, y]) => ({ x, y })) : [{ x: el.x, y: el.y }]))
+  const extra = e.elementos.flatMap((el) => ('puntos' in el ? el.puntos.map(([x, y]) => ({ x, y })) : [{ x: el.x, y: el.y }]))
   return limites([...e.puntos, ...extra], 30)
 }
 
@@ -38,9 +38,14 @@ export function Terreno({ escenario, baseMm }: { escenario: Escenario; baseMm: n
     g.translate((lim.minX + lim.maxX) / 2, 0, -(lim.minY + lim.maxY) / 2)
 
     const caminos = escenario.elementos.filter((el) => el.tipo === 'camino')
+    const rios = escenario.elementos.filter((el) => el.tipo === 'rio')
     const pos = g.attributes.position
     const colores = new Float32Array(pos.count * 3)
-    const [pasto, pastoOscuro, camino] = [COLORES_3D.pasto, COLORES_3D.pastoOscuro, COLORES_3D.camino].map((c) => new THREE.Color(c))
+    const [pasto, pastoOscuro, camino, agua] = [COLORES_3D.pasto, COLORES_3D.pastoOscuro, COLORES_3D.camino, COLORES_3D.agua].map(
+      (c) => new THREE.Color(c),
+    )
+    const sobre = (franjas: { puntos: [number, number][]; ancho: number }[], x: number, y: number) =>
+      franjas.some((c) => c.puntos.slice(1).some((p, k) => distanciaSegmento(x, y, c.puntos[k], p) < c.ancho / 2))
     const color = new THREE.Color()
     const horizonte = alturaHorizonteM(escenario, baseMm)
     for (let i = 0; i < pos.count; i++) {
@@ -52,8 +57,8 @@ export function Terreno({ escenario, baseMm }: { escenario: Escenario; baseMm: n
       const t = Math.min(1, Math.min(x - lim.minX, lim.maxX - x, y - lim.minY, lim.maxY - y) / BORDE_M)
       const suave = t * t * (3 - 2 * t)
       pos.setY(i, horizonte + (real - horizonte) * suave)
-      const enCamino = caminos.some((c) => c.puntos.slice(1).some((p, k) => distanciaSegmento(x, y, c.puntos[k], p) < c.ancho / 2))
-      if (enCamino) color.copy(camino)
+      if (sobre(rios, x, y)) color.copy(agua)
+      else if (sobre(caminos, x, y)) color.copy(camino)
       else color.copy(pasto).lerp(pastoOscuro, ruido(x, y))
       color.toArray(colores, i * 3)
     }

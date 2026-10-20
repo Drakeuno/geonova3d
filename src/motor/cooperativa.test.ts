@@ -11,22 +11,40 @@ const COTA_R = 99_200
 const M = 100_640
 
 describe('evento sembrado (§14)', () => {
+  // Ida de cada tramo: dos posturas, LT y LA en cada una.
+  const ida = { A: ['LT', 'LA', 'LT', 'LA'], B: ['LT', 'LA', 'LT', 'LA'] } as const
+  const idaCopia = { A: [...ida.A], B: [...ida.B] }
+
   it('siempre introduce un error grosero mayor que 30 mm en la ida de un tramo', () => {
     const rng = crearRng(2)
     for (let i = 0; i < 300; i++) {
-      const ev = sembrarEvento(rng, { A: 4, B: 6 })
+      const ev = sembrarEvento(rng, idaCopia)
       expect(Math.abs(ev.desplazamientoMm)).toBeGreaterThan(30)
       expect(ev.indiceLectura).toBeGreaterThanOrEqual(0)
-      expect(ev.indiceLectura).toBeLessThan(ev.tramo === 'A' ? 4 : 6)
+      expect(ev.indiceLectura).toBeLessThan(4)
       expect(ev.causa).toBe(EVENTOS[ev.tipo].causa)
     }
   })
 
   it('reparte el evento entre ambos tramos y los tres tipos', () => {
     const rng = crearRng(3)
-    const eventos = Array.from({ length: 300 }, () => sembrarEvento(rng, { A: 4, B: 4 }))
+    const eventos = Array.from({ length: 300 }, () => sembrarEvento(rng, idaCopia))
     expect(new Set(eventos.map((e) => e.tramo))).toEqual(new Set(['A', 'B']))
     expect(new Set(eventos.map((e) => e.tipo))).toEqual(new Set(Object.keys(EVENTOS)))
+  })
+
+  it('el trípode golpeado siempre cae en una lectura adelante', () => {
+    const rng = crearRng(4)
+    const golpes = Array.from({ length: 300 }, () => sembrarEvento(rng, idaCopia)).filter((e) => e.tipo === 'tripode-golpeado')
+    expect(golpes.length).toBeGreaterThan(0)
+    expect(golpes.every((e) => idaCopia[e.tramo][e.indiceLectura] === 'LA')).toBe(true)
+  })
+
+  it('a un tramo que juega una persona no le toca la libreta mojada', () => {
+    const rng = crearRng(5)
+    const eventos = Array.from({ length: 300 }, () => sembrarEvento(rng, idaCopia, ['A']))
+    expect(eventos.some((e) => e.tramo === 'A' && e.tipo === 'libreta-mojada')).toBe(false)
+    expect(eventos.some((e) => e.tramo === 'B' && e.tipo === 'libreta-mojada')).toBe(true)
   })
 })
 
@@ -49,14 +67,16 @@ describe('CP-05 · dos cuadrillas con cota de M discrepante', () => {
     const evento = { tramo: 'B', tipo: 'mira-danada', causa: 'lectura', indiceLectura: 1, desplazamientoMm: -45 } as const
     const base = {
       tramo: 'B' as const,
-      indiceLectura: 1,
+      estacion: 'S1',
       causa: 'lectura' as const,
       cotaComunMm: 100_640,
       procedimiento: 'Repetimos la lectura adelante de la estación 2 del tramo B con la mira revisada.',
     }
-    expect(validarResolucion(base, evento, M, T).aprobada).toBe(true)
-    expect(validarResolucion({ ...base, causa: 'cinta-mal-tensada' }, evento, M, T)).toMatchObject({ causaOk: false, aprobada: false })
-    expect(validarResolucion({ ...base, cotaComunMm: 100_595 }, evento, M, T)).toMatchObject({ cotaOk: false, aprobada: false })
-    expect(validarResolucion({ ...base, procedimiento: 'error' }, evento, M, T)).toMatchObject({ documentada: false, aprobada: false })
+    expect(validarResolucion(base, evento, 'S1', M, T).aprobada).toBe(true)
+    expect(validarResolucion({ ...base, estacion: 'S2' }, evento, 'S1', M, T)).toMatchObject({ estacionOk: false, aprobada: false })
+    expect(validarResolucion({ ...base, tramo: 'A' }, evento, 'S1', M, T)).toMatchObject({ tramoOk: false, estacionOk: false })
+    expect(validarResolucion({ ...base, causa: 'cinta-mal-tensada' }, evento, 'S1', M, T)).toMatchObject({ causaOk: false, aprobada: false })
+    expect(validarResolucion({ ...base, cotaComunMm: 100_595 }, evento, 'S1', M, T)).toMatchObject({ cotaOk: false, aprobada: false })
+    expect(validarResolucion({ ...base, procedimiento: 'error' }, evento, 'S1', M, T)).toMatchObject({ documentada: false, aprobada: false })
   })
 })

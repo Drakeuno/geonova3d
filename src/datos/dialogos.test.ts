@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import dialogosJson from '../../public/datos/dialogos/cochayuyero.json'
-import { MISIONES_JUGABLES } from '@/misiones/definiciones'
+import { todasLasConfiguraciones } from '@/misiones/definiciones'
 import { esquemaDialogos, MARCAS_DIALOGO, pistaVigente } from './dialogos'
 
 const dialogos = esquemaDialogos.parse(dialogosJson)
 
 describe('guiones del Cochayuyero (RF-11)', () => {
-  it('cada misión jugable tiene encargo, pistas, logro y un rechazo por cada motivo posible', () => {
-    for (const m of Object.values(MISIONES_JUGABLES)) {
-      const d = dialogos.misiones[m.id]
-      expect(d, `faltan los diálogos de la ${m.id}`).toBeDefined()
-      expect(Object.keys(d.rechazo).sort()).toEqual([...m.motivos].sort())
+  it('cada misión jugable (y cada piel de la 2.1) tiene encargo, pistas, logro y un rechazo por motivo', () => {
+    for (const c of todasLasConfiguraciones()) {
+      const d = dialogos.misiones[c.dialogo]
+      expect(d, `faltan los diálogos de ${c.dialogo}`).toBeDefined()
+      expect(Object.keys(d.rechazo).sort(), c.dialogo).toEqual([...c.motivos].sort())
     }
   })
 

@@ -1,0 +1,43 @@
+{
+  "escenario": "rural-cero-cota",
+  "nombre": "Parada rural · Operación Cero Cota",
+  "puntos": [
+    { "id": "PR-C1", "nombre": "PR-C1 (estribo del puente)", "x": 0, "y": 0, "cota": 98.7, "pr": true },
+    { "id": "C1", "x": 32, "y": 24, "cota": 99.12 },
+    { "id": "C2", "x": 62, "y": 64, "cota": 99.87 },
+    { "id": "C3", "x": 89, "y": 100, "cota": 99.462 },
+    { "id": "C4", "x": 125, "y": 148, "cota": 100.24 }
+  ],
+  "aristas": [
+    { "a": "PR-C1", "b": "C1", "dist": 40 },
+    { "a": "C1", "b": "C2", "dist": 50 },
+    { "a": "C2", "b": "C3", "dist": 45 },
+    { "a": "C3", "b": "C4", "dist": 60 }
+  ],
+  "recorridos": [
+    {
+      "id": "2.1",
+      "tipo": "abierto",
+      "estaciones": [
+        { "id": "S1", "x": 30, "y": 36, "visadas": ["PR-C1", "C1", "C2"] },
+        { "id": "S2", "x": 80, "y": 78, "visadas": ["C2", "C3"] },
+        { "id": "S3", "x": 110, "y": 128, "visadas": ["C3", "C4"] }
+      ]
+    }
+  ],
+  "datos": { "lineaSeguridad": 99.5 },
+  "elementos": [
+    { "tipo": "rio", "puntos": [[-80, -30], [40, -26], [160, 30], [240, 52]], "ancho": 16 },
+    { "tipo": "camino", "puntos": [[0, -60], [0, 6], [32, 24], [62, 64], [89, 100], [125, 148]], "ancho": 3 },
+    { "tipo": "edificio", "nombre": "Casa 1", "x": 42, "y": 34, "ancho": 7, "largo": 8, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Casa 2", "x": 72, "y": 74, "ancho": 7, "largo": 8, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Casa 3", "x": 99, "y": 108, "ancho": 7, "largo": 8, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Casa 4", "x": 135, "y": 158, "ancho": 7, "largo": 8, "alto": 3.5 },
+    { "tipo": "arbol", "x": -20, "y": 30, "alto": 8 },
+    { "tipo": "arbol", "x": 60, "y": 20, "alto": 9 },
+    { "tipo": "arbol", "x": 110, "y": 70, "alto": 10 },
+    { "tipo": "arbol", "x": 40, "y": 110, "alto": 9 },
+    { "tipo": "arbol", "x": 150, "y": 120, "alto": 8 },
+    { "tipo": "arbol", "x": 90, "y": 160, "alto": 10 }
+  ]
+}

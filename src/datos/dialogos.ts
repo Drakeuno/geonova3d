@@ -18,13 +18,31 @@ export const esquemaDialogos = z.object({
   version: z.literal(1),
   personaje: z.string().min(1),
   misiones: z.record(z.string(), esquemaDialogoMision),
+  /** Tramos narrativos entre actos (cutscenes), por número de acto. */
+  actos: z.record(z.string(), z.object({ titulo: z.string().min(1), lineas })).default({}),
 })
 
 export type DialogoMision = z.infer<typeof esquemaDialogoMision>
 export type Dialogos = z.infer<typeof esquemaDialogos>
 
 /** Marcas que se pueden usar en los guiones; se rellenan con los datos de la misión y los parámetros. */
-export const MARCAS_DIALOGO = ['pr', 'cotaPr', 'tolerancia', 'longitud', 'estacionamiento', 'escalaH', 'escalaV'] as const
+export const MARCAS_DIALOGO = [
+  'pr',
+  'cotaPr',
+  'tolerancia',
+  'longitud',
+  'estacionamiento',
+  'escalaH',
+  'escalaV',
+  'pendienteMinima',
+  'pendienteMaxima',
+  'linea',
+  'presionMinima',
+  'alturaTorre',
+  'cotaPlano',
+  'tramo',
+  'otroTramo',
+] as const
 
 export async function cargarDialogos(): Promise<Dialogos> {
   const respuesta = await fetch(`${import.meta.env.BASE_URL}datos/dialogos/cochayuyero.json`)

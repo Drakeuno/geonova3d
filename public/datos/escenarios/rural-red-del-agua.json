@@ -1,0 +1,49 @@
+{
+  "escenario": "rural-red-del-agua",
+  "nombre": "Parada rural · La Red del Agua",
+  "puntos": [
+    { "id": "PR-R1", "nombre": "PR-R1", "x": -9, "y": -12, "cota": 95.874, "pr": true },
+    { "id": "F", "nombre": "F (vertiente)", "x": 0, "y": 0, "cota": 96.43 },
+    { "id": "V1", "x": 96, "y": 72, "cota": 97.218 },
+    { "id": "V2", "x": 186, "y": 72, "cota": 98.105 },
+    { "id": "V3", "x": 252, "y": 160, "cota": 99.312 },
+    { "id": "V4", "x": 316, "y": 208, "cota": 100.461 }
+  ],
+  "aristas": [
+    { "a": "PR-R1", "b": "F", "dist": 15 },
+    { "a": "F", "b": "V1", "dist": 120 },
+    { "a": "V1", "b": "V2", "dist": 90 },
+    { "a": "V2", "b": "V3", "dist": 110 },
+    { "a": "V3", "b": "V4", "dist": 80 }
+  ],
+  "recorridos": [
+    {
+      "id": "2.1",
+      "tipo": "abierto",
+      "estaciones": [
+        { "id": "S1", "x": 40, "y": 26, "visadas": ["PR-R1", "F", "V1"] },
+        { "id": "S2", "x": 141, "y": 66, "visadas": ["V1", "V2"] },
+        { "id": "S3", "x": 224, "y": 112, "visadas": ["V2", "V3"] },
+        { "id": "S4", "x": 288, "y": 180, "visadas": ["V3", "V4"] }
+      ]
+    }
+  ],
+  "elementos": [
+    { "tipo": "rio", "puntos": [[-70, 14], [-12, -8], [40, -36], [90, -60]], "ancho": 5 },
+    { "tipo": "camino", "puntos": [[0, 0], [96, 72], [186, 72], [252, 160], [316, 208]], "ancho": 1.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 1", "x": 106, "y": 84, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 2", "x": 196, "y": 86, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 3", "x": 240, "y": 172, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "edificio", "nombre": "Vivienda 4", "x": 328, "y": 220, "ancho": 7, "largo": 9, "alto": 3.5 },
+    { "tipo": "arbol", "x": -30, "y": 30, "alto": 9 },
+    { "tipo": "arbol", "x": 20, "y": -30, "alto": 8 },
+    { "tipo": "arbol", "x": 60, "y": 90, "alto": 10 },
+    { "tipo": "arbol", "x": 150, "y": 30, "alto": 9 },
+    { "tipo": "arbol", "x": 210, "y": 40, "alto": 8 },
+    { "tipo": "arbol", "x": 200, "y": 140, "alto": 11 },
+    { "tipo": "arbol", "x": 290, "y": 130, "alto": 9 },
+    { "tipo": "arbol", "x": 340, "y": 170, "alto": 8 },
+    { "tipo": "arbol", "x": 270, "y": 230, "alto": 10 },
+    { "tipo": "arbol", "x": 120, "y": 120, "alto": 8 }
+  ]
+}

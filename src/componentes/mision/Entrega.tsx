@@ -22,7 +22,8 @@ interface Props {
   /** Motivos por los que la última entrega se bloqueó (no cuentan como falla). */
   bloqueos: string[] | null
   pista: string | null
-  siguiente: { id: string; titulo: string } | null
+  /** A dónde sigue el viaje al aprobar (la misión siguiente o el tramo narrativo entre actos). */
+  siguiente: { a: string; texto: string } | null
   onEntregar: () => void
   onNuevoIntento: () => void
 }
@@ -147,8 +148,8 @@ function Resultado({
       {e.aprobada && (
         <div className="flex flex-wrap gap-2">
           {siguiente && (
-            <Link to={`/mision/${siguiente.id}`} className="btn-primario">
-              {rellenar(t.siguienteMision, { id: siguiente.id, titulo: siguiente.titulo })} <ArrowRight size={16} aria-hidden />
+            <Link to={siguiente.a} className="btn-primario">
+              {siguiente.texto} <ArrowRight size={16} aria-hidden />
             </Link>
           )}
           <Link to="/viaje" className="btn-neutro">
@@ -174,7 +175,10 @@ function Recompensa({ mision, movimientos }: { mision: MisionCatalogo; movimient
       <dl className="mt-2 space-y-0.5 text-sm">
         {movimientos.map((m, i) => (
           <div key={i} className="flex justify-between gap-4">
-            <dt>{NOMBRE_MOVIMIENTO[m.tipo]}</dt>
+            <dt>
+              {NOMBRE_MOVIMIENTO[m.tipo]}
+              {m.ambito === 'cuadrilla' && <span className="ml-1 text-xs text-buey-700">{t.paraLaCuadrilla}</span>}
+            </dt>
             <dd className="font-mono font-semibold">+{m.xp} XP</dd>
           </div>
         ))}

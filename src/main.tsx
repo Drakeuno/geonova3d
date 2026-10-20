@@ -9,7 +9,10 @@ import '@fontsource/source-sans-3/700.css'
 import '@fontsource/jetbrains-mono/400.css'
 import '@fontsource/jetbrains-mono/600.css'
 import App from './App'
+import { sincronizarPestanas } from './estado/sincronizarPestanas'
 import './index.css'
+
+sincronizarPestanas()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

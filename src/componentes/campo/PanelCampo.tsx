@@ -1,7 +1,7 @@
 import { Suspense, lazy, useState, type ReactNode } from 'react'
-import { Binoculars, Check, CheckCircle2, Eye, Grid2x2, Map as MapaIcono, RotateCcw, Ruler } from 'lucide-react'
+import { Binoculars, Check, CheckCircle2, Eye, Grid2x2, Lock, Map as MapaIcono, RotateCcw, Ruler } from 'lucide-react'
 import type { Parametros } from '@/datos/parametros'
-import { crearRng } from '@/motor/azar'
+import { crearRng, derivarSemilla } from '@/motor/azar'
 import { burbujaCalada, burbujaInicial, desviacionBurbuja, type Burbuja } from '@/motor/burbuja'
 import { cotaVerdaderaMm, puntoPorId, type Escenario, type LecturaPlanificada, type Recorrido } from '@/motor/escenarios'
 import { errorMontajeMm } from '@/motor/lecturas'
@@ -19,9 +19,6 @@ const t = textos.campo
 // Trabajo en terreno: elegir la postura del nivel, calar la burbuja, visar la mira, leerla por el
 // anteojo y medir con cinta. Lo comparten la práctica (/campo) y las misiones.
 
-/** Semilla determinista por lectura: el mismo intento muestra siempre la misma cruz. */
-export const semillaDe = (base: number, clave: string) => [...clave].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, base >>> 0)
-
 export const claveLectura = (l: Pick<LecturaPlanificada, 'estacion' | 'tipo' | 'punto'>) => `${l.estacion}:${l.tipo}:${l.punto}`
 
 export interface PropsPanelCampo {
@@ -38,6 +35,10 @@ export interface PropsPanelCampo {
   onNivelar: (estacion: string, desviacion: number | null) => void
   /** Visadas ya anotadas en la libreta (se marcan con un visto). */
   anotada?: (l: LecturaPlanificada) => boolean
+  /** Visadas que todavía no se pueden hacer, con el motivo (2.3: M espera a la otra cuadrilla). */
+  bloqueo?: (l: LecturaPlanificada) => string | null
+  /** Desplazamiento de la cruz que no viene del montaje (2.3: el evento sembrado), en mm. */
+  desplazamientoExtra?: (l: LecturaPlanificada) => number
   /** Contenido bajo el anteojo para la visada activa (la práctica comprueba ahí la lectura). */
   bajoAnteojo?: (visada: LecturaPlanificada, desplazamientoMm: number) => ReactNode
   /** Contenido bajo la escena, a lo ancho (la misión pone ahí la libreta). */
@@ -57,6 +58,8 @@ export function PanelCampo({
   onBurbuja,
   onNivelar,
   anotada,
+  bloqueo,
+  desplazamientoExtra,
   bajoAnteojo,
   children,
   encabezado,
@@ -71,7 +74,7 @@ export function PanelCampo({
   const lt = delaEstacion[0]
   // Dato interno: ubica el anteojo a la altura de la visual. No se muestra.
   const colimacionMm = cotaVerdaderaMm(escenario, lt.punto) + lt.verdaderaMm
-  const burbuja = burbujas[estacion.id] ?? burbujaInicial(crearRng(semillaDe(semilla, `burbuja:${estacion.id}`)))
+  const burbuja = burbujas[estacion.id] ?? burbujaInicial(crearRng(derivarSemilla(semilla, `burbuja:${estacion.id}`)))
   const desviacion = niveladas[estacion.id]
   const nivelada = desviacion !== undefined
   const visadaVigente = visada && visada.estacion === estacion.id ? visada : null
@@ -81,7 +84,7 @@ export function PanelCampo({
     return Math.hypot(estacion.x - p.x, estacion.y - p.y)
   }
   const desplazamientoMm = (l: LecturaPlanificada) =>
-    errorMontajeMm(desviacion ?? 0, parametros.montaje.errorMaximoMm, crearRng(semillaDe(semilla, claveLectura(l))))
+    errorMontajeMm(desviacion ?? 0, parametros.montaje.errorMaximoMm, crearRng(derivarSemilla(semilla, claveLectura(l)))) + (desplazamientoExtra?.(l) ?? 0)
 
   const irAEstacion = (i: number) => {
     setIEstacion(i)
@@ -191,6 +194,8 @@ export function PanelCampo({
                     key={claveLectura(l)}
                     type="button"
                     aria-pressed={visadaVigente === l}
+                    disabled={Boolean(bloqueo?.(l))}
+                    title={bloqueo?.(l) ?? undefined}
                     onClick={() => {
                       setVisada(l)
                       setCinta(null)
@@ -198,11 +203,16 @@ export function PanelCampo({
                     }}
                     className={visadaVigente === l ? 'btn-primario' : 'btn-neutro'}
                   >
-                    <Binoculars size={16} aria-hidden /> {rellenar(t.visar, { tipo: l.tipo, punto: l.punto })}
+                    {bloqueo?.(l) ? <Lock size={16} aria-hidden /> : <Binoculars size={16} aria-hidden />} {rellenar(t.visar, { tipo: l.tipo, punto: l.punto })}
                     {anotada?.(l) && <Check size={14} aria-label={t.yaAnotada} />}
                   </button>
                 ))}
               </div>
+              {delaEstacion.map((l) => bloqueo?.(l)).find(Boolean) && (
+                <p className="mt-2 flex items-center gap-1.5 text-sm text-buey-800" role="status">
+                  <Lock size={14} aria-hidden /> {delaEstacion.map((l) => bloqueo?.(l)).find(Boolean)}
+                </p>
+              )}
 
               {visadaVigente && (
                 <div className="mt-4 space-y-3">

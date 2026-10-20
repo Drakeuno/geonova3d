@@ -12,6 +12,8 @@ interface Props {
   filas: FilaVista[]
   pr: { punto: string; cotaMm: number }
   onIntentarEditar: (fila: FilaLibreta, celda: Celda) => void
+  /** Libreta ajena (la de la otra cuadrilla en la 2.3): se lee, no se toca. */
+  soloLectura?: boolean
 }
 
 const textoTachado = (c: Celda, v: number | null) =>
@@ -24,7 +26,17 @@ const NOMBRE_CAMPO: Record<Celda['campo'], string> = {
   cotaMm: 'cota',
 }
 
-function ValorCelda({ fila, celda, onIntentarEditar }: { fila: FilaLibreta; celda: Celda | null; onIntentarEditar: Props['onIntentarEditar'] }) {
+function ValorCelda({
+  fila,
+  celda,
+  onIntentarEditar,
+  soloLectura,
+}: {
+  fila: FilaLibreta
+  celda: Celda | null
+  onIntentarEditar: Props['onIntentarEditar']
+  soloLectura?: boolean
+}) {
   if (!celda) return <td className="px-2 py-2" />
   const contenido = (
     <>
@@ -39,7 +51,7 @@ function ValorCelda({ fila, celda, onIntentarEditar }: { fila: FilaLibreta; celd
     </>
   )
   // Toda celda escrita por el jugador es un botón: el intento de editarla abre el aviso de bloqueo.
-  const esBoton = !celda.delSistema
+  const esBoton = !celda.delSistema && !soloLectura
   return (
     <td className="whitespace-nowrap px-2 py-2 text-right font-mono tabular-nums">
       {esBoton ? (
@@ -58,7 +70,7 @@ function ValorCelda({ fila, celda, onIntentarEditar }: { fila: FilaLibreta; celd
   )
 }
 
-export function TablaLibreta({ filas, pr, onIntentarEditar }: Props) {
+export function TablaLibreta({ filas, pr, onIntentarEditar, soloLectura }: Props) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[760px] border-collapse text-sm">
@@ -97,11 +109,11 @@ export function TablaLibreta({ filas, pr, onIntentarEditar }: Props) {
               <td className="px-2 py-2 font-mono text-xs text-tierra-600">{v.fila.numero}</td>
               <td className="px-2 py-2">{v.fila.estacion}</td>
               <td className="px-2 py-2 font-semibold">{v.fila.punto}</td>
-              <ValorCelda fila={v.fila} celda={v.lt} onIntentarEditar={onIntentarEditar} />
-              <ValorCelda fila={v.fila} celda={v.la} onIntentarEditar={onIntentarEditar} />
-              <ValorCelda fila={v.fila} celda={v.desnivel} onIntentarEditar={onIntentarEditar} />
-              <ValorCelda fila={v.fila} celda={v.cota} onIntentarEditar={onIntentarEditar} />
-              <ValorCelda fila={v.fila} celda={v.distancia} onIntentarEditar={onIntentarEditar} />
+              <ValorCelda fila={v.fila} celda={v.lt} onIntentarEditar={onIntentarEditar} soloLectura={soloLectura} />
+              <ValorCelda fila={v.fila} celda={v.la} onIntentarEditar={onIntentarEditar} soloLectura={soloLectura} />
+              <ValorCelda fila={v.fila} celda={v.desnivel} onIntentarEditar={onIntentarEditar} soloLectura={soloLectura} />
+              <ValorCelda fila={v.fila} celda={v.cota} onIntentarEditar={onIntentarEditar} soloLectura={soloLectura} />
+              <ValorCelda fila={v.fila} celda={v.distancia} onIntentarEditar={onIntentarEditar} soloLectura={soloLectura} />
               <td className="px-2 py-2">
                 <div className="flex flex-wrap items-center gap-1">
                   {v.fila.anuladaPor && (

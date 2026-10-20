@@ -1,4 +1,5 @@
 import type { Parametros } from '@/datos/parametros'
+import type { EventoSembrado, Tramo } from '@/motor/cooperativa'
 import type { Escenario, LecturaPlanificada } from '@/motor/escenarios'
 import type { ModoCalculo, RegistroLibreta } from '@/motor/libreta'
 import type { Mm } from '@/motor/numeros'
@@ -6,18 +7,21 @@ import type { Mm } from '@/motor/numeros'
 // Tipos comunes del shell de misión (F4). Cada misión jugable define su recorrido en el escenario,
 // su etapa propia (compensación, perfil…) y una evaluación pura sobre la libreta del jugador.
 
-export type IdMisionJugable = '1.1' | '1.2' | '1.3'
+export type IdMisionJugable = '1.1' | '1.2' | '1.3' | '2.1' | '2.2' | '2.3'
 
 /** Lo que se entrega además de la libreta: la etapa propia de cada misión. */
-export type Etapa = 'ninguna' | 'compensacion' | 'perfil'
+export type Etapa =
+  | 'ninguna'
+  | 'compensacion'
+  | 'perfil'
+  | 'decision-agua'
+  | 'decision-pehuen'
+  | 'decision-cero-cota'
+  | 'detective'
+  | 'cooperativa'
 
-export interface DefinicionMision {
-  id: IdMisionJugable
-  escenario: string
-  /** Recorrido del escenario que se nivela. Su primera visada es el PR de partida. */
-  recorrido: string
-  etapa: Etapa
-}
+/** Respuestas de las etapas de formulario (decisión, informe, diagnóstico), tal como se escriben. */
+export type Formulario = Record<string, string>
 
 /** Compensación de la 1.2: por punto, la corrección (mm) y la cota compensada (m), como texto. */
 export type EntradasCompensacion = Record<string, { correccion: string; cota: string }>
@@ -55,6 +59,32 @@ export interface ContextoEntrega {
   lecturas: LecturaPlanificada[]
   compensacion: EntradasCompensacion
   perfil: EntradasPerfil
+  formulario: Formulario
+  /** Solo en la 2.3. */
+  cooperativa: SesionCooperativa | null
+}
+
+/** Lo que una cuadrilla comparte con la otra en la 2.3 (por el canal, o generado si es simulada). */
+export interface ResolucionPublica {
+  tramo: Tramo
+  estacion: string
+  causa: string
+  cotaComunMm: Mm
+  documentada: boolean
+}
+
+export interface SesionCooperativa {
+  /** Tramo de quien juega en esta ventana. */
+  tramo: Tramo
+  evento: EventoSembrado
+  /** Postura de la ida donde quedó la lectura alterada. */
+  estacionDelEvento: string
+  companero: {
+    simulado: boolean
+    registro: RegistroLibreta | null
+    lecturas: LecturaPlanificada[]
+    resolucion: ResolucionPublica | null
+  }
 }
 
 export interface Criterio {

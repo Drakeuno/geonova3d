@@ -69,6 +69,137 @@
         "desniveles": "Los desniveles no calzan con el terreno. Alguna lectura intermedia quedó mala: esas el cierre no las controla.",
         "dibujo": "El dibujo no cumple el formato. Revisen las escalas que les pedí, el plano de comparación y los rótulos de los ejes."
       }
+    },
+    "2.1@red-del-agua": {
+      "encargo": [
+        "Llegamos a la parada rural. Aquí la gente acarrea el agua en bidones desde una vertiente, la F, que está abajo, en la quebrada. Quieren una red para las cuatro viviendas, de V1 a V4.",
+        "La pregunta es una sola: ¿el agua llega sola, por gravedad, o hay que bombearla? Para que llegue sola, la fuente debe estar más alta que V4 y la pendiente del trazado no puede bajar de {pendienteMinima} %.",
+        "Partan del {pr}, cota {cotaPr} m, y nivelen el trazado por tramos: F, V1, V2, V3 y V4. Son 400 m de cañería, así que van a cambiar de postura varias veces.",
+        "Después me traen la decisión con los números de su libreta: las cotas de F y de V4, el largo del trazado y la pendiente. Nada de \"parece que\"."
+      ],
+      "pistas": [
+        "La pendiente hidráulica es P = (Cota F − Cota V4) / distancia × 100. Si F está más abajo que V4, la pendiente sale negativa: el agua no sube sola.",
+        "La distancia es la del trazado, sumando los tramos F–V1–V2–V3–V4, no la línea recta entre F y V4."
+      ],
+      "logro": [
+        "Bien fundamentado: con esos números no hay discusión. La comunidad va a necesitar bomba y estanque. Insignia de oro: Juez de Pendientes.",
+        "Y estanque ya tienen: lo instaló un proyecto anterior. Vamos a verlo, que algo no anda bien."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Vuelvan a medir y corrijan en línea nueva.",
+        "planilla": "La planilla no calza con su libreta. Copien los desniveles tal como salen, tramo por tramo.",
+        "desniveles": "Algún desnivel no calza con el terreno. Revisen esa postura: la burbuja, la lectura, el punto de cambio.",
+        "justificacion": "La decisión tiene que apoyarse en sus números. Revisen las cotas de F y V4, el largo del trazado y la pendiente que sale de ellos.",
+        "decision": "Miren de nuevo sus números: ¿la fuente está más alta que V4? ¿La pendiente alcanza el mínimo?"
+      }
+    },
+    "2.1@camino-pehuen": {
+      "encargo": [
+        "Llegamos a la parada rural. La comunidad quiere habilitar el camino viejo que sube hacia los pehuenes, para que pueda pasar la micro rural.",
+        "Un camino así es transitable si ningún tramo pasa de {pendienteMaxima} % de pendiente. Hay que medirlo, no mirarlo: el ojo engaña en las subidas.",
+        "Partan del {pr}, cota {cotaPr} m, y nivelen las estacas K0 a K4. Para cada tramo necesito el desnivel y la pendiente, con la distancia de la cinta.",
+        "Después me dicen qué tramos pasan el máximo y si el camino se puede transitar así como está."
+      ],
+      "pistas": [
+        "Pendiente del tramo = desnivel / distancia × 100. Un tramo corto con harto desnivel puede pasarse aunque el resto sea suave.",
+        "Revisen tramo por tramo: basta uno sobre el máximo para que el camino no sea transitable."
+      ],
+      "logro": [
+        "Bien medido: ese repecho entre K2 y K3 no lo sube la micro. Insignia de oro: Juez de Pendientes.",
+        "Con estos datos la comunidad puede pedir que se rebaje la rasante. Seguimos."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Vuelvan a medir y corrijan en línea nueva.",
+        "planilla": "La planilla no calza con su libreta. Revisen los desniveles y las pendientes, tramo por tramo.",
+        "desniveles": "Algún desnivel no calza con el terreno. Revisen esa postura: la burbuja, la lectura, el punto de cambio.",
+        "decision": "Algún tramo está mal clasificado o la conclusión no sigue de las pendientes. Compárenlas una por una con el máximo."
+      }
+    },
+    "2.1@cero-cota": {
+      "encargo": [
+        "Llegamos a la parada rural, a orillas del río. Con las crecidas del invierno, el agua ya ha llegado a varias casas.",
+        "La municipalidad fijó la línea de seguridad en la cota {linea} m: las casas que quedan bajo esa cota tienen que trasladarse o protegerse.",
+        "Partan del {pr}, cota {cotaPr} m, y nivelen las cuatro casas, de C1 a C4. Para cada una necesito su cota y cuánto queda sobre o bajo la línea.",
+        "Con esos números decimos qué casas están en riesgo. Ojo con las que quedan justito: ahí un milímetro mal leído cambia la respuesta."
+      ],
+      "pistas": [
+        "Margen = cota de la casa − cota de la línea. Si sale negativo, la casa está bajo la línea.",
+        "Revisen con calma las casas que quedan cerca de la línea: ahí se juega la decisión."
+      ],
+      "logro": [
+        "Bien medido. Con esa lista la municipalidad sabe a quién avisar primero. Insignia de oro: Juez de Pendientes.",
+        "Seguimos camino: en esta comunidad hay más trabajo."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Vuelvan a medir y corrijan en línea nueva.",
+        "planilla": "La planilla no calza con su libreta. Revisen cada cota y su margen respecto de la línea.",
+        "cotas": "Alguna cota no calza con el terreno. Revisen esa postura: la burbuja, la lectura, el punto de cambio.",
+        "decision": "Alguna casa está mal clasificada. Comparen cada cota con la línea de seguridad."
+      }
+    },
+    "2.2": {
+      "encargo": [
+        "Esta comunidad ya tiene un estanque elevado: lo instaló un proyecto anterior. Pero a las viviendas más alejadas el agua les llega sin fuerza.",
+        "Aquí está el plano del proyecto: dice que el radier del estanque está en la cota {cotaPlano} m, y que la torre mide {alturaTorre} m. La torre la medimos: está bien. El radier, no lo sé.",
+        "Re-nivelen el sector en un circuito de verificación: partan del {pr}, cota {cotaPr} m, pasen por las cuatro viviendas y por el radier del estanque, y vuelvan al {pr}.",
+        "Después comparen con el plano. Cada vivienda necesita al menos {presionMinima} m de columna de agua: díganme dónde debería quedar el estanque."
+      ],
+      "pistas": [
+        "La cota del estanque es la del radier más la altura de la torre. La presión en una vivienda es la cota del estanque menos la cota de la vivienda.",
+        "La cota óptima del estanque es la de la vivienda más alta más {presionMinima} m. Propongan una cota que no quede ni un milímetro por debajo."
+      ],
+      "logro": [
+        "¡Caso resuelto! El plano tenía el radier 3,5 m más alto que el real: con ese dato diseñaron una torre corta. Insignia de oro: Detective de Cotas.",
+        "Ahora falta la línea que trae el agua al reservorio. Para eso vamos a trabajar con otra cuadrilla."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Vuelvan a medir y corrijan en línea nueva.",
+        "cierre": "El circuito de verificación no cierra. Antes de acusar al plano, nuestra nivelación tiene que estar impecable.",
+        "planilla": "El informe no calza con su libreta o con sus propias cuentas. Revisen la cota del estanque, las presiones y la cota óptima.",
+        "deteccion": "¿Qué dice su nivelación del radier, comparada con el plano? Si hay diferencia, hay que decirlo con todas sus letras.",
+        "cotaOptima": "La cota óptima no calza. Busquen la vivienda más alta y súmenle la presión mínima.",
+        "abastecimiento": "Con la cota que proponen, alguna vivienda queda corta de presión. Mejor quedar un poco arriba que un poco abajo."
+      }
+    },
+    "2.3": {
+      "encargo": [
+        "Último encargo de la parada: la línea de conducción, 400 m desde la captación C hasta el reservorio R. Ustedes son la cuadrilla {tramo}; la cuadrilla {otroTramo} parte del otro extremo.",
+        "Cada cuadrilla nivela su mitad hasta el punto M, al medio, y vuelve a su punto de partida para cerrar. M se lee recién cuando las dos cuadrillas llegan.",
+        "En M comparamos: las dos cotas de M tienen que coincidir. Si no coinciden, nadie se va para la casa: se juntan, revisan las dos libretas y las bitácoras, y encuentran el error.",
+        "Ustedes parten del {pr}, cota {cotaPr} m. Suerte, y anoten todo lo que pase en terreno."
+      ],
+      "pistas": [
+        "El tramo que no cierra contra su cota conocida es el que tiene el error. Dentro de ese tramo, comparen la ida y la vuelta por secciones: de la cota conocida al punto de cambio, y del punto de cambio a M.",
+        "La bitácora cuenta lo que pasó en cada postura. Una ráfaga en la mira, un golpe al trípode o una libreta mojada dejan huellas distintas."
+      ],
+      "logro": [
+        "¡Eso es trabajo en equipo! Las dos cuadrillas coinciden en M y el error quedó explicado. Insignia de oro, para toda la cuadrilla: Punto de Encuentro.",
+        "Con esto cerramos la parada rural. El Ñielol nos espera."
+      ],
+      "rechazo": {
+        "calculos": "Las cuentas de la libreta no cuadran con sus lecturas. Revisen Δh = LT − LA y la suma de cotas, fila por fila.",
+        "distancias": "Hay distancias que no son las de la cinta. Vuelvan a medir y corrijan en línea nueva.",
+        "tramo": "¿Cuál de los dos tramos no cierra contra su cota conocida? Ahí está el error.",
+        "estacion": "El error está en ese tramo, pero no en esa postura. Comparen la ida y la vuelta por secciones.",
+        "causa": "La causa no corresponde a lo que pasó en terreno. Lean otra vez las bitácoras.",
+        "cota": "La cota común de M no calza. Usen el tramo que sí cierra, o corrijan el otro con el error que encontraron.",
+        "acuerdo": "Falta que la otra cuadrilla coincida con ustedes y documente su parte."
+      }
+    }
+  },
+  "actos": {
+    "1": {
+      "titulo": "Puerto Saavedra",
+      "lineas": [
+        "Puerto Saavedra. Aquí, donde el río Imperial se junta con el mar, empezaba mi camino cuando era cochayuyero: cargábamos la carreta con cochayuyo y partíamos tierra adentro con los bueyes.",
+        "En la costanera hay un PR marítimo, amarrado al nivel del mar. De un punto así cuelgan todas las cotas del viaje: cada vez que dicen \"cota 100\", alguien la midió desde un PR como este.",
+        "Por eso cuidamos tanto el método: si una cota se tuerce al principio, se tuerce todo el camino. Queule, Toltén, el Cautín… cada parada se apoya en la anterior.",
+        "Suban a la carreta. La próxima parada es una comunidad rural que necesita gente como ustedes."
+      ]
     }
   }
 }

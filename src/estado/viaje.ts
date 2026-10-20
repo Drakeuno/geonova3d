@@ -4,7 +4,7 @@ import { MISIONES } from '@/datos/misiones'
 import type { Burbuja } from '@/motor/burbuja'
 import { entregar, iniciar, resolver, viajeInicial, type EstadoMision, type ProgresoMision, type Viaje } from '@/motor/progreso'
 import type { MovimientoXp } from '@/motor/puntaje'
-import { perfilVacio, type EntradasCompensacion, type EntradasPerfil, type Evaluacion } from '@/misiones/tipos'
+import { perfilVacio, type EntradasCompensacion, type EntradasPerfil, type Evaluacion, type Formulario } from '@/misiones/tipos'
 import { useJuego } from './juego'
 
 // Avance del viaje por estudiante, guardado en el navegador: estado de cada misión, el intento en
@@ -23,6 +23,14 @@ export interface IntentoMision {
   niveladas: Record<string, number>
   compensacion: EntradasCompensacion
   perfil: EntradasPerfil
+  /**
+   * Respuestas de las etapas de formulario, por sección: '_' en general; en la 2.3, una por tramo
+   * (dos ventanas del mismo equipo comparten este almacenamiento). Opcional: los intentos guardados
+   * antes de F5 no lo tienen.
+   */
+  formularios?: Record<string, Formulario>
+  /** 2.3: con una cuadrilla simulada o con otra ventana del mismo equipo (código de sesión). */
+  cooperativa?: { modo: 'simulada' | 'ventanas'; codigo: string | null } | null
 }
 
 export interface EvaluacionGuardada extends Evaluacion {
@@ -62,6 +70,8 @@ const intentoNuevo = (numero: number): IntentoMision => ({
   niveladas: {},
   compensacion: {},
   perfil: perfilVacio(),
+  formularios: {},
+  cooperativa: null,
 })
 
 const viajeGuardado = (viajes: Record<string, Viaje>, usuarioId: string) => viajes[usuarioId] ?? VIAJE_INICIAL

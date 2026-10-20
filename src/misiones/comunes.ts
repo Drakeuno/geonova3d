@@ -9,10 +9,12 @@ import {
   type ModoCalculo,
   type RegistroLibreta,
 } from '@/motor/libreta'
-import { formatearNumero, type Mm } from '@/motor/numeros'
+import { toleranciaCierreMm } from '@/motor/desniveles'
+import { longitudRecorridoM } from '@/motor/escenarios'
+import { formatearNumero, parsearMetrosAMm, parsearNumero, type Mm } from '@/motor/numeros'
 import { rellenar } from '@/textos/rellenar'
 import textos from '@/textos/es-CL.json'
-import type { ContextoEntrega, Criterio, Evaluacion } from './tipos'
+import type { ContextoEntrega, Criterio, Evaluacion, Formulario } from './tipos'
 
 // Revisiones que comparten las misiones con libreta: que siga el recorrido, que esté completa, que
 // las cuentas del jugador cuadren con sus lecturas y que las distancias sean las de la cinta.
@@ -117,3 +119,74 @@ export function cerrarEvaluacion(criterios: Criterio[], desempeno: Evaluacion['d
   const primeraFalla = criterios.find((c) => !c.ok)
   return { aprobada: !primeraFalla, criterios, motivo: primeraFalla?.id ?? null, desempeno }
 }
+
+// ── Etapas de formulario (2.1, 2.2, 2.3) ────────────────────────────────────────────────────────
+
+/** Tolerancia del levantamiento: T = 12√K con el largo del recorrido de la misión. */
+export const toleranciaRecorrido = (ctx: ContextoEntrega) =>
+  toleranciaCierreMm(longitudRecorridoM(ctx.lecturas), ctx.parametros.toleranciaCierre.coeficienteMm)
+
+/** Cota y distancia acumulada de cada punto según la libreta (con las lecturas del jugador). */
+export function puntosDeLibreta(pares: Par[], pr: { punto: string; cotaMm: Mm }) {
+  const puntos = new Map<string, { cotaMm: Mm; distanciaAcumuladaM: number }>([[pr.punto, { cotaMm: pr.cotaMm, distanciaAcumuladaM: 0 }]])
+  for (const p of pares) {
+    if (p.lectura.tipo === 'LA' && !puntos.has(p.lectura.punto)) {
+      puntos.set(p.lectura.punto, { cotaMm: p.calculo.cotaMm, distanciaAcumuladaM: p.calculo.distanciaAcumuladaM })
+    }
+  }
+  return puntos
+}
+
+/** Clave de un campo por tramo: "dh:F|V1". La barra separa porque los nombres de punto llevan guion. */
+export const claveTramo = (campo: string, a: string, b: string) => `${campo}:${a}|${b}`
+
+export const leerMm = (f: Formulario, clave: string) => parsearMetrosAMm(f[clave] ?? '')
+export const leerNumero = (f: Formulario, clave: string) => parsearNumero(f[clave] ?? '')
+
+/** El valor falta o se aleja de la referencia más que el margen. */
+export const fueraDe = (valor: number | null, referencia: number, margen: number) => valor === null || Math.abs(valor - referencia) > margen
+
+/** Nombre legible de un campo del formulario, para los avisos de bloqueo. */
+export function nombreCampo(clave: string): string {
+  const [campo, resto = ''] = clave.split(':')
+  const [a, b = ''] = resto.split('|')
+  const plantilla = (t.campos as Record<string, string>)[campo] ?? clave
+  return rellenar(plantilla, { a, b })
+}
+
+/**
+ * Campos que faltan o no se pueden leer. `mm` = metros escritos (cotas, Δh, presiones); `numero` =
+ * cualquier número (pendientes, escalas); `texto` = no vacío; `opcion` = una de las opciones dadas.
+ */
+export function camposIncompletos(f: Formulario, campos: Record<string, 'mm' | 'numero' | 'texto' | readonly string[]>): string[] {
+  return Object.entries(campos)
+    .filter(([clave, tipo]) => {
+      const v = (f[clave] ?? '').trim()
+      if (tipo === 'mm') return parsearMetrosAMm(v) === null
+      if (tipo === 'numero') return parsearNumero(v) === null
+      if (tipo === 'texto') return v === ''
+      return !tipo.includes(v)
+    })
+    .map(([clave]) => nombreCampo(clave))
+}
+
+/** Bloqueo por campos incompletos y por una justificación demasiado corta. */
+export function bloqueosFormulario(
+  f: Formulario,
+  campos: Record<string, 'mm' | 'numero' | 'texto' | readonly string[]>,
+  textoLargo?: { clave: string; minimo: number },
+): string[] {
+  const faltan = camposIncompletos(f, campos)
+  const motivos = faltan.length ? [rellenar(t.faltanCampos, { campos: faltan.join(', ') })] : []
+  if (textoLargo && (f[textoLargo.clave] ?? '').trim().length < textoLargo.minimo) {
+    motivos.push(rellenar(t.textoCorto, { campo: nombreCampo(textoLargo.clave), n: textoLargo.minimo }))
+  }
+  return motivos
+}
+
+/** Criterio a partir de la lista de lo que falló: ok si está vacía. */
+export const criterio = (id: string, malos: string[], textoOk: string, textoMal: string, valores: Record<string, string | number> = {}): Criterio => ({
+  id,
+  ok: malos.length === 0,
+  texto: rellenar(malos.length === 0 ? textoOk : textoMal, { ...valores, lista: malos.join(', ') }),
+})

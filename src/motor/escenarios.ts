@@ -50,6 +50,16 @@ const esquemaElemento = z.discriminatedUnion('tipo', [
   }),
   z.object({ tipo: z.literal('arbol'), x: z.number(), y: z.number(), alto: z.number().positive().default(8) }),
   z.object({ tipo: z.literal('camino'), puntos: z.array(z.tuple([z.number(), z.number()])).min(2), ancho: z.number().positive().default(2) }),
+  z.object({ tipo: z.literal('rio'), puntos: z.array(z.tuple([z.number(), z.number()])).min(2), ancho: z.number().positive().default(8) }),
+  /** Estanque elevado: depósito sobre una torre de `alto` metros (Misión 2.2). */
+  z.object({
+    tipo: z.literal('estanque'),
+    nombre: z.string().optional(),
+    x: z.number(),
+    y: z.number(),
+    alto: z.number().positive(),
+    radio: z.number().positive().default(2.5),
+  }),
 ])
 
 export const esquemaEscenario = z.object({
@@ -60,6 +70,11 @@ export const esquemaEscenario = z.object({
   sendero: z.object({ eje: z.array(z.string()).min(2), estacionamiento_m: z.number().positive() }).optional(),
   recorridos: z.array(esquemaRecorrido).default([]),
   elementos: z.array(esquemaElemento).default([]),
+  /**
+   * Datos que la misión entrega al jugador, en metros: línea de seguridad (Cero Cota), altura de la
+   * torre y cota del plano antiguo (2.2)… No son cotas que se midan.
+   */
+  datos: z.record(z.string(), z.number()).default({}),
 })
 
 export type ElementoEscenario = z.infer<typeof esquemaElemento>

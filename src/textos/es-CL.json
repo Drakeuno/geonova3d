@@ -34,7 +34,7 @@
     "ruta": "Campus UCT → Puerto Saavedra → parada rural → Cerro Ñielol",
     "saludo": "Antes de salir al camino, demuéstrame que sabes armar el nivel y leer la mira. En el campamento partimos.",
     "actoPrefijo": "Acto",
-    "cutscene": "Tramo narrativo: el Cochayuyero muestra el PR marítimo de Puerto Saavedra.",
+    "cutscene": "Tramo narrativo: el Cochayuyero muestra el PR marítimo de Puerto Saavedra y parte el viaje.",
     "enConstruccion": "En construcción",
     "grupal": "grupal",
     "xp": "XP",
@@ -42,7 +42,9 @@
     "continuar": "Continuar",
     "reintentar": "Reintentar",
     "ver": "Ver",
-    "misXp": "{xp} XP en el viaje"
+    "misXp": "{xp} XP en el viaje",
+    "verTramo": "Ver el tramo",
+    "tramoBloqueado": "Se abre al terminar el campamento"
   },
   "panel": {
     "titulo": "Panel docente",
@@ -287,6 +289,98 @@
       },
       "dibujoOk": "El dibujo cumple las escalas, el plano de comparación y los rótulos.",
       "dibujoMal": "El dibujo debe llevar: {problemas}."
+    },
+    "faltanCampos": "faltan datos o no se pueden leer: {campos}",
+    "textoCorto": "{campo}: escribe al menos {n} caracteres",
+    "campos": {
+      "dh": "Δh {a}–{b}",
+      "p": "pendiente {a}–{b}",
+      "excede": "¿{a}–{b} pasa el máximo?",
+      "cota": "cota de {a}",
+      "margen": "margen de {a}",
+      "bajo": "¿{a} bajo la línea?",
+      "presion": "presión en {a}",
+      "dist": "distancia del trazado",
+      "pendiente": "pendiente del trazado",
+      "decision": "decisión",
+      "justificacion": "justificación",
+      "dif": "diferencia con el plano",
+      "alterado": "¿plano alterado?",
+      "cotaEstanque": "cota del estanque",
+      "cotaOptima": "cota óptima",
+      "cotaPropuesta": "cota propuesta",
+      "tramo": "tramo con el error",
+      "estacion": "postura con el error",
+      "causa": "causa raíz",
+      "cotaComun": "cota común de M",
+      "procedimiento": "procedimiento de corrección"
+    },
+    "m21": {
+      "planillaOk": "La planilla coincide con tu libreta.",
+      "planillaMal": "La planilla no coincide con tu libreta en {lista}.",
+      "desnivelesOk": "Los desniveles calzan con el terreno (±{t} mm).",
+      "desnivelesMal": "Los desniveles de {lista} se alejan del terreno más que la tolerancia (±{t} mm).",
+      "justificacionOk": "La justificación cita los números de tu libreta.",
+      "justificacionMal": "La justificación no cita bien los números de tu libreta: revisa {lista}.",
+      "citas": {
+        "cotaF": "la cota de F",
+        "cotaV4": "la cota de V4",
+        "distancia": "la distancia del trazado",
+        "pendiente": "la pendiente"
+      },
+      "agua": {
+        "decisionOk": "Decisión correcta: {d}.",
+        "decisionMal": "La decisión no corresponde a lo que muestran los desniveles.",
+        "opciones": {
+          "gravedad": "el agua llega por gravedad",
+          "bombeo": "hay que bombear"
+        }
+      },
+      "pehuen": {
+        "decisionOk": "Decisión correcta: identificaste los tramos que pasan de {max} % y si el camino es transitable.",
+        "tramosMal": "Algún tramo está mal clasificado respecto del máximo de {max} %.",
+        "decisionMal": "La decisión sobre el camino no corresponde a sus pendientes."
+      },
+      "ceroCota": {
+        "planillaMal": "La planilla no coincide con tu libreta en {lista} (cota o margen respecto de la línea).",
+        "cotasOk": "Las cotas de las casas calzan con el terreno (±{t} mm).",
+        "cotasMal": "Las cotas de {lista} se alejan del terreno más que la tolerancia (±{t} mm).",
+        "decisionOk": "Identificaste bien las casas bajo la línea de seguridad.",
+        "decisionMal": "Alguna casa está mal clasificada respecto de la línea de seguridad."
+      }
+    },
+    "m22": {
+      "cierreOk": "El circuito de verificación cierra: e = ΣΔh = {e} mm, dentro de ±{t} mm.",
+      "cierreMal": "El circuito de verificación no cierra: e = ΣΔh = {e} mm, más que la tolerancia de ±{t} mm.",
+      "planillaOk": "El informe coincide con tu libreta y sus cuentas cuadran.",
+      "planillaMal": "Revisa en el informe: {lista}.",
+      "campos": {
+        "radier": "cota del radier",
+        "dif": "diferencia con el plano",
+        "estanque": "cota del estanque (radier + torre)",
+        "presion": "presión en {v}",
+        "optima": "cota óptima (máx. Vᵢ + presión mínima)"
+      },
+      "deteccionOk": "Detectaste la alteración del plano: el radier real está más abajo de lo que dice.",
+      "deteccionMal": "No queda demostrada la alteración del plano: revisa tu cota del radier y tu conclusión.",
+      "optimaOk": "Cota óptima correcta (±{t} mm).",
+      "optimaMal": "La cota óptima no calza con el terreno (±{t} mm).",
+      "abastecimientoOk": "Con la cota propuesta, todas las viviendas tienen al menos {mca} m.c.a.",
+      "abastecimientoMal": "Con la cota propuesta, alguna vivienda queda bajo {mca} m.c.a."
+    },
+    "m23": {
+      "sinSesion": "elige cómo jugar la misión: con una cuadrilla simulada o con otra ventana",
+      "companeroSinTerminar": "la cuadrilla {tramo} todavía no termina su tramo (ida y vuelta)",
+      "tramoOk": "Identificaste el tramo con el error.",
+      "tramoMal": "El tramo señalado no es el que tiene el error: ¿cuál no cierra contra su cota conocida?",
+      "estacionOk": "Ubicaste la postura con la lectura errónea.",
+      "estacionMal": "La postura señalada no es la de la lectura errónea: compara la ida y la vuelta por secciones.",
+      "causaOk": "Causa raíz correcta.",
+      "causaMal": "La causa raíz no corresponde a lo que pasó en terreno: revisa las bitácoras.",
+      "cotaOk": "Cota común de M dentro de la tolerancia (±{t} mm).",
+      "cotaMal": "La cota común de M no calza con el terreno (±{t} mm).",
+      "acuerdoOk": "Ambas cuadrillas coinciden en la cota de M y documentaron el proceso.",
+      "acuerdoMal": "La otra cuadrilla aún no documenta su diagnóstico, o su cota de M difiere en más de ±{t} mm."
     }
   },
   "estados": {
@@ -346,7 +440,8 @@
       "bonus-cooperativa": "Bonus cooperativo",
       "bonus-ayuda": "Ayuda entre cuadrillas",
       "penalizacion-tachadura": "Tachadura"
-    }
+    },
+    "paraLaCuadrilla": "(cuadrilla)"
   },
   "compensacion": {
     "titulo": "Cierre y compensación",
@@ -407,5 +502,174 @@
     },
     "pie": "Escala horizontal 1:{h} · Escala vertical 1:{v} (exageración ×{ex}) · Plano de comparación: {plano} m",
     "imprimir": "Imprimir al 100 %, sin ajustar a la página"
+  },
+  "cutscene": {
+    "volver": "Volver al viaje",
+    "acto": "Acto {n}",
+    "cargando": "Cargando…",
+    "alt1": "El Cochayuyero sale de Puerto Saavedra con su carreta de bueyes cargada de cochayuyo, junto al mar.",
+    "seguir1": "Seguir a la parada rural",
+    "irActo1": "Partir a Puerto Saavedra"
+  },
+  "etapas": {
+    "si": "Sí",
+    "no": "No",
+    "tramo": "Tramo",
+    "dh": "Δh (m)",
+    "dhDe": "Δh {a}–{b}, en metros",
+    "planillaTramos": "Planilla de tramos",
+    "justificacion": "Justificación (cita tus números)",
+    "agua": {
+      "titulo": "Decisión técnica: ¿gravedad o bombeo?",
+      "bajada": "Con los desniveles de tu libreta, decide si el agua llega sola a las viviendas.",
+      "pendienteMinima": "Pendiente mínima para gravedad",
+      "citas": "Números de la decisión",
+      "formula": "P = (Cota F − Cota V4) / distancia del trazado × 100",
+      "cotaF": "Cota de F (m)",
+      "cotaV4": "Cota de V4 (m)",
+      "distancia": "Distancia del trazado (m)",
+      "distanciaAyuda": "F–V1–V2–V3–V4, con la cinta",
+      "pendiente": "Pendiente P (%)",
+      "decision": "Decisión",
+      "gravedad": "Gravedad: el agua llega sola",
+      "bombeo": "Bombeo: hay que impulsarla",
+      "ejemploJustificacion": "Ej.: la fuente queda bajo V4, P = … %: no alcanza el mínimo, hay que bombear."
+    },
+    "pehuen": {
+      "titulo": "Decisión técnica: ¿el camino es transitable?",
+      "bajada": "Con los desniveles de tu libreta, calcula la pendiente de cada tramo y compárala con el máximo.",
+      "pendienteMaxima": "Pendiente máxima transitable",
+      "formula": "P = Δh / distancia × 100",
+      "pendiente": "Pendiente (%)",
+      "pendienteDe": "Pendiente {a}–{b}, en %",
+      "excede": "¿Pasa {max}?",
+      "excedeDe": "¿El tramo {a}–{b} pasa {max}?",
+      "decision": "Decisión",
+      "transitable": "Transitable",
+      "noTransitable": "No transitable así como está",
+      "ejemploJustificacion": "Ej.: el tramo … sube … %, más que el máximo: hay que rebajar la rasante."
+    },
+    "ceroCota": {
+      "titulo": "Decisión técnica: casas bajo la línea de seguridad",
+      "bajada": "Con las cotas de tu libreta, decide qué casas quedan bajo la línea que fijó la municipalidad.",
+      "linea": "Línea de seguridad",
+      "planilla": "Planilla de casas",
+      "formula": "Margen = cota de la casa − cota de la línea (negativo: bajo la línea)",
+      "casa": "Casa",
+      "cota": "Cota (m)",
+      "margen": "Margen (m)",
+      "bajo": "¿Bajo la línea?",
+      "cotaDe": "Cota de {a}, en metros",
+      "margenDe": "Margen de {a}, en metros",
+      "bajoDe": "¿{a} queda bajo la línea?",
+      "ejemploJustificacion": "Ej.: C… queda … m bajo la línea: hay que trasladarla o protegerla."
+    },
+    "detective": {
+      "titulo": "Informe del detective",
+      "bajada": "Compara tu nivelación con el plano antiguo, calcula las presiones reales y propone dónde debe quedar el estanque.",
+      "plano": "El plano antiguo dice",
+      "radierPlano": "Cota del radier",
+      "torre": "Altura de la torre (correcta)",
+      "estanquePlano": "Cota del estanque según el plano",
+      "verificacion": "Verificación del radier",
+      "radierMedido": "Cota del radier, según tu libreta (m)",
+      "radierAyuda": "El punto T",
+      "diferencia": "Diferencia: plano − tu libreta (m)",
+      "diferenciaAyuda": "Positiva: el plano lo pone más alto",
+      "estanqueReal": "Cota real del estanque (m)",
+      "estanqueAyuda": "Radier + altura de la torre",
+      "alterado": "¿El plano tiene la cota del radier alterada?",
+      "alteradoSi": "Sí, está alterada",
+      "alteradoNo": "No, coincide",
+      "viviendas": "Presión en las viviendas, con el estanque actual",
+      "formulaPresion": "Presión = cota del estanque − cota de la vivienda (m.c.a.)",
+      "vivienda": "Vivienda",
+      "cota": "Cota (m)",
+      "presion": "Presión (m.c.a.; mínimo {mca})",
+      "cotaDe": "Cota de {v}, en metros",
+      "presionDe": "Presión en {v}, en m.c.a.",
+      "propuesta": "Cota óptima y propuesta",
+      "formulaOptima": "Cota óptima = cota de la vivienda más alta + {mca} m",
+      "optima": "Cota óptima del estanque (m)",
+      "propuestaCota": "Cota que propones para el estanque (m)",
+      "propuestaAyuda": "Con ella, ninguna vivienda debe quedar bajo el mínimo",
+      "ejemploJustificacion": "Ej.: el radier real está … m bajo el plano; hay que subir el estanque a …"
+    }
+  },
+  "cooperativa": {
+    "modoTitulo": "¿Con quién nivelan la línea?",
+    "modoBajada": "La misión 2.3 se juega entre dos cuadrillas: cada una nivela su mitad de la línea y se encuentran en M.",
+    "simulada": "Con una cuadrilla simulada",
+    "simuladaBajada": "La otra cuadrilla la lleva el juego. Recomendado para practicar o si juegas solo.",
+    "ventanas": "Con otra ventana de este equipo",
+    "ventanasBajada": "Abre la misión en dos ventanas de este navegador: cada una es una cuadrilla.",
+    "sesion": "Sesión {codigo}",
+    "elegirCuadrilla": "Esta ventana es una de las dos cuadrillas. Elige cuál: la otra ventana debe elegir la otra.",
+    "cuadrillaA": "Cuadrilla A (desde la captación C)",
+    "cuadrillaB": "Cuadrilla B (desde el reservorio R)",
+    "cambiarASimulada": "Mejor con una cuadrilla simulada",
+    "titulo": "Punto de Encuentro",
+    "bajada": "Las dos cuadrillas confrontan su cota de M. Si no coinciden, diagnostican juntas el error.",
+    "tuCuadrilla": "Tu cuadrilla: {tramo}",
+    "otraSimulada": "Cuadrilla {tramo} (simulada)",
+    "otraVentana": "Cuadrilla {tramo} (otra ventana)",
+    "parteDe": "Parte de {punto}",
+    "estado": {
+      "nivelando": "Nivelando la ida hacia M.",
+      "llegasteAM": "Llegó a M y anotó su cota.",
+      "enCamino": "Viene en camino hacia M.",
+      "enM": "Llegó a M: esperando para confrontar.",
+      "cerro": "Terminó su tramo, ida y vuelta.",
+      "esperandoVentana": "Esperando a la otra ventana… Ábrela y entra a la misión 2.3."
+    },
+    "codigoSesion": "Sesión {codigo}: la otra ventana debe estar en esta misión, en este mismo navegador.",
+    "bloqueoM": "M se lee recién cuando la cuadrilla {tramo} también llegue.",
+    "confrontacion": "Confrontación en M",
+    "sinConfrontar": "Cuando las dos cuadrillas anoten su cota de M, se comparan aquí.",
+    "cotaMDe": "Cota de M según la cuadrilla {tramo}",
+    "diferencia": "Diferencia (tolerancia ±{t} mm)",
+    "discrepan": "Las cotas de M no coinciden: se activa el diagnóstico conjunto.",
+    "coinciden": "Las cotas de M coinciden dentro de la tolerancia.",
+    "diagnosticoIntro": "Diagnóstico conjunto: terminen la vuelta para cerrar cada tramo, revisen las dos libretas y las bitácoras, y acuerden qué pasó.",
+    "bitacoras": "Bitácoras de terreno",
+    "bitacoraDe": "Bitácora de la cuadrilla {tramo}",
+    "rutina": [
+      "Sin novedad.",
+      "Cielo cubierto, buena visibilidad.",
+      "Viento suave; mira bien aplomada.",
+      "Sin novedad; terreno firme."
+    ],
+    "eventos": {
+      "mira-danada": "Una ráfaga fuerte sacudió la mira mientras el portamira la sostenía. Se siguió leyendo.",
+      "tripode-golpeado": "Un caballo suelto pasó rozando el trípode entre la lectura atrás y la lectura adelante.",
+      "libreta-mojada": "Chubasco: la libreta se mojó y una fila se pasó en limpio después, en la camioneta."
+    },
+    "cierres": "Cierre de cada tramo (ida y vuelta contra su cota conocida)",
+    "cierra": "Tramo {tramo}: e = {e} mm, dentro de ±{t} mm. Cierra.",
+    "noCierra": "Tramo {tramo}: e = {e} mm, más que ±{t} mm. No cierra.",
+    "sinCierre": "Tramo {tramo}: falta la vuelta para cerrar.",
+    "libretaDe": "Libreta de la cuadrilla {tramo}",
+    "sinLibretaOtra": "La libreta de la otra cuadrilla aparece al confrontar M.",
+    "resolucion": "Documento de resolución",
+    "campos": {
+      "tramo": "¿Qué tramo tiene el error?",
+      "estacion": "¿En qué postura de la ida?",
+      "causa": "Causa raíz",
+      "cotaComun": "Cota común de M (m)",
+      "procedimiento": "Procedimiento de corrección acordado"
+    },
+    "tramoN": "Tramo {tramo}",
+    "posturaS1": "S1 (primera postura)",
+    "posturaS2": "S2 (llegada a M)",
+    "causas": {
+      "lectura": "Error de lectura (la mira se movió o se leyó mal)",
+      "anotacion": "Error de anotación (el dato quedó mal escrito)",
+      "instrumento-desnivelado": "Instrumento desnivelado (se movió entre lecturas)",
+      "cinta-mal-tensada": "Error sistemático: cinta mal tensada"
+    },
+    "cotaComunAyuda": "La que adoptan las dos cuadrillas",
+    "ejemploProcedimiento": "Ej.: repetir la postura … del tramo … con la mira revisada; adoptar la cota de M del tramo que cierra.",
+    "otraResolvio": "La cuadrilla {tramo} documentó su diagnóstico: cota común {cota} m.",
+    "otraSinResolver": "La cuadrilla {tramo} aún no documenta su diagnóstico."
   }
 }

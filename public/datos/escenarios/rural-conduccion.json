@@ -1,0 +1,44 @@
+{
+  "escenario": "rural-conduccion",
+  "nombre": "Parada rural · La línea de conducción",
+  "puntos": [
+    { "id": "C", "nombre": "C (captación)", "x": 0, "y": 0, "cota": 101.8, "pr": true },
+    { "id": "P1", "x": 100, "y": 0, "cota": 101.32 },
+    { "id": "M", "nombre": "M (punto de encuentro)", "x": 200, "y": 0, "cota": 100.873 },
+    { "id": "Q1", "x": 300, "y": 0, "cota": 100.41 },
+    { "id": "R", "nombre": "R (reservorio)", "x": 400, "y": 0, "cota": 99.95, "pr": true }
+  ],
+  "recorridos": [
+    {
+      "id": "2.3-A",
+      "tipo": "circuito",
+      "estaciones": [
+        { "id": "S1", "x": 50, "y": 7, "visadas": ["C", "P1"] },
+        { "id": "S2", "x": 150, "y": 7, "visadas": ["P1", "M"] },
+        { "id": "S3", "x": 150, "y": -7, "visadas": ["M", "P1"] },
+        { "id": "S4", "x": 50, "y": -7, "visadas": ["P1", "C"] }
+      ]
+    },
+    {
+      "id": "2.3-B",
+      "tipo": "circuito",
+      "estaciones": [
+        { "id": "S1", "x": 350, "y": 7, "visadas": ["R", "Q1"] },
+        { "id": "S2", "x": 250, "y": 7, "visadas": ["Q1", "M"] },
+        { "id": "S3", "x": 250, "y": -7, "visadas": ["M", "Q1"] },
+        { "id": "S4", "x": 350, "y": -7, "visadas": ["Q1", "R"] }
+      ]
+    }
+  ],
+  "elementos": [
+    { "tipo": "camino", "puntos": [[-15, 0], [415, 0]], "ancho": 2 },
+    { "tipo": "edificio", "nombre": "Captación", "x": -12, "y": 14, "ancho": 6, "largo": 6, "alto": 2.5 },
+    { "tipo": "edificio", "nombre": "Reservorio", "x": 414, "y": -16, "ancho": 12, "largo": 12, "alto": 2 },
+    { "tipo": "arbol", "x": 30, "y": 30, "alto": 9 },
+    { "tipo": "arbol", "x": 120, "y": -32, "alto": 8 },
+    { "tipo": "arbol", "x": 190, "y": 34, "alto": 10 },
+    { "tipo": "arbol", "x": 270, "y": -30, "alto": 9 },
+    { "tipo": "arbol", "x": 330, "y": 28, "alto": 8 },
+    { "tipo": "arbol", "x": 380, "y": 40, "alto": 11 }
+  ]
+}

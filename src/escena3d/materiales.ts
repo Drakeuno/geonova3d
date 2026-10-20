@@ -22,6 +22,8 @@ export const COLORES_3D = {
   pasto: paleta.bosque[300],
   pastoOscuro: paleta.bosque[400],
   camino: paleta.tierra[300],
+  agua: paleta.costa[400],
+  estanque: paleta.costa[200],
   muro: paleta.tierra[100],
   techo: paleta.granate[700],
   copa: paleta.bosque[600],

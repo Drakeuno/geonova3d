@@ -7,6 +7,7 @@ import Inicio from '@/paginas/Inicio'
 import MapaViaje from '@/paginas/MapaViaje'
 import PanelDocente from '@/paginas/PanelDocente'
 import PracticaLibreta from '@/paginas/PracticaLibreta'
+import Cutscene from '@/paginas/Cutscene'
 import textos from '@/textos/es-CL.json'
 
 // Las páginas con terreno 3D (y three.js) se descargan solo cuando se abren.
@@ -61,6 +62,7 @@ export default function App() {
             </SoloRol>
           }
         />
+        <Route path="/acto/:acto" element={<SoloRol rol="estudiante"><Cutscene /></SoloRol>} />
         <Route path="/panel" element={<SoloRol rol="docente"><PanelDocente /></SoloRol>} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

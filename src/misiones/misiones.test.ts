@@ -7,7 +7,7 @@ import { cotaVerdaderaMm, estacionesDelEje, leerEscenario, planificarRecorrido, 
 import { rangoDesdeParametros } from '@/motor/lecturas'
 import { corregirEnLineaNueva, registrarFila, registroVacio, type DatosFila, type RegistroLibreta } from '@/motor/libreta'
 import { formatearMm, type Mm } from '@/motor/numeros'
-import { entregarMision } from './definiciones'
+import { configMision, entregarMision } from './definiciones'
 import { cierreDelCircuito } from './m12'
 import { perfilDesdeLibreta, planillaEsperada, planoComparacionValido } from './m13'
 import { perfilVacio, type ContextoEntrega, type EntradasPerfil, type Evaluacion, type IdMisionJugable } from './tipos'
@@ -58,11 +58,15 @@ const contexto = (registro: RegistroLibreta, lecturas: LecturaPlanificada[], ext
   lecturas,
   compensacion: {},
   perfil: perfilVacio(),
+  formulario: {},
+  cooperativa: null,
   ...extra,
 })
 
+const cfg = (id: IdMisionJugable) => configMision(id, { piel: 'red-del-agua' })
+
 function evaluar(id: IdMisionJugable, ctx: ContextoEntrega): Evaluacion {
-  const r = entregarMision(id, ctx)
+  const r = entregarMision(cfg(id), ctx)
   if (r.tipo !== 'evaluada') throw new Error(`Entrega bloqueada: ${r.motivos.join(' | ')}`)
   return r.evaluacion
 }
@@ -127,14 +131,14 @@ describe('Misión 1.1 · El Primer Coteo', () => {
 
   it('bloquea sin contar como falla si falta la distancia o la fila no sigue el recorrido', () => {
     const sinDistancia = libreta('1.1', 7, { distancia: { 1: null } })
-    const r1 = entregarMision('1.1', contexto(sinDistancia.registro, sinDistancia.lecturas))
+    const r1 = entregarMision(cfg('1.1'), contexto(sinDistancia.registro, sinDistancia.lecturas))
     expect(r1).toEqual({ tipo: 'bloqueada', motivos: ['faltan distancias en las filas 2'] })
 
     const otroPunto = libreta('1.1', 7, { fila: { 1: { punto: 'P2' } } })
-    const r2 = entregarMision('1.1', contexto(otroPunto.registro, otroPunto.lecturas))
+    const r2 = entregarMision(cfg('1.1'), contexto(otroPunto.registro, otroPunto.lecturas))
     expect(r2.tipo === 'bloqueada' && r2.motivos[0]).toContain('la fila 2 no sigue el recorrido: correspondía LA a P1 (estación E1)')
 
-    const vacia = entregarMision('1.1', contexto(registroVacio(sinDistancia.registro.pr), sinDistancia.lecturas))
+    const vacia = entregarMision(cfg('1.1'), contexto(registroVacio(sinDistancia.registro.pr), sinDistancia.lecturas))
     expect(vacia).toEqual({ tipo: 'bloqueada', motivos: ['la libreta no tiene filas'] })
   })
 
@@ -203,7 +207,7 @@ describe('Misión 1.2 · Circuito Cerrado', () => {
     const { registro, lecturas } = libreta('1.2', 3)
     const compensacion = compensacionDe(registro, lecturas)
     delete compensacion.D
-    expect(entregarMision('1.2', contexto(registro, lecturas, { compensacion }))).toEqual({
+    expect(entregarMision(cfg('1.2'), contexto(registro, lecturas, { compensacion }))).toEqual({
       tipo: 'bloqueada',
       motivos: ['falta la compensación de D'],
     })
@@ -288,7 +292,7 @@ describe('Misión 1.3 · El Perfil del Sendero', () => {
     const { registro, lecturas } = libreta('1.3', 5)
     const perfil = plantilla(registro, lecturas, { titulo: ' ', ejeY: '' })
     delete perfil.filas.E4
-    expect(entregarMision('1.3', contexto(registro, lecturas, { perfil }))).toEqual({
+    expect(entregarMision(cfg('1.3'), contexto(registro, lecturas, { perfil }))).toEqual({
       tipo: 'bloqueada',
       motivos: ['falta completar la planilla en E4', 'faltan datos del dibujo: rótulo del eje vertical, título'],
     })

@@ -21,6 +21,11 @@ export default function MapaViaje() {
   const viaje = useViajeDe(usuarioId)
   const todasAbiertas = useViaje((s) => s.todasAbiertas)
   const xp = useXpIndividual(usuarioId)
+  // El tramo de Puerto Saavedra se abre al terminar el campamento (al aprobar la última misión del Acto 0).
+  const actoAbierto = (acto: number) => {
+    const ultimaAnterior = misionesDelActo((acto - 1) as 0).slice(-1)[0]
+    return todasAbiertas || (ultimaAnterior ? viaje?.[ultimaAnterior.id]?.aprobadaEn != null : false)
+  }
   // XP base de la misión (§6.2): la cooperativa suma su bonus (2.3 = Oro 150 + 100).
   const xpDe = (m: MisionCatalogo) =>
     parametros
@@ -72,10 +77,23 @@ export default function MapaViaje() {
                   alt=""
                   className="h-32 w-full rounded-xl object-cover object-[50%_30%] sm:w-56"
                 />
-                <p className="flex items-start gap-2 text-tierra-800">
-                  <Clapperboard size={20} className="mt-0.5 shrink-0 text-poncho-500" aria-hidden />
-                  {textos.viaje.cutscene}
-                </p>
+                <div className="flex-1">
+                  <p className="flex items-start gap-2 text-tierra-800">
+                    <Clapperboard size={20} className="mt-0.5 shrink-0 text-poncho-500" aria-hidden />
+                    {textos.viaje.cutscene}
+                  </p>
+                  <div className="mt-3">
+                    {actoAbierto(acto.id) ? (
+                      <Link to={`/acto/${acto.id}`} className="btn-primario">
+                        <Play size={15} aria-hidden /> {textos.viaje.verTramo}
+                      </Link>
+                    ) : (
+                      <span className="chip bg-tierra-100 text-tierra-700">
+                        <Lock size={13} aria-hidden /> {textos.viaje.tramoBloqueado}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             ) : (
               <ul className="divide-y divide-tierra-100">

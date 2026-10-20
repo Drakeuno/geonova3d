@@ -1,5 +1,5 @@
 import { elegir, enteroEntre, signoAlAzar, type Rng } from './azar'
-import { errorCierreMm } from './desniveles'
+import { errorCierreMm, type TipoVisada } from './desniveles'
 import type { Mm } from './numeros'
 
 // Misión 2.3 · Punto de Encuentro (§5 y protocolo cooperativo de la §14).
@@ -34,17 +34,29 @@ export interface EventoSembrado {
 }
 
 /**
- * Siembra el evento al iniciar la misión: así la fase de diagnóstico ocurre siempre (§14).
- * El error va en la ida del tramo sorteado, para que la cota de M de esa cuadrilla quede mal.
+ * Siembra el evento al iniciar la misión: así la fase de diagnóstico ocurre siempre (§14). El error
+ * va en la ida del tramo sorteado, para que la cota de M de esa cuadrilla quede mal.
+ *
+ * En un tramo que juega una persona solo caben eventos que cambian lo que se ve por el anteojo: la
+ * mira dañada (cualquier lectura) o el trípode golpeado (una LA: el golpe ocurre entre la lectura
+ * atrás y la adelante). La libreta mojada solo le toca a una cuadrilla simulada: a una persona no se
+ * le cambia lo que ya escribió.
  */
-export function sembrarEvento(rng: Rng, lecturasIda: Record<Tramo, number>, umbralMm = 30): EventoSembrado {
+export function sembrarEvento(
+  rng: Rng,
+  ida: Record<Tramo, TipoVisada[]>,
+  jugadosPorPersonas: Tramo[] = [],
+  umbralMm = 30,
+): EventoSembrado {
   const tramo = elegir(rng, ['A', 'B'] as const)
-  const tipo = elegir(rng, Object.keys(EVENTOS) as TipoEvento[])
+  const tipos = (Object.keys(EVENTOS) as TipoEvento[]).filter((t) => !jugadosPorPersonas.includes(tramo) || t !== 'libreta-mojada')
+  const tipo = elegir(rng, tipos)
+  const candidatas = ida[tramo].flatMap((t, i) => (tipo === 'tripode-golpeado' && t !== 'LA' ? [] : [i]))
   return {
     tramo,
     tipo,
     causa: EVENTOS[tipo].causa,
-    indiceLectura: enteroEntre(rng, 0, lecturasIda[tramo] - 1),
+    indiceLectura: elegir(rng, candidatas),
     desplazamientoMm: signoAlAzar(rng) * enteroEntre(rng, umbralMm + 5, umbralMm + 60),
   }
 }
@@ -86,7 +98,11 @@ export function tramoConError(a: CierreTramo, b: CierreTramo): Tramo | 'ambos' |
 
 export interface Resolucion {
   tramo: Tramo
-  indiceLectura: number
+  /**
+   * Postura del instrumento donde está la lectura errónea. Los cierres parciales de ida y vuelta
+   * aíslan la postura, pero no distinguen su LT de su LA: por eso se pide la postura.
+   */
+  estacion: string
   causa: CausaRaiz
   cotaComunMm: Mm
   /** Procedimiento de corrección acordado y documentado por ambas cuadrillas. */
@@ -95,7 +111,7 @@ export interface Resolucion {
 
 export interface ValidacionResolucion {
   tramoOk: boolean
-  lecturaOk: boolean
+  estacionOk: boolean
   causaOk: boolean
   cotaOk: boolean
   documentada: boolean
@@ -106,14 +122,16 @@ export interface ValidacionResolucion {
 export function validarResolucion(
   r: Resolucion,
   evento: EventoSembrado,
+  /** Postura de la ida donde quedó la lectura alterada por el evento. */
+  estacionDelEvento: string,
   cotaVerdaderaMMm: Mm,
   toleranciaMm: number,
   minimoCaracteres = 40,
 ): ValidacionResolucion {
   const tramoOk = r.tramo === evento.tramo
-  const lecturaOk = tramoOk && r.indiceLectura === evento.indiceLectura
+  const estacionOk = tramoOk && r.estacion === estacionDelEvento
   const causaOk = r.causa === evento.causa
   const cotaOk = Math.abs(r.cotaComunMm - cotaVerdaderaMMm) <= toleranciaMm
   const documentada = r.procedimiento.trim().length >= minimoCaracteres
-  return { tramoOk, lecturaOk, causaOk, cotaOk, documentada, aprobada: tramoOk && lecturaOk && causaOk && cotaOk && documentada }
+  return { tramoOk, estacionOk, causaOk, cotaOk, documentada, aprobada: tramoOk && estacionOk && causaOk && cotaOk && documentada }
 }

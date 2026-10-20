@@ -1,0 +1,41 @@
+{
+  "escenario": "rural-pehuen",
+  "nombre": "Parada rural · Camino del Pehuén",
+  "puntos": [
+    { "id": "PR-P1", "nombre": "PR-P1", "x": -12, "y": -9, "cota": 99.2, "pr": true },
+    { "id": "K0", "x": 0, "y": 0, "cota": 99.54 },
+    { "id": "K1", "x": 48, "y": 36, "cota": 100.38 },
+    { "id": "K2", "x": 93, "y": 36, "cota": 101.01 },
+    { "id": "K3", "x": 105, "y": 52, "cota": 102.74 },
+    { "id": "K4", "x": 138, "y": 96, "cota": 103.32 }
+  ],
+  "aristas": [
+    { "a": "PR-P1", "b": "K0", "dist": 15 },
+    { "a": "K0", "b": "K1", "dist": 60 },
+    { "a": "K1", "b": "K2", "dist": 45 },
+    { "a": "K2", "b": "K3", "dist": 20 },
+    { "a": "K3", "b": "K4", "dist": 55 }
+  ],
+  "recorridos": [
+    {
+      "id": "2.1",
+      "tipo": "abierto",
+      "estaciones": [
+        { "id": "S1", "x": 24, "y": 10, "visadas": ["PR-P1", "K0", "K1"] },
+        { "id": "S2", "x": 72, "y": 30, "visadas": ["K1", "K2"] },
+        { "id": "S3", "x": 95, "y": 48, "visadas": ["K2", "K3"] },
+        { "id": "S4", "x": 126, "y": 70, "visadas": ["K3", "K4"] }
+      ]
+    }
+  ],
+  "elementos": [
+    { "tipo": "camino", "puntos": [[-20, -15], [0, 0], [48, 36], [93, 36], [105, 52], [138, 96], [160, 125]], "ancho": 4 },
+    { "tipo": "arbol", "x": 20, "y": 40, "alto": 14 },
+    { "tipo": "arbol", "x": 70, "y": 60, "alto": 13 },
+    { "tipo": "arbol", "x": 120, "y": 30, "alto": 15 },
+    { "tipo": "arbol", "x": 150, "y": 80, "alto": 12 },
+    { "tipo": "arbol", "x": 10, "y": -30, "alto": 10 },
+    { "tipo": "arbol", "x": 110, "y": 110, "alto": 14 },
+    { "tipo": "arbol", "x": 60, "y": 5, "alto": 11 }
+  ]
+}
